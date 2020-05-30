@@ -1,92 +1,120 @@
 package com.example.lectrac;
 
+import android.app.Activity;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.view.Display;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Console;
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class DatabaseManager {
+public class DatabaseManager extends SQLiteOpenHelper {
 
-        //CONSTANTS
-        private static String tblWITS = "WITS";
+    //CONSTANTS
+    private static String tblWITS = "WITS";
 
-        void Error(String error){
-        Log.e("ERROR","The problem is at" + error);
+    //Initialization
+    OkHttpClient client = new OkHttpClient();
+    JSONArray arr = null;
+
+    public DatabaseManager(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
     }
 
-        void printInfo(String info) {
-        Log.i("INFO",info);
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
     }
 
 
-        //Query function
-        JSONArray Query(final String query){
-        //Intialization
-        OkHttpClient client = new OkHttpClient();
-        String url = "https://lamp.ms.wits.ac.za/home/s2180393/Query.php?query=";
-        url += query;
+    void Debug(String error){
+        Log.d("DEBUG","The problem is at" + error);
+    }
 
+
+
+    void Query(String query) throws InterruptedException {
+
+
+        //Url
+        String url = "https://lamp.ms.wits.ac.za/home/s2180393/Query.php";
+        HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+        httpBuilder.addQueryParameter("query", query);
+        url = httpBuilder.build().toString();
+
+        //Request
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        //Request Enqueue
+        //Response
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Error("enqueue failure for request - OkHttpClient, when querying " + query);
-                e.printStackTrace();
+                Debug("Request Failed");
+                notify();
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (!response.isSuccessful()){
-                    Error("Response is not successful - OkHttpClient, when querying " + query);
-                    Error("Unexpected code " + response.toString());
-                    throw new IOException("Unexpected code" + response);
-                }
-                else{//response.isSuccessful
-                    try {//trying to get response data
-                        JSONArray arr = new JSONArray(response.body().string());
-
+                if (response.isSuccessful()) {
+                    try {
+                        arr = new JSONArray(response.body().string());
+                        //notify();
                     } catch (JSONException e) {
-                        Error("Response data is unsuccessful, when querying" + query);
                         e.printStackTrace();
                     }
-                }//End response.isSuccessful
+                    //notify();
+                } else {
+                    Debug("Welp, response failed :(");
+                    //notify();
+                }
             }
-        });//end of OnResponse
+        });
 
-        return arr;
-        //end of Query function
-    }
-
-        void Display(){
-        JSONArray arr = Query("SELECT * FROM " + tblWITS);
-        try {
-            JSONObject obj = arr.getJSONObject(0);
-            printInfo(obj.toString());
-        } catch (JSONException e) {
-            Error("Display, object at index might not exist");
-            e.printStackTrace();
-        }
-
+        //client.wait();
 
     }
 
+       /* void Display (final Activity a) throws InterruptedException, JSONException {
+            Query("SELECT * FROM WITS");
+            JSONArray Jarr = arr;
 
-    }
+            if (Jarr == null) {
+                Debug("JSONArray is null");
+                return;
+            }
+            JSONObject obj = Jarr.getJSONObject(0);
+            Debug("Success!");
+
+
+        }*/
+
+
+
+}
+
