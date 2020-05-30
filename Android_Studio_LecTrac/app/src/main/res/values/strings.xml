@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LecTrac</string>
+
+    // the ActionBarDrawerToggle needs this code:
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

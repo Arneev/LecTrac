@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    // creates the navigation bar with the titles and icons
+
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="Calendar" />
+
+    <item
+        android:id="@+id/nav_courseList"
+        android:icon="@drawable/ic_list"
+        android:title="Course To-Do List" />
+
+    <item
+        android:id="@+id/nav_personalList"
+        android:icon="@drawable/ic_list"
+        android:title="Personal To-Do List" />
+
+    <item
+        android:id="@+id/nav_messageBoard"
+        android:icon="@drawable/ic_message_board"
+        android:title="Message Board" />
+
+    <item
+        android:id="@+id/nav_testMarks"
+        android:icon="@drawable/ic_marks"
+        android:title="Test Marks" />
+
+    <item
+        android:id="@+id/nav_forum"
+        android:icon="@drawable/ic_forum"
+        android:title="Forum" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+
+</group>
+
+<item android:title="Logout">
+    <menu>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+    </menu>
+</item>
+
+</menu>
