@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -45,6 +46,7 @@ public class OnlineDatabaseManager {
     //endregion Helper Functions
 
     void Query(final String query) throws InterruptedException {
+        arr = null;
 
         //Testing
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -76,6 +78,7 @@ public class OnlineDatabaseManager {
                         arr = new JSONArray(response.body().string());
                         Log("Response is successful :D , " + arr.toString());
                     }catch (Exception e){
+                        arr = null;
                         Log(e.toString());
                     }
                     finally {
@@ -90,18 +93,71 @@ public class OnlineDatabaseManager {
        countDownLatch.await();
     }
 
-    void Display () throws InterruptedException, JSONException {
-        Query("SELECT * FROM WITS");
-        Log("Display arr is " + arr.toString());
+    void Display (String tableName) throws InterruptedException, JSONException {
+        try{
+            Query("SELECT * FROM " + tableName);
+//            DoSomething()
+        }catch (Exception e)
+        {
+            Log(e.toString());
+        }
 
-        if (arr == null) {
-            Log("JSONArray is null");
+
+    }
+
+    boolean QueryBool(String query) throws Exception {
+
+        //If found a row that matches query, will return true
+        try{
+            Query(query);
+            if (arr != null) return true;
+            return false;
+
+        }catch (Exception e) {
+            Log(e.toString());
+            throw new Exception(e);
+        }
+
+    }
+
+    void Update(String tableName,String column_value, String condition) throws InterruptedException {
+        try{
+            Query("UPDATE " + tableName + " SET " + column_value + " WHERE " + condition);
+
+        }catch (Exception e) { Log(e.toString()); }
+    }
+
+    void Insert(String tableName,String columns, String values) {
+        try{
+            Query("INSERT INTO " + tableName + " (" + columns + ") VALUES (" +  values + ")");
+
+        }catch (Exception e) { Log(e.toString()); }
+    }
+
+    void Insert(String tableName, String values) {
+        try{
+            Query("INSERT INTO " + tableName + " VALUES (" + values + ")");
+
+        }catch (Exception e) { Log(e.toString()); }
+    }
+
+    void Delete (String tableName, String condition) {
+        try{
+            Query("DELETE FROM " + tableName + " WHERE " + condition);
+
+        }catch (Exception e) { Log(e.toString()); }
+    }
+
+    void Delete(String tableName, boolean youSure) throws InterruptedException {
+        if (!youSure){
+            Log("Can NOT delete table, you are not sure");
             return;
         }
 
-        JSONObject obj = arr.getJSONObject(0);
-        //Log("JSON FIRST OBJECT IS" + obj.toString());
+        try{
+            Query("DELETE FROM " + tableName);
 
+        }catch (Exception e) { Log(e.toString()); }
     }
 
 
