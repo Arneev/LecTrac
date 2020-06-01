@@ -14,14 +14,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DatabaseManager db = new DatabaseManager(this,"dbManager",null,1);
+
+        Start();
+
+
+
+
+    }
+
+    void Start(){
+        OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
         try {
-            db.Display(MainActivity.this);
-        } catch (InterruptedException | JSONException e) {
+            onlineDB.Display();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 }
