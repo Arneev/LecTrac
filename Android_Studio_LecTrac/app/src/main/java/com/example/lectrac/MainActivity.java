@@ -8,8 +8,7 @@ import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
+    //OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,19 +17,14 @@ public class MainActivity extends AppCompatActivity {
         Start();
 
 
-
-
     }
 
+    //Start Method
     void Start(){
         OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
-        try {
-            onlineDB.Display();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
+
+
 }

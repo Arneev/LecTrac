@@ -27,7 +27,7 @@ import androidx.annotation.Nullable;
  import okhttp3.Request;
  import okhttp3.Response;
 
-public class OnlineDatabaseManager {
+final public class OnlineDatabaseManager {
 
     //region CONSTANTS
     private static String tblWITS = "WITS";
@@ -38,12 +38,12 @@ public class OnlineDatabaseManager {
     static JSONArray arr = null;
     //endregion
 
-    //region Helper Functions
-    void Log(String error){
+    //region HelperFunctions
+    public static void Log(String error){
         Log.i("Perso",error);
     }
+    //endregion
 
-    //endregion Helper Functions
 
     void Query(final String query) throws InterruptedException {
         arr = null;
@@ -120,7 +120,7 @@ public class OnlineDatabaseManager {
 
     }
 
-    void Update(String tableName,String column_value, String condition) throws InterruptedException {
+    void Update(String tableName,String column_value, String condition) {
         try{
             Query("UPDATE " + tableName + " SET " + column_value + " WHERE " + condition);
 
@@ -160,6 +160,14 @@ public class OnlineDatabaseManager {
         }catch (Exception e) { Log(e.toString()); }
     }
 
+    JSONArray getJSONArr(String query) throws InterruptedException {
+        Query(query);
+        return arr;
+    }
 
+    JSONObject getJSONObj(String query) throws InterruptedException, JSONException {
+        Query(query);
+        return arr.getJSONObject(0);
+    }
 
 }
