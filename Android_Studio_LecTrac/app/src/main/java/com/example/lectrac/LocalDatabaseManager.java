@@ -28,15 +28,39 @@ final public class LocalDatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String tblUSER = "";
-        final String tblLEC = "";
-        final String tblTASK = "";
-        final String tblCOURSE = "";
+        //SORT OUT FOREIGN KEYS
+        //SORT OUT AUTOINCREMENT
+        //SET DEFAULTS
+
+        final String tblUSER = "CREATE TABLE USER(isLoggedIn BOOLEAN NOT NULL," +
+                " isLecturer BOOLEAN NOT NULL," +
+                " isDarkMode BOOLEAN NOT NULL, Nickname VARCHAR(30));";
+
+
+        final String tblLEC = "CREATE TABLE LECTURER(Lecturer_ID CHAR(7) PRIMARY KEY," +
+                " Lecturer_FName VARCHAR(50) NOT NULL, Lecturer_LName VARCHAR(50) NOT NULL," +
+                "Lecturer_Email VARCHAR(128) NOT NULL, Lecturer_Reference VARCHAR(50));";
+
+        final String tblTASK = "CREATE TABLE TASK(Task_ID INT AUTOINCREMENT NOT NULL, isUser BOOLEAN NOT NULL," +
+                "Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE,Course_Code CHAR(8) CHAR(8), PRIMARY KEY(Task_ID,isUser));";
+
+
+        final String tblTEST = "CREATE TABLE TEST(Test_No INT AUTOINCREMENT PRIMARY KEY, Test_Name VARCHAR(50) NOT NULL," +
+                " Test_Mark INT NOT NULL, Test_Total INT NOT NULL, Course_Code CHAR(8));";
+
+        final String tblMESSAGE = "CREATE TABLE MESSAGE(Message_ID INT AUTOINCREMENT PRIMARY KEY," +
+                " Message_Name VARCHAR(50) NOT NULL, Message_Classification VARCHAR(50)," +
+                " MESSAGE_CONTENT VARCHAR(512), Message_Due_Date DATE, Message_isDeleted BOOLEAN NOT NULL," +
+                " Course_Code CHAR(8), Lecturer_ID CHAR(7) NOT NULL);";
+
+        final String tblCOURSE = "CREATE TABLE COURSE(Course_Code CHAR(8) PRIMARY KEY, Course_Name VARCHAR(50) NOT NULL);";
 
         db.execSQL(tblUSER);
         db.execSQL(tblLEC);
         db.execSQL(tblTASK);
         db.execSQL(tblCOURSE);
+        db.execSQL(tblTEST);
+        db.execSQL(tblMESSAGE);
     }
 
     public String getCurrDate(){
