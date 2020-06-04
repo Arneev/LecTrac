@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline_left" />
 
     <EditText
-        android:id="@+id/userID"
+        android:id="@+id/edtUserID"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="firstName"
@@ -36,7 +36,7 @@
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintBottom_toTopOf="@+id/edtFirstName"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/labelCreate"
@@ -44,7 +44,7 @@
 
 
     <EditText
-        android:id="@+id/firstName"
+        android:id="@+id/edtFirstName"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="firstName"
@@ -54,17 +54,18 @@
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/surname"
+        app:layout_constraintBottom_toTopOf="@+id/edtSurname"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/userID"
+        app:layout_constraintTop_toBottomOf="@+id/edtUserID"
         tools:ignore="LabelFor" />
 
     <Button
-        android:id="@+id/button_create"
+        android:id="@+id/btnCreateAcc"
         android:layout_width="150dp"
         android:layout_height="42dp"
         android:background="@drawable/background_et"
+        android:onClick="RegisterButtonClick"
         android:text="Create Account"
         android:textAllCaps="false"
         android:textColor="@color/black"
@@ -72,10 +73,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/edtConfirmPassword" />
 
     <EditText
-        android:id="@+id/nickname"
+        android:id="@+id/edtNickname"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="nickname"
@@ -85,14 +86,14 @@
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintBottom_toTopOf="@+id/edtPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail"
         tools:ignore="LabelFor" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/edtEmail"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="email"
@@ -102,14 +103,14 @@
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/nickname"
+        app:layout_constraintBottom_toTopOf="@+id/edtNickname"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/surname"
+        app:layout_constraintTop_toBottomOf="@+id/edtSurname"
         tools:ignore="LabelFor" />
 
     <EditText
-        android:id="@+id/surname"
+        android:id="@+id/edtSurname"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="surname"
@@ -119,14 +120,14 @@
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintBottom_toTopOf="@+id/edtEmail"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/firstName"
+        app:layout_constraintTop_toBottomOf="@+id/edtFirstName"
         tools:ignore="LabelFor" />
 
     <EditText
-        android:id="@+id/confirmPassword"
+        android:id="@+id/edtConfirmPassword"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="password"
@@ -137,10 +138,10 @@
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/button_create"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreateAcc"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
         tools:ignore="LabelFor" />
 
     <TextView
@@ -150,7 +151,7 @@
         android:text="Create Account"
         android:textColor="@color/black"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintBottom_toTopOf="@+id/edtFirstName"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -163,7 +164,7 @@
         android:layout_height="44dp"
         android:contentDescription="@null"
         android:src="@drawable/name"
-        app:layout_constraintBottom_toTopOf="@id/firstName"
+        app:layout_constraintBottom_toTopOf="@id/edtFirstName"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -171,7 +172,7 @@
         app:layout_constraintVertical_bias="0.172" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/edtPassword"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="password"
@@ -182,10 +183,10 @@
         android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/confirmPassword"
+        app:layout_constraintBottom_toTopOf="@+id/edtConfirmPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/nickname"
+        app:layout_constraintTop_toBottomOf="@+id/edtNickname"
         tools:ignore="LabelFor" />
 
     <ImageView

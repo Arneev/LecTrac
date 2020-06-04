@@ -26,25 +26,25 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline_left" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/edtUserID"
         android:layout_width="305dp"
         android:layout_height="56dp"
         android:layout_marginTop="30dp"
         android:autofillHints="username"
         android:background="@drawable/background_et"
         android:ems="10"
-        android:hint="Username"
+        android:hint="User ID"
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintBottom_toTopOf="@+id/edtPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/IMGname"
         tools:ignore="LabelFor" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/edtPassword"
         android:layout_width="305dp"
         android:layout_height="56dp"
         android:autofillHints="username"
@@ -54,29 +54,30 @@
         android:inputType="text"
         android:padding="16dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/button_login"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/edtUserID"
         tools:ignore="LabelFor" />
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/btnLogin"
         android:layout_width="150dp"
         android:layout_height="42dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/background_et"
+        android:onClick="LoginButtonClick"
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/ForgotPassword"
+        app:layout_constraintBottom_toTopOf="@+id/lblForgotPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
     <TextView
-        android:id="@+id/ForgotPassword"
+        android:id="@+id/lblForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -87,7 +88,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
     <View
         android:id="@+id/footer_line"
@@ -98,7 +99,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/ForgotPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/lblForgotPassword" />
 
     <TextView
         android:id="@+id/create_acc"
@@ -135,6 +136,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintHorizontal_bias="0.783"
         app:layout_constraintTop_toBottomOf="@+id/IMGlogo"
-        app:layout_constraintBottom_toTopOf="@+id/username"/>
+        app:layout_constraintBottom_toTopOf="@+id/edtUserID"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

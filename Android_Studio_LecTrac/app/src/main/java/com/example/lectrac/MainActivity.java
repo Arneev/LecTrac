@@ -4,16 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends AppCompatActivity {
 
-
+    public static void Log(String error){
+        Log.i("Perso",error);
+    }
 
     //OnCreate
     @Override
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Start();
+
 
         configureNextButton();
 
@@ -31,6 +35,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void LoginButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException {
+        RegisterLoginManager loginManager = new RegisterLoginManager();
+
+        TextView tvUserID = (TextView)findViewById(R.id.edtUserID);
+        String userID =  tvUserID.getText().toString();
+
+        TextView tvPassword = (TextView)findViewById(R.id.edtPassword);
+        String password =  tvPassword.getText().toString();
+
+        Log("Attempting to LogInAttempt()");
+        boolean isSuccessful = loginManager.LogInAttempt(password,userID,this);
+
+        if (isSuccessful){
+            Log("LOG IN IS SUCCESSFUL <3 :P");
+        }
+        else{
+            Log("LOG IN IS NOT SUCCESSFUL :(");
+        }
+    }
 
     private void openRegistration(){
 
@@ -45,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureNextButton(){
 
-        Button loginButton = (Button) findViewById(R.id.button_login);
+        Button loginButton = (Button) findViewById(R.id.btnLogin);
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -54,12 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Start Method
-    void Start(){
-        OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
-
-    }
 
 
 }

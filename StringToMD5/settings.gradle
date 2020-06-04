@@ -1,0 +1,2 @@
+rootProject.name='StringToMD5'
+include ':app'

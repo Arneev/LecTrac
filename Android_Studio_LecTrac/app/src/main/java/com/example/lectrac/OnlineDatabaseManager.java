@@ -141,6 +141,21 @@ final public class OnlineDatabaseManager {
         }catch (Exception e) { Log(e.toString()); }
     }
 
+    public void Insert(String tableName, String[] values) throws InterruptedException {
+        String stringVals = "";
+        int size = values.length;
+
+        for (int i = 0; i < size; i++){
+            stringVals += values[i];
+
+            if (i != size - 1){
+                stringVals += ",";
+            }
+        }
+
+        Query("INSERT INTO " + tableName + " VALUES(" + values + ")");
+    }
+
     void Delete (String tableName, String condition) {
         try{
             Query("DELETE FROM " + tableName + " WHERE " + condition);
@@ -167,7 +182,23 @@ final public class OnlineDatabaseManager {
 
     JSONObject getJSONObj(String query) throws InterruptedException, JSONException {
         Query(query);
+
+        if (arr.length() > 1){
+            Log("ARRAY IS GREATER THAN ONE");
+        }
         return arr.getJSONObject(0);
+    }
+
+    boolean isEmpty(String tableName, String condition) throws InterruptedException {
+        String query = "SELECT * FROM " + tableName + " WHERE " + condition;
+        Query(query);
+
+        if (arr.length() == 0) {
+            Log("The table, " + tableName + ", is empty with the condition " + condition);
+            return true;
+        }
+
+        return false;
     }
 
 }
