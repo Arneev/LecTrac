@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         configureNextButton();
 
         openRegistration();
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void LoginButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException {
+    public void LoginButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         RegisterLoginManager loginManager = new RegisterLoginManager();
 
         TextView tvUserID = (TextView)findViewById(R.id.edtUserID);

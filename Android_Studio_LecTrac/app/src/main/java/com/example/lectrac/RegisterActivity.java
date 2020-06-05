@@ -1,8 +1,10 @@
 package com.example.lectrac;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -24,10 +27,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+//        LocalDatabaseManager localDatabaseManager = new LocalDatabaseManager(this);
+//        localDatabaseManager.DeleteEverything();
         exitRegistration();
     }
 
-    public void RegisterButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException {
+    public void RegisterButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         RegisterLoginManager registerManager = new RegisterLoginManager();
 
         TextView tvUserID = (TextView)findViewById(R.id.edtUserID);

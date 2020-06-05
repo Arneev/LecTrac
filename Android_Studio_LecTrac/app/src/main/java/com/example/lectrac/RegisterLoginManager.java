@@ -14,74 +14,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorCompletionService;
 
+import static com.example.lectrac.HelperFunctions.*;
+
 public class RegisterLoginManager{
 
 
     //region Constants
-    final static String START_SALT = "!@We#4";
-    final static String  END_SALT = "HQWn98";
-    final static int STUDENT_NUMBER_LENGTH = 7;
-    final static String tblStudent = "STUDENT";
-    final static String tblLecturer = "LECTURER";
-    final static int tblUserLength = 5;
-    final static String tblUser = "USER";
-    final static String tblWITS = "WITS";
-    final static String errorCodeMoreThanOne = "Error Code 01";
+
     //endregion
 
     //region Initialization
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+    HelperFunctions hp = new HelperFunctions();
+    static JSONObject userInWITS = null;
     //endregion
-
-    //region HelperFunction
-    public static void Log(String error){
-        Log.i("Perso",error);
-    }
-
-    public static void ShowUserError(String error){
-        //Show Error, for now lets just Log
-        Log(error);
-        //Change this in the future
-    }
-
-    boolean hasWhitespace(String line){
-        int size = line.length();
-
-        for (int i = 0; i < size; i++){
-            if (line.charAt(i) == ' ') return true;
-        }
-
-        return false;
-    }
-
-    String StringToMD5(String string) throws NoSuchAlgorithmException {
-
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] messageDigest = md.digest(string.getBytes());
-        BigInteger bigInteger = new BigInteger(1,messageDigest);
-        String hashString = bigInteger.toString(16);
-        return hashString;
-    }
-
-    String salt(String string){
-        String temp = "";
-        temp = START_SALT + string + END_SALT;
-        return temp;
-    }
-
-    String saltAndHash(String string) throws NoSuchAlgorithmException {
-        String temp = StringToMD5(salt(string));
-        return temp;
-    }
-    //endregion
+    
 
     //region Register
-    boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass) throws NoSuchAlgorithmException, InterruptedException, JSONException {
+    boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
         //userID sorted out
         if (userID.length() != 0){
             userID = userID.trim();
@@ -97,9 +53,9 @@ public class RegisterLoginManager{
         }
 
         //region Getting JSON Object
-        JSONObject obj = null;
+        userInWITS = null;
 
-        boolean found = foundObj(tblWITS, "User_ID = " + '"' + userID + '"');
+        boolean found = foundObj(tblWITS, "User_ID = " + quote(userID));
 
         if (!found){
             ShowUserError("There is no WITS User ID with that user ID, please contact support");
@@ -108,11 +64,12 @@ public class RegisterLoginManager{
 
         boolean isLec = isLecturerWITS(userID);
 
-        obj = onlineDB.getJSONObj("SELECT * FROM" +
-                    " " + tblWITS + " WHERE User_ID" + '"' + userID + '"');
+        userInWITS = onlineDB.getJSONObj("SELECT * FROM" +
+                " " + tblWITS + " WHERE User_ID = " + quote(userID));
 
 
         //endregion
+
 
         //firstName sorted out
         if (firstName.length() != 0){
@@ -123,7 +80,7 @@ public class RegisterLoginManager{
             }
         }
         else{
-            firstName = obj.getString("FirstName");
+            firstName = userInWITS.getString("FirstName");
 
         }
 
@@ -136,7 +93,7 @@ public class RegisterLoginManager{
             }
         }
         else{
-            lastName = obj.getString("LastName");
+            lastName = userInWITS.getString("LastName");
 
         }
 
@@ -149,11 +106,7 @@ public class RegisterLoginManager{
             }
         }
         else{
-
-            if (isLec){
-                email = obj.getString("Email");
-            }
-
+            email = userInWITS.getString("Email");
             Log("Using WITS Email");
         }
 
@@ -178,18 +131,8 @@ public class RegisterLoginManager{
                 return false;
             }
 
-            if (confirmPass != password){
+            if (!confirmPass.equals(password)){
                 ShowUserError("Make sure your password and confirm password are matching");
-                return false;
-            }
-
-            //Confirm pass cass checked
-
-            password = saltAndHash(password);
-        }
-        else{
-            if (confirmPass.length() != 0){
-                ShowUserError("Remove all text from Confirm Password");
                 return false;
             }
 
@@ -197,26 +140,58 @@ public class RegisterLoginManager{
                     "WHEN PASSWORD.LENGTH = 0 IN REGISTER ATTEMPT");
 
 
-            password = obj.getString("Password");
+            String tempPassword = userInWITS.getString("Password");
 
+            //Confirm pass cass checked
+
+            password = saltAndHash(password);
+            Log(password);
+
+            //Non cut password (BINARY16)
+            password = CopyOnly(password,passwordLength);
+            Log(password);
+
+            if (!tempPassword.equals(password)){
+                ShowUserError("Enter your WITS password");
+                return false;
+            }
+        }
+        else{
+            ShowUserError("Enter your WITS password");
+            return false;
         }
 
         return Register(userID,firstName,lastName,email,nick,password);
     }
 
-    boolean alreadyReg(String userID) throws InterruptedException {
+    boolean alreadyReg(String userID) {
 
-        if (onlineDB.getJSONArr("SELECT * FROM" +
-                " STUDENT WHERE Student_ID = " + "'" + userID + "'").length() != 0 ||
-                onlineDB.getJSONArr("SELECT * FROM" +
-                 " LECTURER WHERE Lecturer_ID = " + "'" + userID + "'").length() != 0){
-            return true;
+        try {
+            Log("alreadyReg");
+            JSONArray studentLength = onlineDB.getJSONArr("SELECT * FROM" +
+                    " STUDENT WHERE Student_ID = " + quote(userID));
+
+            Log(studentLength.length() + " is student length");
+
+            JSONArray lecturerLength = onlineDB.getJSONArr("SELECT * FROM" +
+                    " LECTURER WHERE Lecturer_ID = " + quote(userID));
+
+            Log(lecturerLength.length() + " is lecturer length");
+
+            if (studentLength.length() != 0 || lecturerLength.length() != 0) {
+                Log("Returning true for alreadyReg");
+                return true;
+            }
+        }catch(Exception e){
+            Log(e.toString());
+            Log("Returning false for alreadyReg");
+            return false;
         }
-
         return false;
     }
 
-    boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick,@NotNull String password) throws InterruptedException {
+    boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick,@NotNull String password) throws InterruptedException, IOException, JSONException {
+        Log("Register");
         boolean isLec = isLecturer(userID);
 
         String[] values = new String[6];
@@ -225,7 +200,7 @@ public class RegisterLoginManager{
         values[2] = '"' + lastName + '"';
         values[3] = '"' + email + '"';
         values[4] = '"' + nick + '"';
-        values[5] = password;
+        values[5] = '"' + password + '"';
 
         try{
             if (isLec){
@@ -244,7 +219,7 @@ public class RegisterLoginManager{
     }
 
     boolean correctPassParams(@NotNull String password){
-
+        Log("Correct Pass Params");
         boolean containSpecial = false;
         boolean isDigit = false;
         boolean isUpper = false;
@@ -315,6 +290,7 @@ public class RegisterLoginManager{
     }
 
     boolean correctUserID(String userID) throws InterruptedException {
+        Log("Correct UserID");
         if (userID.length() != 7){
             ShowUserError("Enter a valid user ID");
             return false;
@@ -322,6 +298,7 @@ public class RegisterLoginManager{
 
         if (hasWhitespace(userID)){
             ShowUserError("Cannot have a space in User ID");
+            return false;
         }
 
         try
@@ -335,20 +312,15 @@ public class RegisterLoginManager{
 
         }catch(Exception e){
             ShowUserError("Enter a valid user ID");
+            return false;
         }
 
-        boolean isCorrect = foundObj(tblWITS,"User_ID = " + "'" + userID + "'");
-
-        if (isCorrect){
-            return true;
-        }
-
-        ShowUserError("Enter a valid user ID");
-        return false;
+        return true;
 
     }
 
-    boolean foundObj(String tableName, String condition) throws InterruptedException {
+    boolean foundObj(String tableName, String condition) throws InterruptedException, IOException, JSONException {
+        Log("foundObj");
         String query = "SELECT * FROM " + tableName + " WHERE " + condition;
         JSONArray arr = onlineDB.getJSONArr(query);
 
@@ -373,6 +345,7 @@ public class RegisterLoginManager{
     }
 
     boolean correctEmail(String email){
+        Log("correctEmail");
         int size = email.length();
 
         if (size > 128){
@@ -396,7 +369,7 @@ public class RegisterLoginManager{
     }
 
     boolean correctSurname(String surname){
-
+        Log("correctSurname");
         for(char c : surname.toCharArray()) {
             if(Character.isDigit(c)) {
                 ShowUserError("There cannot be a number in your surname...");
@@ -414,7 +387,7 @@ public class RegisterLoginManager{
     }
 
     boolean correctFirstName(@NotNull String firstName){
-
+        Log("correctFirstName");
         for(char c : firstName.toCharArray()) {
             if(Character.isDigit(c)) {
                 ShowUserError("There cannot be a number in your name...");
@@ -436,10 +409,10 @@ public class RegisterLoginManager{
         return true;
     }
 
-    boolean isLecturerWITS(String userID) throws InterruptedException {
-
+    boolean isLecturerWITS(String userID) throws InterruptedException, IOException, JSONException {
+        Log("isLecturerWITS");
         JSONArray tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblWITS +
-                " WHERE User_ID = " + "'" + userID + "'");
+                " WHERE User_ID = " + quote(userID));
 
         int size = tempArr.length();
 
@@ -473,7 +446,8 @@ public class RegisterLoginManager{
     //endregion
 
     //region LogIn
-    boolean LogInAttempt(String password, String userID, Context context) throws InterruptedException, NoSuchAlgorithmException, JSONException {
+    boolean LogInAttempt(String password, String userID, Context context) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
+        Log("LogInAttempt");
         password = password.trim();
         userID = userID.trim();
 
@@ -488,7 +462,8 @@ public class RegisterLoginManager{
         }
     }
 
-    boolean LogIn(String password, String userID, Context context) throws JSONException, InterruptedException {
+    boolean LogIn(String password, String userID, Context context) throws JSONException, InterruptedException, IOException {
+        Log("LogIn");
         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
 
         int isLecturer;
@@ -518,10 +493,11 @@ public class RegisterLoginManager{
         return true;
     }
 
-    boolean isLecturer(String userID) throws InterruptedException {
+    boolean isLecturer(String userID) throws InterruptedException, IOException, JSONException {
+        Log("isLecturer");
         boolean isLecturer;
 
-        JSONArray tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblStudent + " WHERE STUDENT_ID = " + "'" + userID + "'");
+        JSONArray tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblStudent + " WHERE STUDENT_ID = " + quote(userID));
 
         int size = tempArr.length();
         if (size == 1){
@@ -531,15 +507,17 @@ public class RegisterLoginManager{
             Log("No matching studentID, might be lecturer");
 
             tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblLecturer +
-                    " WHERE Lecturer_ID = " + userID);
+                    " WHERE Lecturer_ID = " + quote(userID));
 
-            if (size == 1){
+            int tempSize = tempArr.length();
+
+            if (tempSize == 1){
                 return true;
-            }else if (size == 0){
+            }else if (tempSize == 0){
                 Log("No lecturer or student match, please register");
                 ShowUserError("No matching user with this user ID");
             }
-            else if (size > 1){
+            else if (tempSize > 1){
                 ShowUserError("There seems to be 2 accounts with the same user ID," +
                         " please contact the support team");
             }
@@ -553,7 +531,7 @@ public class RegisterLoginManager{
     }
 
     boolean checkStudentID(String studentID){
-
+        Log("checkStudentID");
         if (hasWhitespace(studentID)){
             return false;
         }
@@ -581,7 +559,8 @@ public class RegisterLoginManager{
 
     }
 
-    boolean checkPassword(String password, String userID) throws NoSuchAlgorithmException, InterruptedException {
+    boolean checkPassword(String password, String userID) throws NoSuchAlgorithmException, InterruptedException, IOException, JSONException {
+        Log("checkPassword");
         if (hasWhitespace(password)){
             ShowUserError("No whitespaces are allowed in password");
             return false;
@@ -590,7 +569,7 @@ public class RegisterLoginManager{
         String hashPass = saltAndHash(password);
 
         JSONArray arr = onlineDB.getJSONArr("SELECT * FROM STUDENT" +
-                " WHERE Student_ID = " + "'" + userID + "'");
+                " WHERE Student_ID = " + quote(userID));
 
 
 
@@ -617,20 +596,20 @@ public class RegisterLoginManager{
 
             //region Might be Lecturer
             JSONArray lecArr = onlineDB.getJSONArr("SELECT * FROM LECTURER" +
-                    " WHERE Lecturer_ID = " + "'" + userID + "'");
+                    " WHERE Lecturer_ID = " + quote(userID));
 
             int lecArrSize = lecArr.length();
-            if (size == 0){
+            if (lecArrSize == 0){
                 Log("No Student or Lecturer with ID, please register");
                 ShowUserError("There is no matching user with this userID");
             }
 
-            if (size == 1){
+            if (lecArrSize == 1){
                 try {
                     JSONObject obj = arr.getJSONObject(0);
                     String hashPassFromDB = obj.getString("Lecturer_Password");
 
-                    if (hashPass == hashPassFromDB){
+                    if (hashPass.equals(hashPassFromDB)){
                         return true;
                     }
 
@@ -641,7 +620,7 @@ public class RegisterLoginManager{
                 }
             }
 
-            if (size > 1){
+            if (lecArrSize > 1){
                 ShowUserError("There seems to be 2 accounts with the same user IDs," +
                         " please contact the support team");
             }

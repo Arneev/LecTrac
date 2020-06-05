@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
@@ -19,7 +20,8 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 import androidx.annotation.Nullable;
- import androidx.arch.core.util.Function;
+import androidx.annotation.RequiresApi;
+import androidx.arch.core.util.Function;
  import okhttp3.Call;
  import okhttp3.Callback;
  import okhttp3.HttpUrl;
@@ -27,30 +29,18 @@ import androidx.annotation.Nullable;
  import okhttp3.Request;
  import okhttp3.Response;
 
+import static com.example.lectrac.HelperFunctions.*;
+
 final public class OnlineDatabaseManager {
 
-    //region CONSTANTS
-    private static String tblWITS = "WITS";
-    final static int countDownTime = 1;
-    //endregion
-
     //region Initialization
-    OkHttpClient client = new OkHttpClient();
+    static OkHttpClient client = new OkHttpClient();
     static JSONArray arr = null;
+    HelperFunctions hp = new HelperFunctions();
     //endregion
 
-    //region HelperFunctions
-    public static void Log(String error){
-        Log.i("Perso",error);
-    }
-    //endregion
-
-
-    void Query(final String query) throws InterruptedException {
+    void Query(final String query) throws InterruptedException, IOException, JSONException {
         arr = null;
-
-        //Testing
-        final CountDownLatch countDownLatch = new CountDownLatch(countDownTime);
 
         //Url
         String url = "https://lamp.ms.wits.ac.za/home/s2180393/Query.php";
@@ -59,39 +49,41 @@ final public class OnlineDatabaseManager {
         url = httpBuilder.build().toString();
 
         //Request
-        Request request = new Request.Builder()
+        final Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        Log(url);
-
-        client.newCall(request).enqueue(new Callback() {
+        Thread t = new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log("onFailure method for callback");
-                countDownLatch.countDown();
-            }
+            public void run() {
+                try {
+                    Response response = client.newCall(request).execute();
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.isSuccessful()){
-                    try{
-                        arr = new JSONArray(response.body().string());
-                        Log("Response is successful :D , " + arr.toString());
-                    }catch (Exception e){
-                        arr = null;
-                        Log(e.toString());
+                    if (response.isSuccessful()){
+                        Log("Response is successful");
+                        String res = response.body().string();
+                        Log(res);
+                        arr = new JSONArray(res);
+
+                        if (arr == null){
+                            Log("arr is empty");
+                        }
+                        Log("Response is successful with query " + query);
                     }
-                    finally {
-                        countDownLatch.countDown();
+                    else{
+                        Log("Response has failed with query " + query);
                     }
-                }else {
-                    Log("Response is NOT successful :(");
+                }catch (Exception e){
+                    Log(e.toString());
+                    Log("Sync never work");
                 }
             }
         });
 
-       countDownLatch.await();
+        t.start();
+        t.join();
+        Log("Thread join complete");
     }
 
     void Display (String tableName) throws InterruptedException, JSONException {
@@ -142,7 +134,7 @@ final public class OnlineDatabaseManager {
         }catch (Exception e) { Log(e.toString()); }
     }
 
-    public void Insert(String tableName, String[] values) throws InterruptedException {
+    public void Insert(String tableName, String[] values) throws InterruptedException, IOException, JSONException {
         String stringVals = "";
         int size = values.length;
 
@@ -177,12 +169,18 @@ final public class OnlineDatabaseManager {
         }catch (Exception e) { Log(e.toString()); }
     }
 
-    JSONArray getJSONArr(String query) throws InterruptedException {
+    JSONArray getJSONArr(String query) throws InterruptedException, IOException, JSONException {
+        Log(query);
         Query(query);
+
+        if (arr != null){
+            return arr;
+        }
+        Log("About to return null JSONArry with Query, " + query);
         return arr;
     }
 
-    JSONObject getJSONObj(String query) throws InterruptedException, JSONException {
+    JSONObject getJSONObj(String query) throws InterruptedException, JSONException, IOException {
         Query(query);
 
         if (arr.length() > 1){
@@ -198,7 +196,7 @@ final public class OnlineDatabaseManager {
         return arr.getJSONObject(0);
     }
 
-    boolean isEmpty(String tableName, String condition) throws InterruptedException {
+    boolean isEmpty(String tableName, String condition) throws InterruptedException, IOException, JSONException {
         String query = "SELECT * FROM " + tableName + " WHERE " + condition;
         Query(query);
 
