@@ -31,6 +31,7 @@ final public class OnlineDatabaseManager {
 
     //region CONSTANTS
     private static String tblWITS = "WITS";
+    final static int countDownTime = 3;
     //endregion
 
     //region Initialization
@@ -49,7 +50,7 @@ final public class OnlineDatabaseManager {
         arr = null;
 
         //Testing
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(countDownTime);
 
         //Url
         String url = "https://lamp.ms.wits.ac.za/home/s2180393/Query.php";
@@ -153,7 +154,8 @@ final public class OnlineDatabaseManager {
             }
         }
 
-        Query("INSERT INTO " + tableName + " VALUES(" + values + ")");
+        Log("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
+        Query("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
     }
 
     void Delete (String tableName, String condition) {
@@ -185,6 +187,7 @@ final public class OnlineDatabaseManager {
 
         if (arr.length() > 1){
             Log("ARRAY IS GREATER THAN ONE");
+            Log(query);
         }
         return arr.getJSONObject(0);
     }
