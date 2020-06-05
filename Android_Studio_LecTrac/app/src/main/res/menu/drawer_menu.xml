@@ -12,14 +12,9 @@
         android:title="Calendar" />
 
     <item
-        android:id="@+id/nav_courseList"
+        android:id="@+id/nav_todoList"
         android:icon="@drawable/ic_list"
-        android:title="Course To-Do List" />
-
-    <item
-        android:id="@+id/nav_personalList"
-        android:icon="@drawable/ic_list"
-        android:title="Personal To-Do List" />
+        android:title="To-Do List" />
 
     <item
         android:id="@+id/nav_messageBoard"
