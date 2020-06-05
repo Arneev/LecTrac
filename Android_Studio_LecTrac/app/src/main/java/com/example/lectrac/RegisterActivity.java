@@ -53,10 +53,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         boolean isSuccessful = registerManager.RegisterAttempt(userID,firstName,surname,email,nickname,password,confirmPassword);
         if (isSuccessful){
-            Log("LOG IN IS SUCCESSFUL <3 :P");
+            Log("REGISTER IN IS SUCCESSFUL <3 :P");
         }
         else{
-            Log("LOG IN IS NOT SUCCESSFUL :(");
+            Log("REGISTER IN IS NOT SUCCESSFUL :(");
         }
     }
 

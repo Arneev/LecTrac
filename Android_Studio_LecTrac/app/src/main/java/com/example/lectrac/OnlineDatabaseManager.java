@@ -31,7 +31,7 @@ final public class OnlineDatabaseManager {
 
     //region CONSTANTS
     private static String tblWITS = "WITS";
-    final static int countDownTime = 3;
+    final static int countDownTime = 1;
     //endregion
 
     //region Initialization
@@ -189,6 +189,12 @@ final public class OnlineDatabaseManager {
             Log("ARRAY IS GREATER THAN ONE");
             Log(query);
         }
+
+        if (arr.length() == 0){
+            Log("Object is empty");
+            Log(query);
+        }
+
         return arr.getJSONObject(0);
     }
 

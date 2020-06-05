@@ -82,14 +82,16 @@ public class RegisterLoginManager{
 
     //region Register
     boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass) throws NoSuchAlgorithmException, InterruptedException, JSONException {
-
-
-
         //userID sorted out
         if (userID.length() != 0){
             userID = userID.trim();
 
             if (!correctUserID(userID)){
+                return false;
+            }
+
+            if (alreadyReg(userID)){
+                ShowUserError("You already registered before");
                 return false;
             }
         }
@@ -117,11 +119,6 @@ public class RegisterLoginManager{
             firstName = firstName.trim();
 
             if (!correctFirstName(firstName)){
-                return false;
-            }
-
-            if (alreadyReg(userID)){
-                ShowUserError("You already registered before");
                 return false;
             }
         }
@@ -210,9 +207,9 @@ public class RegisterLoginManager{
     boolean alreadyReg(String userID) throws InterruptedException {
 
         if (onlineDB.getJSONArr("SELECT * FROM" +
-                " STUDENT WHERE Student_ID = " + "'" + userID + "'") != null ||
+                " STUDENT WHERE Student_ID = " + "'" + userID + "'").length() != 0 ||
                 onlineDB.getJSONArr("SELECT * FROM" +
-                 " LECTURER WHERE Lecturer_ID = " + "'" + userID + "'") != null){
+                 " LECTURER WHERE Lecturer_ID = " + "'" + userID + "'").length() != 0){
             return true;
         }
 
