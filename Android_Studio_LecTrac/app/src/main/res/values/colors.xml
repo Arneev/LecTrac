@@ -18,6 +18,12 @@
     <color name="maroon">#800000</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="gray">#808080</color>
+    <color name="teal">#008080</color>
+    <color name="PowderBlue">#B0E0E6</color>
+    <color name="LightSteelBlue">#B0C4DE</color>
+    <color name="PaleTurquoise">#AFEEEE</color>
+    <color name="OffWhite">#F4F4F4</color>
 
     <color name="login_form_details">#ccffffff</color>
     <color name="login_form_details_light">#1affffff</color>

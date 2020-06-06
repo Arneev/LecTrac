@@ -62,7 +62,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         final String tblCOURSE = "CREATE TABLE COURSE(Course_Code CHAR(8) PRIMARY KEY, Course_Name VARCHAR(50) NOT NULL);";
 
         final String tblUSER_TASK = "CREATE TABLE USER_TASK(Task_ID INT PRIMARY KEY AUTOINCREMENT," +
-                " Task_Description VARCHAR(50) NOT NULL, Task_Due_Date DATE);";
+                " Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE, Task_Due_Time TIME);";
 
 
         db.execSQL(tblCOURSE);
@@ -166,7 +166,25 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
             }
         }
 
-        doQuery("INSERT INTO " + tableName + " VALUES(" + values + ")");
+        doQuery("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
+    }
+
+    public void doInsert(String tableName,String[] columns, String[] values){
+        String stringVals = "";
+        String stringCols = "";
+        int size = values.length;
+
+        for (int i = 0; i < size; i++){
+            stringVals += values[i];
+            stringCols += columns[i];
+
+            if (i != size - 1){
+                stringVals += ",";
+                stringCols += ",";
+            }
+        }
+
+        doQuery("INSERT INTO " + tableName + "(" + stringCols + ") VALUES(" + stringVals + ")");
     }
 
     public long getDBFileLength()

@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class ToDoListActivity extends AppCompatActivity {
     ToDoAdapter toDoAdapter;
     RecyclerView recyclerView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,8 @@ public class ToDoListActivity extends AppCompatActivity {
             Log("Failed to do Adapter shit");
         }
 
+        moveToAddTask();
+
     }
 
     void StartAdapter(){
@@ -44,7 +49,7 @@ public class ToDoListActivity extends AppCompatActivity {
         // get the reference of RecyclerView
         recyclerView = (RecyclerView)findViewById(R.id.rvToDoItems);
 
-        // create JSON array and get size
+        // create JSON array and ArrayList
         JSONArray arrTaskName = null;
         ArrayList<String> arrOnlyTaskNames = new ArrayList<>();
         ArrayList<String> arrOnlyTaskCourses = new ArrayList<>();
@@ -83,13 +88,21 @@ public class ToDoListActivity extends AppCompatActivity {
 
         // using adapter class for Recycler View
 
-
-        //I swapped the 2 arrays here, change if needed, idk just testing rn
-        //It works nvm, last time the course code and task name position was swapped
-        //leave as is
         toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses);
         recyclerView.setAdapter(toDoAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void moveToAddTask(){
+
+        Button btnAddNew = (Button) findViewById(R.id.btnAddNew);
+        btnAddNew.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ToDoListActivity.this, AddNewTaskActivity.class));
+            }
+        });
+
     }
 
 }

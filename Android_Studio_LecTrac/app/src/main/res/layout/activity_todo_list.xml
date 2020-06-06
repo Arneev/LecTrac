@@ -9,22 +9,58 @@
     android:background="@color/white"
     tools:context=".ToDoListActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="159dp"
-        android:background="@color/DarkBlue"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvTitlePage"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_height="198dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="87dp"
-            android:layout_marginTop="50dp"
-            android:gravity="center_horizontal"
-            android:text="To-Do List"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_marginLeft="16dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_marginTop="40dp"
+                    android:textSize="32sp"
+                    android:textColor="@color/white"
+                    android:text="To-Do List"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvChange"
+                    android:textSize="18sp"
+                    android:textColor="#4A4E6A"
+                    android:layout_marginTop="8dp"
+                    android:text="Finish Them Quickly Today"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAddNew"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/btn_add_new"
+                android:gravity="center_horizontal"
+                android:text="+"
+                android:textAlignment="center"
+                android:textColor="#FFF"
+                android:textSize="38sp" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -36,7 +72,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvToDoItems"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="-60dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_width="match_parent"
@@ -50,7 +86,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/black"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="End of To-Dos"
         android:textAlignment="center"
         android:gravity="center_horizontal" />

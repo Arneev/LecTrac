@@ -120,9 +120,24 @@ final public class OnlineDatabaseManager {
         }catch (Exception e) { Log(e.toString()); }
     }
 
-    void Insert(String tableName,String columns, String values) {
+    void Insert(String tableName,String[] columns, String[] values) {
+
+        String stringVals = "";
+        String stringCols = "";
+        int size = values.length;
+
+        for (int i = 0; i < size; i++){
+            stringVals += values[i];
+            stringCols += columns[i];
+
+            if (i != size - 1){
+                stringVals += ",";
+                stringCols += ",";
+            }
+        }
+
         try{
-            Query("INSERT INTO " + tableName + " (" + columns + ") VALUES (" +  values + ")");
+            Query("INSERT INTO " + tableName + " (" + stringCols + ") VALUES (" +  stringVals + ")");
 
         }catch (Exception e) { Log(e.toString()); }
     }
