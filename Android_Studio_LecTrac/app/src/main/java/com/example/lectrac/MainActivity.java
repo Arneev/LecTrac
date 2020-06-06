@@ -16,8 +16,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import static com.example.lectrac.HelperFunctions.quote;
-import static com.example.lectrac.HelperFunctions.tblWITS;
+import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,13 +30,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        configureNextButton();
-
+        //configureNextButton();
         openRegistration();
 
-
-
+        Sync();
     }
 
     public void LoginButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
@@ -54,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (isSuccessful){
             Log("LOG IN IS SUCCESSFUL <3 :P");
+            startActivity(new Intent(MainActivity.this, DrawerActivity.class));
         }
         else{
             Log("LOG IN IS NOT SUCCESSFUL :(");
@@ -71,16 +68,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void configureNextButton(){
-
-        Button loginButton = (Button) findViewById(R.id.btnLogin);
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DrawerActivity.class));
-            }
-        });
-    }
+//    private void configureNextButton(){
+//
+//        Button loginButton = (Button) findViewById(R.id.btnLogin);
+//        loginButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+//            }
+//        });
+//    }
 
 
 

@@ -21,11 +21,17 @@ public class HelperFunctions {
     final static String tblLecturer = "LECTURER";
     final static String tblUser = "USER";
     final static String tblWITS = "WITS";
+    final static String tblMessage = "MESSAGE";
+    final static String tblUserTask = "USER_TASK";
+    final static String tblLocalLecTask = "LECTURER_TASK";
+    final static String tblCourse = "COURSE";
+    final static String tblTest = "TEST";
     //endregion
 
     //region Error Codes
     //More than one user with the same User ID
     final static String errorCodeMoreThanOne = "Error Code 01";
+    final static String errorProblemSync = "Error Code 02";
 
 
     //endregion
@@ -98,5 +104,7 @@ public class HelperFunctions {
     public static String quote(String string){
         return "'" + string + "'";
     }
+
+    public static String doubleQuote(String string){ return '"' + string + '"'; }
 
 }

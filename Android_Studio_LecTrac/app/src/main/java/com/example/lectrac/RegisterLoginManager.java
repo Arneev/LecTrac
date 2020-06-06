@@ -33,11 +33,12 @@ public class RegisterLoginManager{
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     HelperFunctions hp = new HelperFunctions();
     static JSONObject userInWITS = null;
+    static JSONObject userInLT = null;
     //endregion
     
 
     //region Register
-    boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
+    boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass, Context context) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
         //userID sorted out
         if (userID.length() != 0){
             userID = userID.trim();
@@ -161,7 +162,7 @@ public class RegisterLoginManager{
             return false;
         }
 
-        return Register(userID,firstName,lastName,email,nick,password);
+        return Register(userID,firstName,lastName,email,nick,password,context);
     }
 
     boolean alreadyReg(String userID) {
@@ -190,32 +191,64 @@ public class RegisterLoginManager{
         return false;
     }
 
-    boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick,@NotNull String password) throws InterruptedException, IOException, JSONException {
+    boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick,@NotNull String password, Context context) throws InterruptedException, IOException, JSONException {
         Log("Register");
+        Log("About to initialize local DB");
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+
         boolean isLec = isLecturerWITS(userID);
 
+        String isLecString;
 
-        String[] values = new String[6];
-        values[0] = '"' + userID + '"';
-        values[1] = '"' + firstName + '"';
-        values[2] = '"' + lastName + '"';
-        values[3] = '"' + email + '"';
-        values[4] = '"' + nick + '"';
-        values[5] = '"' + password + '"';
+        if (isLec){
+            isLecString = "1";
+        }
+        else{
+            isLecString = "0";
+        }
+
+
+        //Into Online (LecTrac) Database
+        String[] onlineValues = new String[6];
+        onlineValues[0] = '"' + userID + '"';
+        onlineValues[1] = '"' + firstName + '"';
+        onlineValues[2] = '"' + lastName + '"';
+        onlineValues[3] = '"' + email + '"';
+        onlineValues[4] = '"' + nick + '"';
+        onlineValues[5] = '"' + password + '"';
+
+        //Into Local (On Device) Database
+        String[] localValues = new String[5];
+        localValues[0] = '"' + userID + '"';
+        localValues[1] = "1";   //isLoggedIn
+        localValues[2] = isLecString;
+        localValues[3] = "0"; //DarkMode set to false
+        localValues[4] = '"' + nick + '"';
 
         try{
             if (isLec){
                 Log("Inserting into Lecturer Table");
-                onlineDB.Insert(tblLecturer,values);
+                onlineDB.Insert(tblLecturer,onlineValues);
             }
             else{
 
                 Log("Inserting into Student Table");
-                onlineDB.Insert(tblStudent,values);
+                onlineDB.Insert(tblStudent,onlineValues);
             }
+
+            try{
+                localDB.doInsert(tblUser,localValues);
+            }catch (Exception e){
+                Log(e.toString());
+                Log("Inserting into local DB failed");
+            }
+
 
             return true;
         }catch (Exception e){
+            Log(e.toString());
+            Log("OnlineDB insert failed");
             ShowUserError("Oops, please contact support");
             return false;
         }
@@ -456,6 +489,8 @@ public class RegisterLoginManager{
 
     //region LogIn
     boolean LogInAttempt(String password, String userID, Context context) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
+        userInLT = null;
+
         Log("LogInAttempt");
         password = password.trim();
         userID = userID.trim();
@@ -476,13 +511,21 @@ public class RegisterLoginManager{
         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
 
         int isLecturer;
+        String nick = "";
 
         if (isLecturer(userID)){
             isLecturer = 1;
+            nick = userInLT.getString("Lecturer_Reference");
         }
         else{
             isLecturer = 0;
+            nick = userInLT.getString("Student_Nickname");
         }
+
+
+
+
+
 
         String[] values = new String[tblUserLength];
 
@@ -494,7 +537,7 @@ public class RegisterLoginManager{
         values[1] = "1";
         values[2] = Integer.toString(isLecturer);
         values[3] = "0";
-        values[4] = "NULL";
+        values[4] = '"' + nick + '"';
 
 
         localDB.doInsert(tblUser, values);
@@ -587,6 +630,7 @@ public class RegisterLoginManager{
         if (size == 1){
             try {
                 JSONObject obj = arr.getJSONObject(0);
+                userInLT = obj;
 
                 String hashPassFromDB = obj.getString("Student_Password");
 
@@ -616,6 +660,8 @@ public class RegisterLoginManager{
             if (lecArrSize == 1){
                 try {
                     JSONObject obj = arr.getJSONObject(0);
+                    userInLT = obj;
+
                     String hashPassFromDB = obj.getString("Lecturer_Password");
 
                     if (hashPass.equals(hashPassFromDB)){
