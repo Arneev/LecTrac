@@ -21,8 +21,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
     ArrayList<String> arrTaskCourses;
 
 
-    public ToDoAdapter(Context context, ArrayList<String> names, ArrayList<String> courses){
-
+    public ToDoAdapter(Context cont, ArrayList<String> names, ArrayList<String> courses){
+        context = cont;
         arrTaskNames = names;
         arrTaskCourses = courses;
     }
@@ -39,7 +39,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.myText1.setText(arrTaskNames.get(position));
-        holder.myText1.setText(arrTaskCourses.get(position));
+        holder.myText2.setText(arrTaskCourses.get(position));
     }
 
     @Override

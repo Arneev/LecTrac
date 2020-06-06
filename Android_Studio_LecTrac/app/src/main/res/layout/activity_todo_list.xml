@@ -10,27 +10,27 @@
     tools:context=".ToDoListActivity">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:background="@color/DarkBlue"
         android:layout_width="match_parent"
-        android:layout_height="198dp">
+        android:layout_height="159dp"
+        android:background="@color/DarkBlue"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvTitlePage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="87dp"
             android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
             android:text="To-Do List"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="35sp"
-            android:gravity="center_horizontal" />
+            android:textSize="35sp" />
 
         <View
-            android:layout_marginTop="20dp"
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white" />
 
     </LinearLayout>
 

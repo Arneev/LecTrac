@@ -192,7 +192,8 @@ public class RegisterLoginManager{
 
     boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick,@NotNull String password) throws InterruptedException, IOException, JSONException {
         Log("Register");
-        boolean isLec = isLecturer(userID);
+        boolean isLec = isLecturerWITS(userID);
+
 
         String[] values = new String[6];
         values[0] = '"' + userID + '"';
@@ -204,9 +205,12 @@ public class RegisterLoginManager{
 
         try{
             if (isLec){
+                Log("Inserting into Lecturer Table");
                 onlineDB.Insert(tblLecturer,values);
             }
             else{
+
+                Log("Inserting into Student Table");
                 onlineDB.Insert(tblStudent,values);
             }
 
@@ -417,13 +421,17 @@ public class RegisterLoginManager{
         int size = tempArr.length();
 
         if (size == 1){
-            String isLec;
+            String isLec = "";
 
             try{
                 isLec = tempArr.getJSONObject(0).getString("Classification");
-                if (isLec == "LECTURER"){
+                Log(isLec + " this is IS LEC");
+                if ("LECTURER".equals(isLec)){
+                    Log("returning true for isLec from WITS");
                     return true;
                 }
+
+                Log("returning false for isLec from WITS");
                 return false;
             }catch (Exception e){
                 Log("Cannot get classification fromm WITS table, classification column");
@@ -434,6 +442,7 @@ public class RegisterLoginManager{
         if (size == 0){
             ShowUserError("Enter a valid user ID");
             Log("isLecturer arr is empty");
+            Log("isLecturerWITS BIG ERROR");
         }
 
         if (size > 1){

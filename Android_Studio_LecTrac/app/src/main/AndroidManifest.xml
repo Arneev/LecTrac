@@ -23,6 +23,7 @@
         <activity android:name=".CourseListActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".DrawerActivity" />
+        <activity android:name=".ToDoListActivity"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

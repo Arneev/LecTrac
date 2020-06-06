@@ -14,6 +14,8 @@ import android.os.Bundle;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.example.lectrac.HelperFunctions.*;
+
 
 public class ToDoListActivity extends AppCompatActivity {
 
@@ -27,18 +29,32 @@ public class ToDoListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
 
+        try{
+            StartAdapter();
+        }catch (Exception e){
+            Log(e.toString());
+            Log("Failed to do Adapter shit");
+        }
+
+    }
+
+    void StartAdapter(){
+        Log("Starting to do the RecyclerView code");
+
         // get the reference of RecyclerView
-        recyclerView = findViewById(R.id.rvToDoItems);
+        recyclerView = (RecyclerView)findViewById(R.id.rvToDoItems);
 
         // create JSON array and get size
-        JSONArray arrTaskName = new JSONArray();
+        JSONArray arrTaskName = null;
         ArrayList<String> arrOnlyTaskNames = new ArrayList<>();
         ArrayList<String> arrOnlyTaskCourses = new ArrayList<>();
 
         try {
+            Log("About to query, SELECT * FROM TASK");
             arrTaskName = onlineDB.getJSONArr("SELECT * FROM TASK");
 
         } catch (InterruptedException | IOException | JSONException e) {
+            Log(e.toString());
             e.printStackTrace();
         }
 
@@ -59,6 +75,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 arrOnlyTaskCourses.add(taskCourse);
 
             } catch (JSONException e) {
+                Log(e.toString());
                 e.printStackTrace();
             }
 
@@ -66,10 +83,13 @@ public class ToDoListActivity extends AppCompatActivity {
 
         // using adapter class for Recycler View
 
+
+        //I swapped the 2 arrays here, change if needed, idk just testing rn
+        //It works nvm, last time the course code and task name position was swapped
+        //leave as is
         toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses);
         recyclerView.setAdapter(toDoAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
 }
