@@ -3,6 +3,7 @@ package com.example.lectrac;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,13 +23,31 @@ public class RegisterActivity extends AppCompatActivity {
         Log.i("Perso",error);
     }
 
+    static LocalDatabaseManager localDB;
+    static Context currCont;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-//        LocalDatabaseManager localDatabaseManager = new LocalDatabaseManager(this);
-//        localDatabaseManager.DeleteEverything();
+        currCont = this;
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                localDB = new LocalDatabaseManager(currCont);
+                localDB.DeleteEverything();
+            }
+        });
+
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         exitRegistration();
     }
 

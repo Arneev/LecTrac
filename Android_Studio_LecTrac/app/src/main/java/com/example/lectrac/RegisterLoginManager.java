@@ -34,6 +34,7 @@ public class RegisterLoginManager{
     HelperFunctions hp = new HelperFunctions();
     static JSONObject userInWITS = null;
     static JSONObject userInLT = null;
+    static LocalDatabaseManager localDB = null;
     //endregion
     
 
@@ -191,11 +192,21 @@ public class RegisterLoginManager{
         return false;
     }
 
-    boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick,@NotNull String password, Context context) throws InterruptedException, IOException, JSONException {
+    boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick, @NotNull String password, final Context context) throws InterruptedException, IOException, JSONException {
         Log("Register");
         Log("About to initialize local DB");
 
-        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                localDB = new LocalDatabaseManager(context);
+            }
+        });
+
+        t.start();
+        t.join();
+
+        Log("Finished Initialize");
 
         boolean isLec = isLecturerWITS(userID);
 
@@ -508,7 +519,7 @@ public class RegisterLoginManager{
 
     boolean LogIn(String password, String userID, Context context) throws JSONException, InterruptedException, IOException {
         Log("LogIn");
-        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+        localDB = new LocalDatabaseManager(context);
 
         int isLecturer;
         String nick = "";
@@ -541,6 +552,7 @@ public class RegisterLoginManager{
 
 
         localDB.doInsert(tblUser, values);
+        Log("We supposed to insert into localDB here");
 
         return true;
     }
@@ -618,7 +630,7 @@ public class RegisterLoginManager{
             return false;
         }
 
-        String hashPass = saltAndHash(password);
+        String hashPass = CopyOnly(saltAndHash(password),16);
 
         JSONArray arr = onlineDB.getJSONArr("SELECT * FROM STUDENT" +
                 " WHERE Student_ID = " + quote(userID));
@@ -634,7 +646,7 @@ public class RegisterLoginManager{
 
                 String hashPassFromDB = obj.getString("Student_Password");
 
-                if (hashPass == hashPassFromDB){
+                if (hashPass.equals(hashPassFromDB)){
                     return true;
                 }
 
@@ -659,10 +671,11 @@ public class RegisterLoginManager{
 
             if (lecArrSize == 1){
                 try {
-                    JSONObject obj = arr.getJSONObject(0);
+                    JSONObject obj = lecArr.getJSONObject(0);
                     userInLT = obj;
 
                     String hashPassFromDB = obj.getString("Lecturer_Password");
+                    Log(hashPassFromDB);
 
                     if (hashPass.equals(hashPassFromDB)){
                         return true;
@@ -690,5 +703,6 @@ public class RegisterLoginManager{
 
     }
     //endregion
+
 
 }

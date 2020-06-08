@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 
 import static com.example.lectrac.Syncer.*;
 
@@ -24,17 +25,64 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Perso",error);
     }
 
+    static LocalDatabaseManager localDB;
+
     //OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                localDB = new LocalDatabaseManager(MainActivity.this);
+            }
+        });
+
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (localDB.isLoggedIn()){
+            //region Sync
+            //            try {
+            //                Sync(this);
+            //            } catch (JSONException e) {
+            //                e.printStackTrace();
+            //            } catch (IOException e) {
+            //                e.printStackTrace();
+            //            } catch (InterruptedException e) {
+            //                e.printStackTrace();
+            //            } catch (ParseException e) {
+            //                e.printStackTrace();
+            //            }
+            //            //endregion
+            startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+            return;
+        }
+
         //configureNextButton();
         openRegistration();
 
-        Sync();
+        //region Sync
+        try {
+            Sync(this);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //endregion
     }
+
 
     public void LoginButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         RegisterLoginManager loginManager = new RegisterLoginManager();

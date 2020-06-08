@@ -26,6 +26,7 @@ public class HelperFunctions {
     final static String tblLocalLecTask = "LECTURER_TASK";
     final static String tblCourse = "COURSE";
     final static String tblTest = "TEST";
+    final static String tblTask = "TASK";
     //endregion
 
     //region Error Codes
@@ -40,6 +41,10 @@ public class HelperFunctions {
 
     public static void Log(String error){
         Log.i("Perso",error);
+    }
+
+    public static void LocalLog(String error){
+        Log.i("LocalDB",error);
     }
 
     public static void ShowUserError(String error){
