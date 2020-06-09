@@ -551,6 +551,10 @@ public class RegisterLoginManager{
         values[4] = '"' + nick + '"';
 
 
+        for(int i = 0; i < values.length; i++){
+            Log(values[i]);
+        }
+
         localDB.doInsert(tblUser, values);
         Log("We supposed to insert into localDB here");
 

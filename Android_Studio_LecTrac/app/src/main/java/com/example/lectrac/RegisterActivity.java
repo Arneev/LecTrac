@@ -16,37 +16,19 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+
+import static com.example.lectrac.HelperFunctions.*;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public static void Log(String error){
-        Log.i("Perso",error);
-    }
-
-    static LocalDatabaseManager localDB;
-    static Context currCont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        currCont = this;
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                localDB = new LocalDatabaseManager(currCont);
-                localDB.DeleteEverything();
-            }
-        });
-
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         exitRegistration();
     }
@@ -82,6 +64,29 @@ public class RegisterActivity extends AppCompatActivity {
 
             if (logInSuccess){
                 Log("Log in success");
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //region Try Syncing
+                        try {
+                            Syncer syncClass = new Syncer(RegisterActivity.this);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        //endregion
+                    }
+                });
+
+                t.start();
+                t.join();
+
                 startActivity(new Intent(RegisterActivity.this, DrawerActivity.class));
             }
             else{

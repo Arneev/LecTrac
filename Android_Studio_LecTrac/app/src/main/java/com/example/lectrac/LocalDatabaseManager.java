@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.example.lectrac.HelperFunctions.*;
@@ -29,7 +30,6 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
     //Constructor
     public LocalDatabaseManager(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = this.getWritableDatabase();
     }
 
     @Override
@@ -37,6 +37,8 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         //SORT OUT FOREIGN KEYS
         //SORT OUT AUTOINCREMENT
         //SET DEFAULTS
+
+        db = sqLiteDatabase;
 
         final String tblUSER = "CREATE TABLE USER(User_ID CHAR(7) PRIMARY KEY, isLoggedIn BOOLEAN NOT NULL," +
                 " isLecturer BOOLEAN NOT NULL," +
@@ -47,7 +49,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
                 " Lecturer_FName VARCHAR(50) NOT NULL, Lecturer_LName VARCHAR(50) NOT NULL," +
                 " Lecturer_Email VARCHAR(128) NOT NULL, Lecturer_Reference VARCHAR(50))";
 
-        final String tblLECTURER_TASK = "CREATE TABLE TASK(Task_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+        final String tblLECTURER_TASK = "CREATE TABLE LECTURER_TASK(Task_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE, Task_Due_Time TIME, isDone BOOLEAN NOT NULL, Course_Code CHAR(8) NOT NULL," +
                 " Lecturer_ID CHAR(7) NOT NULL, FOREIGN KEY(Course_Code) REFERENCES COURSE(Course_Code)," +
                 " FOREIGN KEY(Lecturer_ID) REFERENCES LECTURER(Lecturer_ID))";
@@ -69,6 +71,8 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
                 " Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE, Task_Due_Time TIME, isDone BOOLEAN NOT NULL)";
 
 
+        Log("Creating DB");
+
         sqLiteDatabase.execSQL(tblCOURSE);
         sqLiteDatabase.execSQL(tblLEC);
         sqLiteDatabase.execSQL(tblTEST);
@@ -76,6 +80,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(tblMESSAGE);
         sqLiteDatabase.execSQL(tblUSER);
         sqLiteDatabase.execSQL(tblUSER_TASK);
+
 
     }
 
@@ -128,6 +133,10 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         }
     }
 
+    public void doQueryNonSelect(String query){
+        getReadableDatabase().execSQL(query);
+    }
+
     public void doUpdate(String query, String[] params) {
         try {
             getWritableDatabase().execSQL(query, params);
@@ -149,11 +158,13 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         }
     }
 
+
+
     public void doUpdate(String query) {
         try {
             this.getWritableDatabase().execSQL(query);
         } catch (SQLException mSQLException) {
-            LocalLog("doUpdate no parasm : " + query);
+            LocalLog("doUpdate no params : " + query);
             mSQLException.printStackTrace(System.err);
         }
     }
@@ -170,7 +181,9 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
             }
         }
 
-        doQuery("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
+        Log("Local insert with the query, ");
+        Log("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
+        doQueryNonSelect("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
     }
 
     public void doInsert(String tableName,String[] columns, String[] values){
@@ -188,16 +201,16 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
             }
         }
 
-        doQuery("INSERT INTO " + tableName + "(" + stringCols + ") VALUES(" + stringVals + ")");
+        doQueryNonSelect("INSERT INTO " + tableName + "(" + stringCols + ") VALUES(" + stringVals + ")");
     }
 
     public void doDelete(String tableName, String condition){
-        doQuery("DELETE FROM " + tableName  + " WHERE " + condition);
+        doQueryNonSelect("DELETE FROM " + tableName  + " WHERE " + condition);
     }
 
     public void doDelete(String tableName, String colName, String value){
 
-        doQuery("DELETE FROM " + tableName  + " WHERE " + colName + " = " + value);
+        doQueryNonSelect("DELETE FROM " + tableName  + " WHERE " + colName + " = " + value);
     }
 
     public long getDBFileLength()
@@ -225,6 +238,48 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
         return cursor.getString(cursor.getColumnIndex("User_ID"));
     }
+
+    public String[] getCourses(LocalDatabaseManager localDB){
+        Cursor cursor = doQuery("SELECT * FROM " + tblCourse);
+        int size = cursor.getCount();
+        String[] values = new String[size];
+        int localIDX = cursor.getColumnIndex("Course_Code");
+
+        for (int i = 0; i < size; i++){
+            if (i == 0){
+                cursor.moveToFirst();
+            }
+            else{
+                cursor.moveToNext();
+            }
+
+            values[i] = cursor.getString(localIDX);
+        }
+
+        return values;
+    }
+
+    public boolean isLec(){
+        Cursor cursor = doQuery("SELECT * FROM USER");
+        cursor.moveToFirst();
+        int localIDX = cursor.getColumnIndex("isLecturer");
+        Log("LocalIDX for isLec is " + Integer.toString(localIDX));
+
+        int iLec = cursor.getInt(localIDX);
+
+        if (iLec == 1){
+            LocalLog("About to return true for isLec");
+            return true;
+        }
+
+        LocalLog("About to return false for isLec");
+        return false;
+    }
+
+    public void DoDeleteEntire(String tableName){
+        getWritableDatabase().execSQL("DELETE FROM " + tableName);
+    }
+
 
 
 }

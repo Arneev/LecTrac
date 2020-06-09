@@ -1,10 +1,15 @@
 package com.example.lectrac;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class HelperFunctions {
 
@@ -112,4 +117,11 @@ public class HelperFunctions {
 
     public static String doubleQuote(String string){ return '"' + string + '"'; }
 
+    public static boolean isOnline(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in airplane mode it will be null
+        return (netInfo != null && netInfo.isConnected());
+    }
 }

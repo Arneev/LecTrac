@@ -223,7 +223,10 @@ final public class OnlineDatabaseManager {
         return false;
     }
 
-//    public String getUserID() throws InterruptedException, IOException, JSONException {
-//        JSONObject obj = getJSONObj("SELECT * FROM ");
-//    }
+    public JSONObject getUserID(String userID) throws InterruptedException, IOException, JSONException {
+       return getJSONObj("SELECT * FROM STUDENT WHERE Student_ID = " + quote(userID) + " UNION " +
+                "SELECT * FROM LECTURER WHERE Lecturer_ID = " + quote(userID));
+    }
+
+
 }

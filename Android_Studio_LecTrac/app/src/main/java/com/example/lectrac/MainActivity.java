@@ -37,8 +37,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 localDB = new LocalDatabaseManager(MainActivity.this);
+
+                if (localDB.isLoggedIn()){
+                    //region Try Syncing
+                    try {
+                        Syncer syncClass = new Syncer(MainActivity.this);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //endregion
+
+                    startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+                    return;
+                }
+
             }
         });
+
+
 
         t.start();
         try {
@@ -47,40 +69,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (localDB.isLoggedIn()){
-            //region Sync
-            //            try {
-            //                Sync(this);
-            //            } catch (JSONException e) {
-            //                e.printStackTrace();
-            //            } catch (IOException e) {
-            //                e.printStackTrace();
-            //            } catch (InterruptedException e) {
-            //                e.printStackTrace();
-            //            } catch (ParseException e) {
-            //                e.printStackTrace();
-            //            }
-            //            //endregion
-            startActivity(new Intent(MainActivity.this, DrawerActivity.class));
-            return;
-        }
-
         //configureNextButton();
         openRegistration();
 
-        //region Sync
-        try {
-            Sync(this);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        //endregion
     }
 
 
@@ -98,7 +89,31 @@ public class MainActivity extends AppCompatActivity {
 
         if (isSuccessful){
             Log("LOG IN IS SUCCESSFUL <3 :P");
-            startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //region Try Syncing
+                    try {
+                        Syncer syncClass = new Syncer(MainActivity.this);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //endregion
+
+                    startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+                    return;
+                }
+            });
+
+            t.start();
+            t.join();
         }
         else{
             Log("LOG IN IS NOT SUCCESSFUL :(");
