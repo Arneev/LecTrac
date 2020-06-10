@@ -1,9 +1,12 @@
 package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,10 +30,15 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import static com.example.lectrac.HelperFunctions.*;
+
 public class AddNewTaskActivity extends AppCompatActivity {
 
     String sTaskName, sDueDate, sDueTime;
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+    HelperFunctions helperFunctions = new HelperFunctions();
+
+    private SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         getTaskDueDateTime();
 
         Button btnSaveTask = findViewById(R.id.btnSaveTask);
+        Button btnCancel = findViewById(R.id.btnCancelTask);
 
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,9 +63,28 @@ public class AddNewTaskActivity extends AppCompatActivity {
         });
 
 
-
-
         cancelAddTask();
+    }
+
+    public void blah(){
+
+        final TextView displayDate = findViewById(R.id.tvDisplayDate);
+        TextView displayTime = findViewById(R.id.tvDisplayTime);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setCancelable(true);
+        builder.setTitle(displayDate.getText().toString());
+        builder.setMessage(displayTime.getText().toString());
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     private void getTaskTitle(){
@@ -107,7 +135,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 calDate.set(Calendar.YEAR, year);
                 calDate.set(Calendar.MONTH, month);
                 calDate.set(Calendar.DATE, date);
-                String dateText = DateFormat.format("MMM d, yyyy", calDate).toString();
+                String dateText = DateFormat.format("yyyy-MM-dd", calDate).toString();
 
                 displayDate.setText(dateText);
             }
@@ -137,7 +165,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 Calendar calTime = Calendar.getInstance();
                 calTime.set(Calendar.HOUR, hour);
                 calTime.set(Calendar.MINUTE, minute);
-                String dateText = DateFormat.format("h:mm a", calTime).toString();
+                String dateText = DateFormat.format("HH:mm", calTime).toString();
                 displayTime.setText(dateText);
             }
         }, HOUR, MINUTE, is24HourFormat);
@@ -148,33 +176,30 @@ public class AddNewTaskActivity extends AppCompatActivity {
     }
 
 
-    private void saveTask() throws InterruptedException, JSONException, IOException {
+    public void saveTask() throws InterruptedException, JSONException, IOException {
 
-        // get user ID
-        LocalDatabaseManager databaseManager = new LocalDatabaseManager(this);
-        SQLiteDatabase localDB = databaseManager.getWritableDatabase();
-        Cursor cursor = localDB.rawQuery("SELECT * FROM tblUSER", null);
-
-        String userID = cursor.getColumnName(0);
+        LocalDatabaseManager localDatabaseManager = new LocalDatabaseManager(this);
 
         // is user a student or lecturer?
-        RegisterLoginManager loginManager = new RegisterLoginManager();
-        boolean isLec = loginManager.isLecturerWITS(userID);
+        boolean isLec = localDatabaseManager.isLec();
+
+        // quotations
+        sTaskName = quote(sTaskName);
+        sDueDate = quote(sDueDate);
+        sDueTime = quote(sDueTime);
 
         // data
-        String tableName = "tblUSER_TASK";
+        String tableName = "USER_TASK";
         String[] columns = {"Task_Name", "Task_Due_Date", "Task_Due_Time"};
-        String[] data = {sTaskName, sDueDate + sDueTime};
+        String[] data = {sTaskName, sDueDate, sDueTime};
 
         // save new task to local database
-        databaseManager.doInsert(tableName, columns, data);
+        localDatabaseManager.doInsert(tableName, columns, data);
 
         // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
-
             onlineDB.Insert(tableName, columns, data);
         }
-
     }
 
 
