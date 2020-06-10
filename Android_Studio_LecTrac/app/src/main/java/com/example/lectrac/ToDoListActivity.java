@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +23,14 @@ import static com.example.lectrac.HelperFunctions.*;
 public class ToDoListActivity extends AppCompatActivity {
 
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+    LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
     ToDoAdapter toDoAdapter;
     RecyclerView recyclerView;
+
+    ArrayList<String> arrOnlyTaskNames = new ArrayList<>();
+    ArrayList<String> arrOnlyTaskCourses = new ArrayList<>();
+    ArrayList<String> arrOnlyTaskIDs = new ArrayList<>();
 
 
     @Override
@@ -49,46 +55,13 @@ public class ToDoListActivity extends AppCompatActivity {
         // get the reference of RecyclerView
         recyclerView = (RecyclerView)findViewById(R.id.rvToDoItems);
 
-        // create JSON array and ArrayList
-        JSONArray arrTaskName = null;
-        ArrayList<String> arrOnlyTaskNames = new ArrayList<>();
-        ArrayList<String> arrOnlyTaskCourses = new ArrayList<>();
+        addFromLocalDB();
+        addFromOnlineDB();
 
-        try {
-            Log("About to query, SELECT * FROM TASK");
-            arrTaskName = onlineDB.getJSONArr("SELECT * FROM TASK");
-
-        } catch (InterruptedException | IOException | JSONException e) {
-            Log(e.toString());
-            e.printStackTrace();
-        }
-
-
-        // create object to get each item from JSON array to get Task_Name and Course_Code
-        JSONObject objTask;
-        String taskName, taskCourse;
-
-
-        for (int itemIndex = 0; itemIndex < arrTaskName.length(); itemIndex++) {
-
-            try {
-                objTask = arrTaskName.getJSONObject(itemIndex);
-                taskName = objTask.getString("Task_Name");
-                taskCourse = objTask.getString("Course_Code");
-
-                arrOnlyTaskNames.add(taskName);
-                arrOnlyTaskCourses.add(taskCourse);
-
-            } catch (JSONException e) {
-                Log(e.toString());
-                e.printStackTrace();
-            }
-
-        }
 
         // using adapter class for Recycler View
 
-        toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses);
+        toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses, arrOnlyTaskIDs);
         recyclerView.setAdapter(toDoAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -103,6 +76,77 @@ public class ToDoListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void addFromLocalDB (){
+
+        int indexID, indexName, indexCourse;
+        String taskName, taskCourse, taskID;
+
+        Cursor cursor = localDB.doQuery("SELECT * FROM tblUSER_TASK");
+
+        if (cursor == null){
+            return;
+        }
+
+        cursor.moveToFirst();
+
+        for (int localIndex = 0; localIndex < cursor.getCount(); localIndex++){
+
+            indexID = cursor.getColumnIndex("Task_ID");
+            taskID = cursor.getString(indexID);
+
+            indexName = cursor.getColumnIndex("Task_ID");
+            taskName = cursor.getString(indexName);
+
+            indexCourse = cursor.getColumnIndex("Task_ID");
+            taskCourse = cursor.getString(indexCourse);
+
+            arrOnlyTaskIDs.add(taskID);
+            arrOnlyTaskNames.add(taskName);
+            arrOnlyTaskCourses.add(taskCourse);
+
+            cursor.moveToNext();
+        }
+    }
+
+    private void addFromOnlineDB(){
+
+        // create JSON array, cursor and ArrayList
+        JSONArray arrOnlineTasks = null;
+
+        try {
+            Log("About to query, SELECT * FROM TASK");
+            arrOnlineTasks = onlineDB.getJSONArr("SELECT * FROM TASK");
+
+        } catch (InterruptedException | IOException | JSONException e) {
+            Log(e.toString());
+            e.printStackTrace();
+        }
+
+
+        // create object to get each item from JSON array to get Task_Name and Course_Code
+        JSONObject objTask;
+        String taskName, taskCourse, taskID;
+
+        for (int itemIndex = 0; itemIndex < arrOnlineTasks.length(); itemIndex++) {
+
+            try {
+                objTask = arrOnlineTasks.getJSONObject(itemIndex);
+                taskID = objTask.getString("Task_ID");
+                taskName = objTask.getString("Task_Name");
+                taskCourse = objTask.getString("Course_Code");
+
+                arrOnlyTaskIDs.add(taskID);
+                arrOnlyTaskNames.add(taskName);
+                arrOnlyTaskCourses.add(taskCourse);
+
+            } catch (JSONException e) {
+                Log(e.toString());
+                e.printStackTrace();
+            }
+
+        }
     }
 
 }

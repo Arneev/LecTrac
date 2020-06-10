@@ -51,7 +51,7 @@
         android:background="@drawable/background_et"
         android:ems="10"
         android:hint="Password"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:padding="16dp"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/btnLogin"
