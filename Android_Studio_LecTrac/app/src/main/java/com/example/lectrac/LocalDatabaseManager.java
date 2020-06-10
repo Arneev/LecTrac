@@ -68,7 +68,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         final String tblCOURSE = "CREATE TABLE COURSE(Course_Code CHAR(8) PRIMARY KEY, Course_Name VARCHAR(50) NOT NULL)";
 
         final String tblUSER_TASK = "CREATE TABLE USER_TASK(Task_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE, Task_Due_Time TIME, isDone BOOLEAN NOT NULL)";
+                " Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE, Task_Due_Time TIME, isDone BOOLEAN NOT NULL, Course_Code CHAR(8))";
 
 
         Log("Creating DB");
@@ -200,6 +200,8 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
                 stringCols += ",";
             }
         }
+
+        Log("query is, " + "INSERT INTO " + tableName + "(" + stringCols + ") VALUES(" + stringVals + ")");
 
         doQueryNonSelect("INSERT INTO " + tableName + "(" + stringCols + ") VALUES(" + stringVals + ")");
     }

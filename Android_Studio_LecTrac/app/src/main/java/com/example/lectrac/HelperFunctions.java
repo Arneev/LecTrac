@@ -38,6 +38,7 @@ public class HelperFunctions {
     //More than one user with the same User ID
     final static String errorCodeMoreThanOne = "Error Code 01";
     final static String errorProblemSync = "Error Code 02";
+    final static String errorLecNoCourse = "Error Code 03";
 
 
     //endregion
