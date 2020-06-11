@@ -38,10 +38,10 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewTaskActivity extends AppCompatActivity {
 
-    static String sTaskName, sDueDate, sDueTime, sCourseCode;
-    static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
-    static String[] courses;
-    static LocalDatabaseManager localDB = null;
+    public static String sTaskName, sDueDate, sDueTime, sCourseCode;
+    public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+    public static String[] courses;
+    public static LocalDatabaseManager localDB = null;
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -93,14 +93,13 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 calDate.set(Calendar.DATE, date);
                 String dateText = DateFormat.format("yyyy-MM-dd", calDate).toString();
 
+                sDueDate = dateText;
                 displayDate.setText(dateText);
             }
         }, YEAR, MONTH, DATE); // part of datePickerDialog
 
         datePickerDialog.show();
 
-        sDueDate = displayDate.getText().toString();
-        Log(sDueDate);
     }
 
     public void getTime() {
@@ -122,14 +121,13 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 calTime.set(Calendar.HOUR, hour);
                 calTime.set(Calendar.MINUTE, minute);
                 String dateText = DateFormat.format("HH:mm", calTime).toString();
+
+                sDueTime = dateText;
                 displayTime.setText(dateText);
             }
         }, HOUR, MINUTE, is24HourFormat);
 
         timePickerDialog.show();
-
-        sDueTime = displayTime.getText().toString();
-        Log(sDueTime);
     }
 
     public void getCourse(){
@@ -140,8 +138,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
     public void saveTask() throws InterruptedException, JSONException, IOException {
         Log("About to saveTask");
 
-        getDate();
-        getTime();
         getTaskTitle();
         getCourse();
 
@@ -211,12 +207,20 @@ public class AddNewTaskActivity extends AppCompatActivity {
         String[] data = {sTaskName, sDueDate, sDueTime, "0", sCourseCode};
 
         // save new task to local database
-        localDB.doInsert(tableName, columns, data);
+
+
+
 
 
 
         // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
+            if (!sCourseCode.equals("NULL")){
+                tableName = tblLocalLecTask;
+            }
+
+            localDB.doInsert(tableName, columns, data);
+
             Log("isLec and about to insert into onlineDB");
             String userID = quote(localDB.getUserID(localDB));
 
@@ -224,8 +228,11 @@ public class AddNewTaskActivity extends AppCompatActivity {
             String[] lecData = {sTaskName,sDueDate,sCourseCode,userID,sDueTime};
 
             onlineDB.Insert(tblTask,lecCols,lecData);
+
+
         }
         else{
+            localDB.doInsert(tableName, columns, data);
             Log("isStudent, no insert into onlineDB");
         }
     }

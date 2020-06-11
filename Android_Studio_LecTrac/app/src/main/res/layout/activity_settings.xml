@@ -6,4 +6,91 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
+    <Button
+        android:id="@+id/btnSettingsSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="51dp"
+        android:onClick="Save"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSettingsSync" />
+
+    <TextView
+        android:id="@+id/tvNickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginBottom="22dp"
+        android:text="Nickname"
+        app:layout_constraintBottom_toTopOf="@+id/edtSettingsNickname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSettings" />
+
+    <EditText
+        android:id="@+id/edtSettingsNickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="76dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/tvDarkMode"
+        app:layout_constraintStart_toStartOf="@+id/tvNickname"
+        app:layout_constraintTop_toBottomOf="@+id/tvNickname" />
+
+    <TextView
+        android:id="@+id/tvDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginBottom="22dp"
+        android:text="Dark Mode"
+        app:layout_constraintBottom_toTopOf="@+id/cbxSettingsDarkMode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtSettingsNickname" />
+
+    <CheckBox
+        android:id="@+id/cbxSettingsDarkMode"
+        android:layout_width="205dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="63dp"
+        android:text="Dark Mode"
+        app:layout_constraintBottom_toTopOf="@+id/btnSettingsSync"
+        app:layout_constraintStart_toStartOf="@+id/tvDarkMode"
+        app:layout_constraintTop_toBottomOf="@+id/tvDarkMode" />
+
+    <Button
+        android:id="@+id/btnSettingsSync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="74dp"
+        android:onClick="SettingSync"
+        android:text="Sync With Cloud"
+        app:layout_constraintBottom_toTopOf="@+id/btnSettingsSave"
+        app:layout_constraintEnd_toEndOf="@+id/cbxSettingsDarkMode"
+        app:layout_constraintTop_toBottomOf="@+id/cbxSettingsDarkMode" />
+
+    <TextView
+        android:id="@+id/tvSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:layout_marginBottom="129dp"
+        android:lineSpacingExtra="24sp"
+        android:text="SETTINGS"
+        android:textAllCaps="false"
+        android:textSize="48sp"
+        android:typeface="normal"
+        app:fontFamily="@font/msyi"
+        app:layout_constraintBottom_toTopOf="@+id/tvNickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
