@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 import static com.example.lectrac.HelperFunctions.*;
@@ -50,35 +49,13 @@ public class ToDoListActivity extends AppCompatActivity {
 
     }
 
-    void StartAdapter() throws InterruptedException {
+    void StartAdapter(){
         Log("Starting to do the RecyclerView code");
 
         // get the reference of RecyclerView
         recyclerView = (RecyclerView)findViewById(R.id.rvToDoItems);
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //region Sync
-                try {
-                    Syncer syncer = new Syncer(ToDoListActivity.this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //endregion
-            }
-        });
-
-        t.start();
-
         addFromLocalDB();
-        t.join();
         addFromOnlineDB();
 
 
@@ -86,76 +63,9 @@ public class ToDoListActivity extends AppCompatActivity {
 
         toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses, arrOnlyTaskIDs);
         recyclerView.setAdapter(toDoAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ToDoListActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-
-    private void addFromLocalDB (){
-
-        String taskName, taskCourse, taskID;
-
-        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblUserTask);
-
-        int cursorCount = cursor.getCount();
-
-        if (cursorCount == 0){
-            Log("No user task");
-            return;
-        }
-
-        cursor.moveToFirst();
-        int indexID = cursor.getColumnIndex("Task_ID");
-        int indexName = cursor.getColumnIndex("Task_Name");
-        int indexCourse = cursor.getColumnIndex("Course_Code");
-
-        for (int localIndex = 0; localIndex < cursorCount; localIndex++){
-
-            taskID = Integer.toString(cursor.getInt(indexID));
-            taskName = cursor.getString(indexName);
-            taskCourse = cursor.getString(indexCourse);
-
-            arrOnlyTaskIDs.add(taskID);
-            arrOnlyTaskNames.add(taskName);
-            arrOnlyTaskCourses.add(taskCourse);
-
-            cursor.moveToNext();
-        }
-    }
-
-    private void addFromOnlineDB(){
-
-        String taskName, taskCourse, taskID;
-
-        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblLocalLecTask);
-
-        int cursorCount = cursor.getCount();
-
-        if (cursorCount == 0){
-            Log("No lecturer task");
-            return;
-        }
-
-        cursor.moveToFirst();
-        int indexID = cursor.getColumnIndex("Task_ID");
-        int indexName = cursor.getColumnIndex("Task_Name");
-        int indexCourse = cursor.getColumnIndex("Course_Code");
-
-        for (int localIndex = 0; localIndex < cursorCount; localIndex++){
-
-            taskID = Integer.toString(cursor.getInt(indexID));
-            taskName = cursor.getString(indexName);
-            taskCourse = cursor.getString(indexCourse);
-
-            arrOnlyTaskIDs.add(taskID);
-            arrOnlyTaskNames.add(taskName);
-            arrOnlyTaskCourses.add(taskCourse);
-
-            cursor.moveToNext();
-        }
-    }
-
-    //region Helper Functions
     private void moveToAddTask(){
 
         Button btnAddNew = (Button) findViewById(R.id.btnAddNew);
@@ -168,7 +78,75 @@ public class ToDoListActivity extends AppCompatActivity {
 
     }
 
+    private void addFromLocalDB (){
 
-    //endregion
+        int indexID, indexName, indexCourse;
+        String taskName, taskCourse, taskID;
+
+        Cursor cursor = localDB.doQuery("SELECT * FROM tblUSER_TASK");
+
+        if (cursor == null){
+            return;
+        }
+
+        cursor.moveToFirst();
+
+        for (int localIndex = 0; localIndex < cursor.getCount(); localIndex++){
+
+            indexID = cursor.getColumnIndex("Task_ID");
+            taskID = cursor.getString(indexID);
+
+            indexName = cursor.getColumnIndex("Task_ID");
+            taskName = cursor.getString(indexName);
+
+            indexCourse = cursor.getColumnIndex("Task_ID");
+            taskCourse = cursor.getString(indexCourse);
+
+            arrOnlyTaskIDs.add(taskID);
+            arrOnlyTaskNames.add(taskName);
+            arrOnlyTaskCourses.add(taskCourse);
+
+            cursor.moveToNext();
+        }
+    }
+
+    private void addFromOnlineDB(){
+
+        // create JSON array, cursor and ArrayList
+        JSONArray arrOnlineTasks = null;
+
+        try {
+            Log("About to query, SELECT * FROM TASK");
+            arrOnlineTasks = onlineDB.getJSONArr("SELECT * FROM TASK");
+
+        } catch (InterruptedException | IOException | JSONException e) {
+            Log(e.toString());
+            e.printStackTrace();
+        }
+
+
+        // create object to get each item from JSON array to get Task_Name and Course_Code
+        JSONObject objTask;
+        String taskName, taskCourse, taskID;
+
+        for (int itemIndex = 0; itemIndex < arrOnlineTasks.length(); itemIndex++) {
+
+            try {
+                objTask = arrOnlineTasks.getJSONObject(itemIndex);
+                taskID = objTask.getString("Task_ID");
+                taskName = objTask.getString("Task_Name");
+                taskCourse = objTask.getString("Course_Code");
+
+                arrOnlyTaskIDs.add(taskID);
+                arrOnlyTaskNames.add(taskName);
+                arrOnlyTaskCourses.add(taskCourse);
+
+            } catch (JSONException e) {
+                Log(e.toString());
+                e.printStackTrace();
+            }
+
+        }
+    }
 
 }

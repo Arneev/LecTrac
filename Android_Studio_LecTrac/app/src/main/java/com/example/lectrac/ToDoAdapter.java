@@ -18,11 +18,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.quote;
-import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
-import static com.example.lectrac.HelperFunctions.tblTask;
-
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> {
 
     Context context;
@@ -101,34 +96,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     public void deleteTask(int position){
 
-        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-        OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+        LocalDatabaseManager localDatabaseManager = new LocalDatabaseManager(context);
 
-        String tableName = "USER_TASK";
+        String tableName = "tblUSER_TASK";
         String Task_ID = arrTaskIDs.get(position);
         String condition = "Task_ID = " + Task_ID;
 
+        localDatabaseManager.doDelete(tableName, condition);
 
 
+        boolean isLec = localDatabaseManager.isLec();
 
-        boolean isLec = localDB.isLec();
-
-
-        // save new task to local database
-        // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
 
-            tableName = tblLocalLecTask;
-
-            localDB.doDelete(tableName, condition);
-
-            //onlineDB.Delete(tableName, condition);
-
         }
-        else{
-            localDB.doDelete(tableName, condition);
-            Log("isStudent, no insert into onlineDB");
-        }
+
 
     }
 }

@@ -15,12 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddNewTaskActivity"/>
+        <activity android:name=".AddNewTaskActivity"></activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ForumActivity" />
         <activity android:name=".TestMarksActivity" />
         <activity android:name=".MessageBoardActivity" />
+        <activity android:name=".PersonalListActivity" />
+        <activity android:name=".CourseListActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".DrawerActivity" />
         <activity android:name=".ToDoListActivity" />
@@ -33,10 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

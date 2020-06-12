@@ -1,7 +1,6 @@
 package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
@@ -27,7 +26,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,28 +38,20 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewTaskActivity extends AppCompatActivity {
 
-    public static String sTaskID, sTaskName, sDueDate, sDueTime, sCourseCode;
-    public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
-    public static String[] courses;
-    public static LocalDatabaseManager localDB = null;
+    static String sTaskName, sDueDate, sDueTime, sCourseCode;
+    static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+    static String[] courses;
+    static LocalDatabaseManager localDB = null;
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    ToDoAdapter toDoAdapter;
-    RecyclerView recyclerView;
-
-    ArrayList<String> arrOnlyTaskNames = new ArrayList<>();
-    ArrayList<String> arrOnlyTaskCourses = new ArrayList<>();
-    ArrayList<String> arrOnlyTaskIDs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
 
-        localDB = new LocalDatabaseManager(this);
+        localDB = new LocalDatabaseManager(this); //Sorry i just had to rename this lol
 
-        sTaskID = "";
         sTaskName = "";
         sDueDate = "";
         sDueTime = "";
@@ -73,44 +63,8 @@ public class AddNewTaskActivity extends AppCompatActivity {
         TimeOnClicker();
         SaveTaskClick();
         cancelAddTaskClick();
-
     }
 
-    void StartAdapter() throws InterruptedException {
-        Log("Starting to do the RecyclerView code");
-
-        // get the reference of RecyclerView
-        recyclerView = (RecyclerView)findViewById(R.id.rvToDoItems);
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //region Sync
-                try {
-                    Syncer syncer = new Syncer(AddNewTaskActivity.this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //endregion
-            }
-        });
-
-        t.start();
-        t.join();
-
-
-        // using adapter class for Recycler View
-
-        toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses, arrOnlyTaskIDs);
-        recyclerView.setAdapter(toDoAdapter);
-
-    }
 
     public void getTaskTitle(){
 
@@ -139,13 +93,14 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 calDate.set(Calendar.DATE, date);
                 String dateText = DateFormat.format("yyyy-MM-dd", calDate).toString();
 
-                sDueDate = dateText;
                 displayDate.setText(dateText);
             }
         }, YEAR, MONTH, DATE); // part of datePickerDialog
 
         datePickerDialog.show();
 
+        sDueDate = displayDate.getText().toString();
+        Log(sDueDate);
     }
 
     public void getTime() {
@@ -167,13 +122,14 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 calTime.set(Calendar.HOUR, hour);
                 calTime.set(Calendar.MINUTE, minute);
                 String dateText = DateFormat.format("HH:mm", calTime).toString();
-
-                sDueTime = dateText;
                 displayTime.setText(dateText);
             }
         }, HOUR, MINUTE, is24HourFormat);
 
         timePickerDialog.show();
+
+        sDueTime = displayTime.getText().toString();
+        Log(sDueTime);
     }
 
     public void getCourse(){
@@ -181,9 +137,11 @@ public class AddNewTaskActivity extends AppCompatActivity {
         sCourseCode = spinCourse.getSelectedItem().toString();
     }
 
-    public void saveTask() throws InterruptedException, JSONException, IOException, ParseException {
+    public void saveTask() throws InterruptedException, JSONException, IOException {
         Log("About to saveTask");
 
+        getDate();
+        getTime();
         getTaskTitle();
         getCourse();
 
@@ -246,49 +204,30 @@ public class AddNewTaskActivity extends AppCompatActivity {
         Log(sTaskName);
         Log(sDueDate);
         Log(sDueTime);
-        Log(sCourseCode);
 
         // data
         String tableName = "USER_TASK";
         String[] columns = {"Task_Name", "Task_Due_Date", "Task_Due_Time","isDone","Course_Code"};
         String[] data = {sTaskName, sDueDate, sDueTime, "0", sCourseCode};
 
-
         // save new task to local database
+        localDB.doInsert(tableName, columns, data);
+
+
+
         // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
-            Log("about to save new task data");
-            if (!sCourseCode.equals("NULL")){
-                tableName = tblLocalLecTask;
-            }
-
+            Log("isLec and about to insert into onlineDB");
             String userID = quote(localDB.getUserID(localDB));
-            Log(userID);
-
-            Log("isLec and about to insert into localDB");
-            localDB.doInsert(tableName, columns, data);
-
 
             String[] lecCols = {"Task_Name","Task_Due_Date","Course_Code","Lecturer_ID","Task_Due_Time"};
-            String[] lecData = {sTaskName, sDueDate, sCourseCode, userID, sDueTime};
+            String[] lecData = {sTaskName,sDueDate,sCourseCode,userID,sDueTime};
 
-            Log("isLec and about to insert into onlineDB");
             onlineDB.Insert(tblTask,lecCols,lecData);
-
         }
         else{
-            localDB.doInsert(tableName, columns, data);
             Log("isStudent, no insert into onlineDB");
         }
-
-
-        // save data to arrays for adapter and recycler view
-        arrOnlyTaskIDs.add(sTaskID);
-        arrOnlyTaskNames.add(sTaskName);
-        arrOnlyTaskCourses.add(sCourseCode);
-
-        // exit AddNewTaskActivity
-        exit();
     }
 
 
@@ -296,55 +235,24 @@ public class AddNewTaskActivity extends AppCompatActivity {
     //region HelperFunctions
 
 
-    public boolean isDateNull() throws ParseException {
-
-        TextView tvDate = findViewById(R.id.tvDisplayDate);
-        String checkDate = tvDate.getText().toString();
-
-        if (checkDate.equals("")){
-            Log("isSDateNull true");
-             return true;
-        }
-        Log("isSDateNull false");
-        return false;
+    //Please use Log(String); function to debug and test
+    public boolean isDateNull(){
+        return false; //Complete pls
     }
 
-    public boolean isTaskNameNull() {
-
-        TextView tvTaskName = findViewById(R.id.etTitleTask);
-        String checkTaskName = tvTaskName.getText().toString();
-
-        if (checkTaskName.equals("")) {
-            Log("isTaskNameNull true");
-            return true;
-        }
-        return false;
+    public boolean isTaskNameNull(){
+        return false; //Complete pls
     }
 
     public boolean isTimeNull(){
-
-        TextView tvTime = findViewById(R.id.tvDisplayTime);
-        String checkTime = tvTime.getText().toString();
-
-        if (checkTime.equals("")){
-            Log("isTimeNull true");
-            return true;
-        }
-        return false;
+        return false; //Complete pls
     }
 
-    // sCourse from textView will always have a string,
-    // if "None" is selected, consider this null
     public boolean isCourseNull(){
+        return false; //Complete pls
 
-        Spinner spinner = findViewById(R.id.spinCourseCode);
-        String checkCourse = spinner.getSelectedItem().toString();
-
-        if (checkCourse.equals("None")) {
-            Log("isCourseNull true");
-            return true;
-        }
-        return false;
+        //sCourse from textView will always have a string,
+        // if "None" is selected, consider this null
     }
 
     public void SetCourseSpinnerItems(){
@@ -378,7 +286,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     saveTask();
-                } catch (InterruptedException | JSONException | IOException | ParseException e) {
+                } catch (InterruptedException | JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -418,8 +326,26 @@ public class AddNewTaskActivity extends AppCompatActivity {
         });
     }
 
-    public void exit(){
-        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
+
+    public void blah(){
+
+        final TextView displayDate = findViewById(R.id.tvDisplayDate);
+        TextView displayTime = findViewById(R.id.tvDisplayTime);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setCancelable(true);
+        builder.setTitle(displayDate.getText().toString());
+        builder.setMessage(displayTime.getText().toString());
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     //endregion
