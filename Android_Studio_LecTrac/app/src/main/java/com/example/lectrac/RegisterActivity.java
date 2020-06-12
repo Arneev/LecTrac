@@ -1,13 +1,9 @@
 package com.example.lectrac;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         TextView tvEmail = (TextView)findViewById(R.id.edtEmail);
         String email = tvEmail.getText().toString();
 
-        TextView tvNickname = (TextView)findViewById(R.id.edtNickname);
+        TextView tvNickname = (TextView)findViewById(R.id.edtSettingsNickname);
         String nickname = tvNickname.getText().toString();
 
         TextView tvPassword = (TextView)findViewById(R.id.edtPassword);
