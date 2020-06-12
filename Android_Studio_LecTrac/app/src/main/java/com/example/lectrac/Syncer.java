@@ -200,7 +200,6 @@ public class Syncer {
         //region Adding all of those that need to be added from onlineDB
         List<Integer> toAdd = new ArrayList<>();
 
-        Log("Online size is for msgs is " + onlineSize);
         for (int i = 0; i < onlineSize; i++){
             JSONObject obj = onlineArr.getJSONObject(i);
             int onlineMessageID = obj.getInt("Message_ID");
@@ -340,10 +339,10 @@ public class Syncer {
 
         //region Adding all of those that need to be added from onlineDB
         List<Integer> toAdd = new ArrayList<>();
-        Log("The online size is " + onlineSize);
+
         for (int i = 0; i < onlineSize; i++){
             JSONObject obj = onlineArr.getJSONObject(i);
-            int onlineTaskID = obj.getInt("Task_ID");
+            int onlineTaskID = obj.getInt("Message_ID");
 
             boolean inLocal = false;
 

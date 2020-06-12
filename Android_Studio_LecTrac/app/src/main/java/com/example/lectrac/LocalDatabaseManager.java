@@ -186,18 +186,6 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         doQueryNonSelect("INSERT INTO " + tableName + " VALUES(" + stringVals + ")");
     }
 
-    public void doUpdate(String tableName, String setting, String condition){
-        String query = "UPDATE " + tableName + " SET " + setting + " WHERE " + condition;
-        doQueryNonSelect(query);
-    }
-
-    public void doUpdate(String tableName, String setting){
-        String query = "UPDATE " + tableName + " SET " + setting + " WHERE 1 = 1";
-        Log(query);
-        doQueryNonSelect(query);
-    }
-
-
     public void doInsert(String tableName,String[] columns, String[] values){
         String stringVals = "";
         String stringCols = "";

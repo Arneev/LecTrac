@@ -113,14 +113,12 @@ final public class OnlineDatabaseManager {
 
     }
 
-    void Update(String tableName,String setting, String condition) {
+    void Update(String tableName,String column_value, String condition) {
         try{
-            Log("UPDATE " + tableName + " SET " + setting + " WHERE " + condition);
-            Query("UPDATE " + tableName + " SET " + setting + " WHERE " + condition);
+            Query("UPDATE " + tableName + " SET " + column_value + " WHERE " + condition);
 
         }catch (Exception e) { Log(e.toString()); }
     }
-
 
     void Insert(String tableName,String[] columns, String[] values) {
 
@@ -185,7 +183,6 @@ final public class OnlineDatabaseManager {
 
         }catch (Exception e) { Log(e.toString()); }
     }
-
 
     JSONArray getJSONArr(String query) throws InterruptedException, IOException, JSONException {
         Log(query);
