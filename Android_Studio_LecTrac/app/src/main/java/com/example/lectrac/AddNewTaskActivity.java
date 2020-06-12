@@ -45,6 +45,8 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    static boolean createdOne;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,17 +211,23 @@ public class AddNewTaskActivity extends AppCompatActivity {
         // save new task to local database
 
 
-
-
-
-
         // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
             if (!sCourseCode.equals("NULL")){
+                //Local insert - inefficient, change later on but keep for now
+                String userID = quote(localDB.getUserID(localDB));
+
+                String[] locLecCols = {"Task_Name","Task_Due_Date","Task_Due_Time","isDone","Course_Code","Lecturer_ID"};
+                String[] locLecData = {sTaskName,sDueDate,sDueTime,"0",sCourseCode,userID};
                 tableName = tblLocalLecTask;
+
+                localDB.doInsert(tableName,locLecCols,locLecData);
+            }
+            else{
+                localDB.doInsert(tableName, columns, data);
             }
 
-            localDB.doInsert(tableName, columns, data);
+
 
             Log("isLec and about to insert into onlineDB");
             String userID = quote(localDB.getUserID(localDB));
@@ -235,6 +243,8 @@ public class AddNewTaskActivity extends AppCompatActivity {
             localDB.doInsert(tableName, columns, data);
             Log("isStudent, no insert into onlineDB");
         }
+
+        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
     }
 
 
