@@ -152,6 +152,7 @@ public class ToDoListActivity extends AppCompatActivity {
             arrOnlyTaskCourses.add(taskCourse);
 
             cursor.moveToNext();
+            
         }
     }
 
