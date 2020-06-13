@@ -156,6 +156,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
         if (isTaskNameNull()){
             ShowUserError("Enter a task name");
+            return;
         }
         else{
             sTaskName = quote(sTaskName);
@@ -179,29 +180,23 @@ public class AddNewTaskActivity extends AppCompatActivity {
             sDueTime = quote(sDueTime);
         }
 
-        if (isCourseNull()){
 
-            if (isLec){
-                if (courseSize > 0){
-                    ShowUserError("You have to enter a course code, cannot be none");
-                }
-                else if (courseSize == 0){
-                    ShowUserError("Contact support with " + errorLecNoCourse);
-                }
+        //region Course Code
+        if (isLec){
+            if (courseSize == 0){
+                ShowUserError("Contact support with " + errorLecNoCourse);
                 return;
             }
-
-            sCourseCode = "NULL"; //Going to perso userTask (Only he/she can access it)
-
-        }
-        else{
-            sCourseCode = quote(sCourseCode);
         }
 
+        sCourseCode = quote(sCourseCode);
+        //endregion
 
-        Log(sTaskName);
-        Log(sDueDate);
-        Log(sDueTime);
+
+        Log("Task name is, " + sTaskName);
+        Log("Due Date is, " + sDueDate);
+        Log("Due Time is, " + sDueTime);
+        Log("Course Code is, "  + sCourseCode);
 
         // data
         String tableName = "USER_TASK";
@@ -254,22 +249,34 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
     //Please use Log(String); function to debug and test
     public boolean isDateNull(){
-        return false; //Complete pls
+        if (sDueDate.equals("")){
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isTaskNameNull(){
-        return false; //Complete pls
+        if (sTaskName.equals("")){
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isTimeNull(){
-        return false; //Complete pls
+        if (sDueTime.equals("")){
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isCourseNull(){
         return false; //Complete pls
 
-        //sCourse from textView will always have a string,
-        // if "None" is selected, consider this null
+//        sCourse from textView will always have a string,
+//         if "None" is selected, consider this null
     }
 
     public void SetCourseSpinnerItems(){
