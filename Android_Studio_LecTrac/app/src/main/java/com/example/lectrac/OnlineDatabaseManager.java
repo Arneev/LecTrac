@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.concurrent.CountDownLatch;
 
 import androidx.annotation.Nullable;
@@ -230,6 +231,7 @@ final public class OnlineDatabaseManager {
        return getJSONObj("SELECT * FROM STUDENT WHERE Student_ID = " + quote(userID) + " UNION " +
                 "SELECT * FROM LECTURER WHERE Lecturer_ID = " + quote(userID));
     }
+
 
 
 }

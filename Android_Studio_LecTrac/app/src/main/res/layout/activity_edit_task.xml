@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline_left" />
 
     <EditText
-        android:id="@+id/etTitleTask"
+        android:id="@+id/etTaskName"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:background="@drawable/background_add_task"
@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvAddTitle" />
 
     <TextView
-        android:id="@+id/tvDisplayDate"
+        android:id="@+id/tvDate"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -60,15 +60,15 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/btnDueDate" />
+        app:layout_constraintTop_toBottomOf="@id/btnDate" />
 
     <Spinner
-        android:id="@+id/spinCourseCode"
+        android:id="@+id/spinCourses"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/background_add_task"
-        app:layout_constraintBottom_toTopOf="@id/btnSaveTask"
+        app:layout_constraintBottom_toTopOf="@id/btnEditTask"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Add New Task"
+        android:text="Edit Task"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -98,14 +98,14 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/btnDueDate"
+        app:layout_constraintBottom_toTopOf="@id/btnDate"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/etTitleTask" />
+        app:layout_constraintTop_toBottomOf="@id/etTaskName" />
 
     <Button
-        android:id="@+id/btnDueTime"
+        android:id="@+id/btnTime"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:background="@drawable/background_add_task"
@@ -116,7 +116,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textColorHint="@color/gray"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/tvDisplayTime"
+        app:layout_constraintBottom_toTopOf="@id/tvTime"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -127,11 +127,11 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Add Title"
+        android:text="Edit Title"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/etTitleTask"
+        app:layout_constraintBottom_toTopOf="@id/etTaskName"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -154,18 +154,18 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Add Course"
+        android:text="Edit Course"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/spinCourseCode"
+        app:layout_constraintBottom_toTopOf="@id/spinCourses"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/tvDisplayTime" />
+        app:layout_constraintTop_toBottomOf="@id/tvTime" />
 
     <Button
-        android:id="@+id/btnDueDate"
+        android:id="@+id/btnDate"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
@@ -177,14 +177,14 @@
         android:textColor="@color/colorPrimaryDark"
         android:textColorHint="@color/gray"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/tvDisplayDate"
+        app:layout_constraintBottom_toTopOf="@id/tvDate"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/tvDueDate" />
 
     <TextView
-        android:id="@+id/tvDisplayTime"
+        android:id="@+id/tvTime"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -198,7 +198,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/btnDueTime" />
+        app:layout_constraintTop_toBottomOf="@id/btnTime" />
 
     <TextView
         android:id="@+id/tvDueTime"
@@ -209,31 +209,31 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/btnDueTime"
+        app:layout_constraintBottom_toTopOf="@id/btnTime"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/tvDisplayDate" />
+        app:layout_constraintTop_toBottomOf="@id/tvDate" />
 
     <Button
-        android:id="@+id/btnSaveTask"
+        android:id="@+id/btnEditTask"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/background_btn"
-        android:text="Create Now"
+        android:text="Save Changes"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22sp"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/spinCourseCode" />
+        app:layout_constraintTop_toBottomOf="@id/spinCourses" />
 
     <Button
-        android:id="@+id/btnCancelTask"
+        android:id="@+id/btnCancel"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginLeft="16dp"
@@ -247,6 +247,6 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/btnSaveTask" />
+        app:layout_constraintTop_toBottomOf="@id/btnEditTask" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewTaskActivity extends AppCompatActivity {
 
-    public static String sTaskName, sDueDate, sDueTime, sCourseCode;
+    public static String sTaskId, sTaskName, sDueDate, sDueTime, sCourseCode;
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     public static String[] courses;
     public static LocalDatabaseManager localDB = null;
@@ -47,13 +47,26 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
     static boolean createdOne;
 
+    ToDoAdapter toDoAdapter;
+    RecyclerView recyclerView;
+
+    Boolean isLec, mustPost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
 
-        localDB = new LocalDatabaseManager(this); //Sorry i just had to rename this lol
+        localDB = new LocalDatabaseManager(this);
 
+        // is user a student or lecturer?
+        isLec = localDB.isLec();
+        Log("isLec about to return " + Boolean.toString(isLec));
+
+        mustPost = false;
+
+
+        sTaskId = "";
         sTaskName = "";
         sDueDate = "";
         sDueTime = "";
@@ -67,6 +80,54 @@ public class AddNewTaskActivity extends AppCompatActivity {
         cancelAddTaskClick();
     }
 
+    public void isPosted(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Upload New Task");
+
+        builder.setMessage("Would you like to post this task to students?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mustPost = true;
+
+                        try {
+                            saveTask();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        dialog.dismiss();
+                        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mustPost = false;
+
+                        try {
+                            saveTask();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        dialog.dismiss();
+                        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     public void getTaskTitle(){
 
@@ -143,9 +204,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
         getTaskTitle();
         getCourse();
 
-        // is user a student or lecturer?
-        boolean isLec = localDB.isLec();
-        Log("isLec about to return " + Boolean.toString(isLec));
 
         courses = localDB.getCourses(localDB);
         int courseSize = courses.length;
@@ -180,26 +238,32 @@ public class AddNewTaskActivity extends AppCompatActivity {
             sDueTime = quote(sDueTime);
         }
 
+        if (isCourseNull() && mustPost){
 
-        //region Course Code
-        if (isLec){
-            if (courseSize == 0){
-                ShowUserError("Contact support with " + errorLecNoCourse);
+            if (isLec){
+                if (courseSize > 0){
+                    ShowUserError("You have to enter a course code, cannot be empty");
+                }
+                else if (courseSize == 0){
+                    ShowUserError("Contact support with " + errorLecNoCourse);
+                }
                 return;
             }
+
+            sCourseCode = "NULL"; //Going to perso userTask (Only he/she can access it)
+
+        }
+        else{
+            sCourseCode = quote(sCourseCode);
         }
 
-        sCourseCode = quote(sCourseCode);
-        //endregion
 
-
-        Log("Task name is, " + sTaskName);
-        Log("Due Date is, " + sDueDate);
-        Log("Due Time is, " + sDueTime);
-        Log("Course Code is, "  + sCourseCode);
+        Log(sTaskName);
+        Log(sDueDate);
+        Log(sDueTime);
 
         // data
-        String tableName = "USER_TASK";
+        String tableName = tblUserTask;
         String[] columns = {"Task_Name", "Task_Due_Date", "Task_Due_Time","isDone","Course_Code"};
         String[] data = {sTaskName, sDueDate, sDueTime, "0", sCourseCode};
 
@@ -208,7 +272,8 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
         // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
-            if (!sCourseCode.equals("NULL")){
+            if (!sCourseCode.equals("None") && mustPost){
+
                 //Local insert - inefficient, change later on but keep for now
                 String userID = quote(localDB.getUserID(localDB));
 
@@ -216,67 +281,97 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 String[] locLecData = {sTaskName,sDueDate,sDueTime,"0",sCourseCode,userID};
                 tableName = tblLocalLecTask;
 
+                Log("isLec and sCourseCode is NOT NULL about to insert into localDB");
                 localDB.doInsert(tableName,locLecCols,locLecData);
+                sTaskId = "L" + localDB.getLastID(tableName);
+
+
+                //Online insert
+
+                Log("isLec and about to insert into onlineDB");
+
+                String[] lecCols = {"Task_Name","Task_Due_Date","Course_Code","Lecturer_ID","Task_Due_Time"};
+                String[] lecData = {sTaskName,sDueDate,sCourseCode,userID,sDueTime};
+
+                onlineDB.Insert(tblTask,lecCols,lecData);
+
+
             }
             else{
+                Log("isLec and sCourseCode IS NULL about to insert into localDB");
                 localDB.doInsert(tableName, columns, data);
+                sTaskId = "U" + localDB.getLastID(tableName);
             }
-
-
-
-            Log("isLec and about to insert into onlineDB");
-            String userID = quote(localDB.getUserID(localDB));
-
-            String[] lecCols = {"Task_Name","Task_Due_Date","Course_Code","Lecturer_ID","Task_Due_Time"};
-            String[] lecData = {sTaskName,sDueDate,sCourseCode,userID,sDueTime};
-
-            onlineDB.Insert(tblTask,lecCols,lecData);
 
 
         }
         else{
             localDB.doInsert(tableName, columns, data);
             Log("isStudent, no insert into onlineDB");
+            sTaskId = "U" + localDB.getLastID(tableName);
         }
 
-        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
+        // adapter
+
+        Log("Update toDoAdapter after adding new task");
+        toDoAdapter = new ToDoAdapter(sTaskName, sCourseCode, sTaskId);
+
+
     }
 
 
 
     //region HelperFunctions
 
-
-    //Please use Log(String); function to debug and test
     public boolean isDateNull(){
-        if (sDueDate.equals("")){
+
+        TextView tvDate = findViewById(R.id.tvDisplayDate);
+        String checkDate = tvDate.getText().toString();
+
+        if (checkDate.equals("")){
+            Log("checkDate is null");
             return true;
         }
-
         return false;
     }
 
     public boolean isTaskNameNull(){
-        if (sTaskName.equals("")){
+
+        EditText etTaskName = findViewById(R.id.etTitleTask);
+        String checkTaskName = etTaskName.getText().toString();
+
+        if (checkTaskName.equals("")){
+            Log("checkTaskName is null");
             return true;
         }
-
         return false;
     }
 
     public boolean isTimeNull(){
-        if (sDueTime.equals("")){
+
+        TextView tvTime = findViewById(R.id.tvDisplayTime);
+        String checkTime = tvTime.getText().toString();
+
+        if (checkTime.equals("")){
+            Log("checkTime is null");
             return true;
         }
-
         return false;
     }
 
     public boolean isCourseNull(){
-        return false; //Complete pls
 
-//        sCourse from textView will always have a string,
-//         if "None" is selected, consider this null
+        Spinner spinner = (Spinner)findViewById(R.id.spinCourseCode);
+        String checkCourse = spinner.getSelectedItem().toString();
+
+        if (checkCourse.equals("None")){
+            Log("checkCourse is null");
+            return true;
+        }
+        return false;
+
+        //sCourse from textView will always have a string,
+        // if "None" is selected, consider this null
     }
 
     public void SetCourseSpinnerItems(){
@@ -309,6 +404,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    if (isLec) {
+                        isPosted();
+                        return;
+                    }
                     saveTask();
                 } catch (InterruptedException | JSONException | IOException e) {
                     e.printStackTrace();

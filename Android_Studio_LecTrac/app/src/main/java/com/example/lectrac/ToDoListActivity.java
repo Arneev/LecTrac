@@ -81,21 +81,26 @@ public class ToDoListActivity extends AppCompatActivity {
         t.join();
         addFromOnlineDB();
 
+        // is user a student or lecturer?
+        boolean isLec = localDB.isLec();
 
         // using adapter class for Recycler View
 
-        toDoAdapter = new ToDoAdapter(this, arrOnlyTaskNames, arrOnlyTaskCourses, arrOnlyTaskIDs);
+        toDoAdapter = new ToDoAdapter(this, isLec, arrOnlyTaskNames, arrOnlyTaskCourses, arrOnlyTaskIDs);
         recyclerView.setAdapter(toDoAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ToDoListActivity.this));
+
     }
 
 
 
     private void addFromLocalDB (){
 
-        String taskName, taskCourse, taskID;
+        String taskName, taskCourse, taskID, taskTable;
 
-        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblUserTask);
+        taskTable = tblUserTask;
+
+        Cursor cursor = localDB.doQuery("SELECT * FROM " + taskTable);
 
         int cursorCount = cursor.getCount();
 
@@ -111,7 +116,8 @@ public class ToDoListActivity extends AppCompatActivity {
 
         for (int localIndex = 0; localIndex < cursorCount; localIndex++){
 
-            taskID = Integer.toString(cursor.getInt(indexID));
+            // add a "U" before the task ID to show that the task is from the User_Task table in the localDB
+            taskID = "U" + Integer.toString(cursor.getInt(indexID));
             taskName = cursor.getString(indexName);
             taskCourse = cursor.getString(indexCourse);
 
@@ -125,9 +131,12 @@ public class ToDoListActivity extends AppCompatActivity {
 
     private void addFromOnlineDB(){
 
-        String taskName, taskCourse, taskID;
+        String taskName, taskCourse, taskID, taskTable;
+        int isDone;
 
-        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblLocalLecTask);
+        taskTable = tblLocalLecTask;
+
+        Cursor cursor = localDB.doQuery("SELECT * FROM " + taskTable);
 
         int cursorCount = cursor.getCount();
 
@@ -140,16 +149,22 @@ public class ToDoListActivity extends AppCompatActivity {
         int indexID = cursor.getColumnIndex("Task_ID");
         int indexName = cursor.getColumnIndex("Task_Name");
         int indexCourse = cursor.getColumnIndex("Course_Code");
+        int indexIsDone = cursor.getColumnIndex("isDone");
 
         for (int localIndex = 0; localIndex < cursorCount; localIndex++){
 
-            taskID = Integer.toString(cursor.getInt(indexID));
+            // add a "L" before the task ID to show that the task is from the Lecturer_Task table in the localDB
+            taskID = "L" + Integer.toString(cursor.getInt(indexID));
             taskName = cursor.getString(indexName);
             taskCourse = cursor.getString(indexCourse);
+            isDone = cursor.getInt(indexIsDone);
 
-            arrOnlyTaskIDs.add(taskID);
-            arrOnlyTaskNames.add(taskName);
-            arrOnlyTaskCourses.add(taskCourse);
+            // if task is not done then add to the arrays
+            if (isDone == 0) {
+                arrOnlyTaskIDs.add(taskID);
+                arrOnlyTaskNames.add(taskName);
+                arrOnlyTaskCourses.add(taskCourse);
+            }
 
             cursor.moveToNext();
 

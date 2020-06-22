@@ -9,12 +9,14 @@ import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.example.lectrac.HelperFunctions.*;
@@ -295,5 +297,17 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
     }
 
 
+    public String getLastID(String tableName) throws InterruptedException, IOException, JSONException {
+
+        String query = "SELECT * FROM " + tableName;
+
+        Cursor cursor =  doQuery(query);
+        Log(query);
+
+        cursor.moveToLast();
+
+        int index = cursor.getColumnIndex("Task_ID");
+        return cursor.getString(index);
+    }
 
 }
