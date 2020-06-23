@@ -97,7 +97,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
         // set parameters for doUpdate
         String setting = "";
-        String condition = "Task_ID=" + taskID.charAt(1);
+        String condition = "Task_ID=" + taskID.substring(1);
 
 
         // is user a student or lecturer?
@@ -441,9 +441,9 @@ public class EditTaskActivity extends AppCompatActivity {
 
 
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tableName +
-                " WHERE Task_ID = " + taskID.charAt(1));
+                " WHERE Task_ID = " + taskID.substring(1));
 
-        Log("SELECT * FROM " + tableName + " WHERE Task_ID = " + taskID.charAt(1));
+        Log("SELECT * FROM " + tableName + " WHERE Task_ID = " + taskID.substring(1));
 
         cursor.moveToFirst();
 
