@@ -59,6 +59,7 @@ public class Syncer {
             if (!isOnline){
                 Log("The user is offline");
                 Log("This is auto sync");
+                return;
             }
         }
 

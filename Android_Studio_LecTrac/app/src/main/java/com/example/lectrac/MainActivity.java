@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SetToDefault();
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -131,18 +133,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void configureNextButton(){
-//
-//        Button loginButton = (Button) findViewById(R.id.btnLogin);
-//        loginButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, DrawerActivity.class));
-//            }
-//        });
-//    }
+    public void SetToDefault(){
+
+        TextView userID = findViewById(R.id.edtUserID);
+        TextView pass = findViewById(R.id.edtPassword);
+
+        userID.setText("");
+        pass.setText("");
+    }
 
 
+    //region Helper Function
 
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, RegisterActivity.class));
+    }
+
+    //endregion
 
 }

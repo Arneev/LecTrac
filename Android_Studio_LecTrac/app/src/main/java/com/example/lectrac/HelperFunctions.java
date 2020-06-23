@@ -126,4 +126,11 @@ public class HelperFunctions {
         //should check null because in airplane mode it will be null
         return (netInfo != null && netInfo.isConnected());
     }
+
+    public static String orderByDateAndTime(String query){
+        query = "SELECT * FROM ( " + query + " ) ORDER BY Task_Due_Date ASC, Task_Due_Time ASC";
+        return query;
+    }
+
+
 }

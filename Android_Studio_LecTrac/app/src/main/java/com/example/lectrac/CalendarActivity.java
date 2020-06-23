@@ -2,6 +2,7 @@ package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -12,4 +13,5 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
 
     }
+
 }

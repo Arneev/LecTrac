@@ -529,4 +529,13 @@ public class EditTaskActivity extends AppCompatActivity {
 
 
     //endregion
+
+    //region Helper Function
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, ToDoListActivity.class));
+    }
+
+    //endregion
 }

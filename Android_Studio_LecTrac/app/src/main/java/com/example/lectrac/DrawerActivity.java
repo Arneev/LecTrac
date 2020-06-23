@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import static com.example.lectrac.HelperFunctions.*;
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,7 +74,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 startActivity(i7);
                 break;
             case R.id.nav_logout:
-                System.exit(0);
+                LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+                localDB.doDelete(tblUser);
+                Intent i8 = new Intent(this, MainActivity.class);
+                startActivity(i8);
         }
         return true;
     }

@@ -1,100 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".ToDoListActivity">
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
+        android:id="@+id/rlTemp"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:layout_height="220dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:background="@color/DarkBlue"
+        android:paddingBottom="20dp">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnAddNew"
+            android:layout_width="51dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="25dp"
+            android:layout_toEndOf="@+id/tvTitle"
+            android:layout_toRightOf="@+id/tvTitle"
+            android:background="@drawable/btn_add_new"
+            android:gravity="center_horizontal"
+            android:text="+"
+            android:textAlignment="center"
+            android:textColor="#FFF"
+            android:textSize="38sp"
+            android:visibility="visible" />
 
-            <LinearLayout
-                android:layout_marginLeft="16dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinFilterCourses"
+            android:layout_width="180dp"
+            android:layout_height="36dp"
+            android:layout_below="@+id/tvTitle"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="37dp"
+            android:background="@drawable/background_add_task"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_bias="0.492" />
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_marginTop="40dp"
-                    android:textSize="32sp"
-                    android:textColor="@color/white"
-                    android:text="To-Do List"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/spinFilterLec"
+            android:layout_width="180dp"
+            android:layout_height="36dp"
+            android:layout_below="@+id/btnAddNew"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_toEndOf="@+id/spinFilterCourses"
+            android:layout_toRightOf="@+id/spinFilterCourses"
+            android:background="@drawable/background_add_task" />
 
-                <Spinner
-                    android:id="@+id/spinFilterCourses"
-                    android:layout_width="250dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/background_add_task"
-                    app:layout_constraintBottom_toTopOf="@id/btnSaveTask"
-                    app:layout_constraintEnd_toStartOf="@id/guideline_right"
-                    app:layout_constraintHorizontal_bias="0.492"
-                    app:layout_constraintStart_toStartOf="@id/guideline_left"
-                    app:layout_constraintTop_toBottomOf="@id/tvAddCourse" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnAddNew"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="35dp"
-                android:background="@drawable/btn_add_new"
-                android:gravity="center_horizontal"
-                android:text="+"
-                android:textAlignment="center"
-                android:textColor="#FFF"
-                android:textSize="38sp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/white" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvToDoItems"
-        android:layout_marginTop="-50dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="237dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:text="To-Do List"
+            android:textColor="@color/OffWhite"
+            android:textSize="32sp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvEndOfPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:text="End of To-Dos"
+        android:layout_below="@+id/rvToDoItems"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="-12dp"
+        android:layout_marginRight="-12dp"
+        android:gravity="center_horizontal"
+        android:text="End of Tasks"
         android:textAlignment="center"
-        android:gravity="center_horizontal" />
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:fontFamily="@font/msyi" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvToDoItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@+id/rlTemp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp"
+        android:visibility="visible">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
-
-
-</LinearLayout>
+</RelativeLayout>

@@ -27,9 +27,11 @@ import java.util.List;
 import static com.example.lectrac.HelperFunctions.Log;
 import static com.example.lectrac.HelperFunctions.ShowUserError;
 import static com.example.lectrac.HelperFunctions.errorLecNoCourse;
+import static com.example.lectrac.HelperFunctions.isOnline;
 import static com.example.lectrac.HelperFunctions.quote;
 import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
 import static com.example.lectrac.HelperFunctions.tblTask;
+import static com.example.lectrac.HelperFunctions.tblUserTask;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> { //implements Filterable
 
@@ -225,7 +227,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
 
-        String tableName = "USER_TASK";
+        String tableName = tblUserTask;
         String Task_ID = arrTaskIDs.get(position);
         String condition = "Task_ID = " + Task_ID.substring(1);
 
@@ -240,13 +242,18 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         if (isLec){
             if (Task_ID.charAt(0) == 'L'){
 
+                if (!isOnline(context)){
+                    ShowUserError("Cannot delete task as you are offline");
+                    return;
+                }
+
                 tableName = tblLocalLecTask;
 
                 Log("isLec and if sCourseCode is NOT NULL about to delete from localDB");
                 localDB.doDelete(tableName, condition);
 
                 Log("isLec and about to delete from onlineDB");
-                onlineDB.Delete("TASK", condition);
+                onlineDB.Delete(tblTask, condition);
             }
             else{
                 Log("isLec and if sCourseCode IS NULL about to delete from localDB");

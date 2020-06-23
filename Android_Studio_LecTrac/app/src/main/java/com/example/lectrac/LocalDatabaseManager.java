@@ -228,6 +228,10 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         doQueryNonSelect("DELETE FROM " + tableName  + " WHERE " + condition);
     }
 
+    public void doDelete(String tableName){
+        doQueryNonSelect("DELETE FROM " + tableName);
+    }
+
     public void doDelete(String tableName, String colName, String value){
 
         doQueryNonSelect("DELETE FROM " + tableName  + " WHERE " + colName + " = " + value);

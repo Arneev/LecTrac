@@ -105,4 +105,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    //region Helper Function
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    //endregion
 }
