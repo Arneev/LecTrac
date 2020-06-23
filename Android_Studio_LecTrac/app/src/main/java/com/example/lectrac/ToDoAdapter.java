@@ -2,11 +2,14 @@ package com.example.lectrac;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -18,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.example.lectrac.HelperFunctions.Log;
 import static com.example.lectrac.HelperFunctions.ShowUserError;
@@ -26,13 +31,14 @@ import static com.example.lectrac.HelperFunctions.quote;
 import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
 import static com.example.lectrac.HelperFunctions.tblTask;
 
-public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> {
+public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> { //implements Filterable
 
     Context context;
     Boolean isLec;
     ArrayList<String> arrTaskNames = new ArrayList<String>();
     ArrayList<String> arrTaskCourses = new ArrayList<String>();
     ArrayList<String> arrTaskIDs = new ArrayList<String>();
+    ArrayList<String> arrFilteredCourses = new ArrayList<String>();
 
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
@@ -67,8 +73,30 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
+        final String taskID = arrTaskIDs.get(position);
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+
         holder.myText1.setText(arrTaskNames.get(position));
         holder.myText2.setText(arrTaskCourses.get(position));
+
+        if (isLec){
+
+            if (taskID.charAt(0) == 'L'){
+                holder.myText3.setText("Posted");
+            }
+            else {
+                holder.myText3.setText("Not Posted");
+            }
+        }
+        else {
+
+            if (taskID.charAt(0) == 'L'){
+                holder.myText3.setText("Course Task");
+            }
+            else {
+                holder.myText3.setText("You");
+            }
+        }
 
         // A student cannot edit a task that is posted by a lecturer
         // so, we need two options, to check if the task can be edited by the user or not.
@@ -78,34 +106,54 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             @Override
             public void onClick(View v) {
 
-                PopupMenu popup = new PopupMenu(context, holder.ivOptions);
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLec && taskID.charAt(0) == 'L') {
 
-                        switch (menuItem.getItemId()) { // check for item and act accordingly
-                            case R.id.mtEditTask:
+                    PopupMenu popup = new PopupMenu(context, holder.ivOptions);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
 
-                                Log("about to start");
-                                Intent intent = new Intent(context, EditTaskActivity.class);
-                                intent.putExtra("position", position);
-                                intent.putExtra("arrTaskNames", arrTaskNames);
-                                intent.putExtra("arrTaskCourses", arrTaskCourses);
-                                intent.putExtra("arrTaskIDs", arrTaskIDs);
-                                context.startActivity(intent);
-                                break;
-
-                            case R.id.mtDeleteTask:
+                            // check for item and act accordingly
+                            if (menuItem.getItemId() == R.id.mtDeleteTask) {
                                 deleteTask(position);
-                                break;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
+
+                    popup.inflate(R.menu.task_menu_no_edit);
+                    popup.show();
+                }
+                else {
+
+                    PopupMenu popup = new PopupMenu(context, holder.ivOptions);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+
+                            switch (menuItem.getItemId()) { // check for item and act accordingly
+                                case R.id.mtEditTask:
+
+                                    Intent intent = new Intent(context, EditTaskActivity.class);
+                                    intent.putExtra("position", position);
+                                    intent.putExtra("arrTaskNames", arrTaskNames);
+                                    intent.putExtra("arrTaskCourses", arrTaskCourses);
+                                    intent.putExtra("arrTaskIDs", arrTaskIDs);
+                                    context.startActivity(intent);
+                                    break;
+
+                                case R.id.mtDeleteTask:
+                                    deleteTask(position);
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
 
 
-                popup.inflate(R.menu.task_menu);
-                popup.show();
+                    popup.inflate(R.menu.task_menu);
+                    popup.show();
+                }
             }
         });
 
@@ -116,9 +164,49 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         return arrTaskNames.size();
     }
 
+ /*   @Override
+    public Filter getFilter() {
+
+        Log("getFilter");
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<String> filteredList = new ArrayList<>();
+
+            if (constraint.toString().isEmpty()){
+                filteredList.addAll(arrTaskCourses);
+            }
+            else {
+
+                for (String course: arrTaskCourses){
+
+                    if (course.contains(constraint.toString())){
+                        filteredList.add(course);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            arrFilteredCourses.addAll((Collection<? extends String>) results.values);
+            notifyDataSetChanged();
+        }
+    };*/
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView myText1, myText2;
+        TextView myText1, myText2, myText3;
         ImageView ivOptions;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -126,6 +214,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             super(itemView);
             myText1 = itemView.findViewById(R.id.tvTaskName);
             myText2 = itemView.findViewById(R.id.tvTaskCourseName);
+            myText3 = itemView.findViewById(R.id.tvExtra);
             ivOptions = itemView.findViewById(R.id.ivOptions);
         }
     }
@@ -134,43 +223,52 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
         Log("About to delete task");
 
-         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
 
         String tableName = "USER_TASK";
         String Task_ID = arrTaskIDs.get(position);
-        String condition = "Task_ID = " + Task_ID.charAt(1);
+        String condition = "Task_ID = " + Task_ID.substring(1);
 
 
         // is user a student or lecturer?
         boolean isLec = localDB.isLec();
-        Log("isLec about to return " + Boolean.toString(isLec));
 
-        String sCourseCode = arrTaskCourses.get(position);
 
         // delete task from local database
         // if user is a lecturer then the task must also be deleted from the online database
 
         if (isLec){
-            if (!sCourseCode.equals("None")){
+            if (Task_ID.charAt(0) == 'L'){
 
                 tableName = tblLocalLecTask;
 
                 Log("isLec and if sCourseCode is NOT NULL about to delete from localDB");
                 localDB.doDelete(tableName, condition);
+
+                Log("isLec and about to delete from onlineDB");
+                onlineDB.Delete("TASK", condition);
             }
             else{
                 Log("isLec and if sCourseCode IS NULL about to delete from localDB");
                 localDB.doDelete(tableName, condition);
             }
 
-            Log("isLec and about to delete from onlineDB");
-            onlineDB.Delete("TASK", condition);
-
-
         }
         else{
-            Log("isStudent, delete from localDB");
-            localDB.doDelete(tableName, condition);
+
+            if (Task_ID.charAt(0) == 'L'){
+
+                tableName = tblLocalLecTask;
+                String setting = "isDone = '1'";
+
+                Log("isStudent, set isDone from Lecturer localDB");
+                localDB.doUpdate(tableName, setting, condition);
+            }
+            else {
+
+                Log("isStudent, delete from localDB");
+                localDB.doDelete(tableName, condition);
+            }
 
         }
 
@@ -187,14 +285,5 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         Log("Task deleted");
     }
 
-    public void editTask(int pos, String name, String course){
-
-        Log("Edit task in Adapter");
-
-        arrTaskNames.set(pos, name);
-        arrTaskCourses.set(pos, course);
-
-        notifyDataSetChanged();
-    }
 
 }

@@ -12,11 +12,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.example.lectrac.HelperFunctions.*;
 
@@ -33,6 +39,7 @@ public class ToDoListActivity extends AppCompatActivity {
     ArrayList<String> arrOnlyTaskCourses = new ArrayList<>();
     ArrayList<String> arrOnlyTaskIDs = new ArrayList<>();
 
+    public static String[] courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,8 @@ public class ToDoListActivity extends AppCompatActivity {
 
         // get the reference of RecyclerView
         recyclerView = (RecyclerView)findViewById(R.id.rvToDoItems);
+
+        SetCourseSpinnerItems();
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -184,6 +193,63 @@ public class ToDoListActivity extends AppCompatActivity {
 
     }
 
+
+    public void SetCourseSpinnerItems(){
+        Spinner spinCourse = findViewById(R.id.spinFilterCourses);
+        courses = localDB.getCourses(localDB);
+        int courseSize = courses.length;
+
+        List<String> list = new ArrayList<String>();
+
+        list.add("All");
+
+        for(int i = 0; i < courseSize; i++){
+            list.add(courses[i]);
+        }
+
+        list.add("None");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinCourse.setAdapter(dataAdapter);
+
+        // Filer
+
+     /*   spinCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (position >= 0 && position < courses.length) {
+                    getSelectedCourse(position);
+                } else {
+                    Log("Select a course");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log("onNothingSelected");
+            }
+        });*/
+
+    }
+
+
+   /* private void getSelectedCourse(int categoryID) {
+
+        CharSequence selectedCourse = "All";
+
+        for (int i = 0; i < arrOnlyTaskCourses.size(); i++) {
+
+            if (categoryID == i) {
+                selectedCourse = arrOnlyTaskCourses.get(i);
+                Log("categoryID == i: " + selectedCourse);
+            }
+        }
+
+        toDoAdapter.getFilter().filter(selectedCourse);
+    }*/
 
     //endregion
 

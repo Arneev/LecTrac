@@ -409,6 +409,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
                         return;
                     }
                     saveTask();
+                    startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
                 } catch (InterruptedException | JSONException | IOException e) {
                     e.printStackTrace();
                 }
