@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     //region Try Syncing
                     try {
-                        Syncer syncClass = new Syncer(MainActivity.this);
+                        Syncer syncClass = new Syncer(MainActivity.this, true);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {

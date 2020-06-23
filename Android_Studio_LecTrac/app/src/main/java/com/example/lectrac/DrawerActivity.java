@@ -52,21 +52,25 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 Intent i2 = new Intent(this, ToDoListActivity.class);
                 startActivity(i2);
                 break;
-            case R.id.nav_messageBoard:
-                Intent i3 = new Intent(this, MessageBoardActivity.class);
+            case R.id.nav_courses:
+                Intent i3 = new Intent(this, CourseListActivity.class);
                 startActivity(i3);
                 break;
-            case R.id.nav_testMarks:
-                Intent i4 = new Intent(this, TestMarksActivity.class);
+            case R.id.nav_messageBoard:
+                Intent i4 = new Intent(this, MessageBoardActivity.class);
                 startActivity(i4);
                 break;
-            case R.id.nav_forum:
-                Intent i5 = new Intent(this, ForumActivity.class);
+            case R.id.nav_testMarks:
+                Intent i5 = new Intent(this, TestMarksActivity.class);
                 startActivity(i5);
                 break;
-            case R.id.nav_settings:
-                Intent i6 = new Intent(this, SettingsActivity.class);
+            case R.id.nav_forum:
+                Intent i6 = new Intent(this, ForumActivity.class);
                 startActivity(i6);
+                break;
+            case R.id.nav_settings:
+                Intent i7 = new Intent(this, SettingsActivity.class);
+                startActivity(i7);
                 break;
             case R.id.nav_logout:
                 System.exit(0);

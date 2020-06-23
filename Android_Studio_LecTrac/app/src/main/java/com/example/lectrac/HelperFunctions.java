@@ -32,6 +32,7 @@ public class HelperFunctions {
     final static String tblCourse = "COURSE";
     final static String tblTest = "TEST";
     final static String tblTask = "TASK";
+    final static String tblRegistered = "REGISTERED";
     //endregion
 
     //region Error Codes

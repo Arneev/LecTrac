@@ -23,6 +23,15 @@ public class Syncer {
     static boolean isLec;
 
 
+    Syncer(Context context, boolean isManual) throws InterruptedException, ParseException, JSONException, IOException {
+        if (isManual){
+            ManualSync(context);
+        }
+        else{
+            Sync(context);
+        }
+    }
+
     Syncer(Context context) throws InterruptedException, ParseException, JSONException, IOException {
         Sync(context);
     }
@@ -67,22 +76,24 @@ public class Syncer {
 
         isLec = localDB.isLec();
 
-
-        //Have to Sync these first for primary key and foreign key relationship
-        SyncCourses(localDB,onlineDB);
-        if (!isLec){
+        if (isManual){
+            //Have to Sync these first for primary key and foreign key relationship
+            SyncCourses(localDB,onlineDB);
             SyncLecturer(localDB,onlineDB);
+
+            //Doesn't matter which order
+            SyncLecReg(localDB,onlineDB);
+
         }
 
-        //Doesn't matter which order
         SyncTasks(localDB,onlineDB);
         SyncMessages(localDB,onlineDB);
+        SyncTests(localDB,onlineDB);
 
-        if (!isLec){
-            SyncTests(localDB,onlineDB);
-        }
+
 
     }
+
 
     //region Mini Sync Functions
     public static boolean syncValidity(LocalDatabaseManager localDB){
@@ -98,6 +109,60 @@ public class Syncer {
 
         Log("Sync validity passed :D");
         return true;
+    }
+
+    public static void SyncLecReg(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
+        Log("About to sync lecRegistered ");
+        LocalLog("About to sync lecRegistered");
+
+        String[] courses = localDB.getCourses(localDB);
+
+        String onlineQuery = "SELECT * FROM REGISTERED WHERE (";
+        int courseSize = courses.length;
+
+        for (int i = 0; i < courseSize; i++){
+            onlineQuery += "Course_Code = " + quote(courses[i]);
+
+            if (i + 1 < courseSize){
+                onlineQuery += " OR ";
+            }
+        }
+
+        onlineQuery += ")";
+
+        Log("SyncReg query is, " + onlineQuery);
+        LocalLog("SyncReg query is, " + onlineQuery);
+
+
+        String localQuery = "SELECT * FROM " + tblRegistered;
+        Cursor cursor = localDB.doQuery(localQuery);
+
+        JSONArray onlineArr = null;
+
+        try {
+            onlineArr = onlineDB.getJSONArr(onlineQuery);
+        }catch (Exception e){
+            ShowUserError("Failed to sync messages from cloud, please contact support or try again");
+            return;
+        }
+
+
+        //Empty test table
+        EmptyLocalTable(localDB,tblRegistered);
+
+        //If online database is empty, return
+        if (onlineArr == null){
+            return;
+        }
+
+        int onlineSize = onlineArr.length();
+
+        //Move all into test table
+        for (int i = 0; i < onlineSize; i ++){
+            JSONObject obj = onlineArr.getJSONObject(i);
+
+            LocalInsertLecReg(localDB,obj);
+        }
     }
 
     public static void SyncMessages(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException, IOException, InterruptedException, ParseException {
@@ -536,6 +601,23 @@ public class Syncer {
     //endregion
 
     //region HelperFunctions
+
+    public static void LocalInsertLecReg(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+        String[] values = new String[2];
+
+        String lecID = obj.getString("Lecturer_ID");
+        String courseCode = obj.getString("Course_Code");
+
+        values[0] = doubleQuote(lecID);
+        values[1] = doubleQuote(courseCode);
+
+        try{
+            localDB.doInsert(tblRegistered,values);
+        }catch (Exception e){
+            Log("Problem sync course");
+            ShowUserError("Problem syncing, please contact support");
+        }
+    }
 
     public static void LocalInsertMessages(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
 

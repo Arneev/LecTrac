@@ -72,6 +72,9 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         final String tblUSER_TASK = "CREATE TABLE USER_TASK(Task_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " Task_Name VARCHAR(50) NOT NULL, Task_Due_Date DATE, Task_Due_Time TIME, isDone BOOLEAN NOT NULL, Course_Code CHAR(8))";
 
+        final String tblREGISTERED = "CREATE TABLE REGISTERED(Lecturer_ID CHAR(7), Course_Code CHAR(8), PRIMARY KEY(Lecturer_ID,Course_Code)," +
+                " FOREIGN KEY(Lecturer_ID) REFERENCES LECTURER(Lecturer_ID), FOREIGN KEY (Course_Code) REFERENCES COURSE(Course_Code))";
+
 
         Log("Creating DB");
 
@@ -82,6 +85,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(tblMESSAGE);
         sqLiteDatabase.execSQL(tblUSER);
         sqLiteDatabase.execSQL(tblUSER_TASK);
+        sqLiteDatabase.execSQL(tblREGISTERED);
 
 
     }
