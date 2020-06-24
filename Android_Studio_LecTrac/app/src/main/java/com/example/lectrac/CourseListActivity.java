@@ -6,14 +6,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.lectrac.HelperFunctions.*;
 
 public class CourseListActivity extends AppCompatActivity {
 
-    RecyclerView rvCourseItems;
+    static RecyclerView rvCourseItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,5 +95,6 @@ public class CourseListActivity extends AppCompatActivity {
         rvCourseItems.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
 
 }

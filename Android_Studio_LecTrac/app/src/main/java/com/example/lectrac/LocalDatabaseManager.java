@@ -63,7 +63,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
         final String tblMESSAGE = "CREATE TABLE MESSAGE(Message_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " Message_Name VARCHAR(50) NOT NULL, Message_Classification VARCHAR(50)," +
-                " MESSAGE_Content VARCHAR(512), Message_Due_Posted DATE NOT NULL, Message_isDeleted BOOLEAN NOT NULL," +
+                " Message_Content VARCHAR(512), Message_Date_Posted DATE NOT NULL, Message_isDeleted BOOLEAN NOT NULL," +
                 " Course_Code CHAR(8), Lecturer_ID CHAR(7) NOT NULL, FOREIGN KEY(Course_Code) REFERENCES COURSE(Course_Code)," +
                 " FOREIGN KEY(Lecturer_ID) REFERENCES LECTURER(Lecturer_ID))";
 

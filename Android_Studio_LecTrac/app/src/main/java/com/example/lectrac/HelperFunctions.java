@@ -128,7 +128,7 @@ public class HelperFunctions {
     }
 
     public static String orderByDateAndTime(String query){
-        query = "SELECT * FROM ( " + query + " ) ORDER BY Task_Due_Date ASC, Task_Due_Time ASC";
+        query = "SELECT * FROM ( " + query + " ) ORDER BY Task_Due_Date DESC, Task_Due_Time ASC";
         return query;
     }
 
