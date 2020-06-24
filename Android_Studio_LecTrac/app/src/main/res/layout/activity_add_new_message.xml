@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login"
+    tools:context=".AddNewMessage">
+
+    <TextView
+        android:id="@+id/tvAddMessageHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="22dp"
+        android:gravity="center"
+        android:text="Add Message"
+        android:textColor="@color/OffWhite"
+        android:textSize="45sp"
+        app:fontFamily="@font/abeezee" />
+
+    <EditText
+        android:id="@+id/edtAddMessageContent"
+        android:layout_width="289dp"
+        android:layout_height="224dp"
+        android:layout_below="@+id/tvAddMessageContent"
+        android:layout_alignStart="@+id/tvAddMessageContent"
+        android:layout_alignLeft="@+id/tvAddMessageContent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/background_add_task"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:singleLine="false"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        android:verticalScrollbarPosition="defaultPosition" />
+
+    <EditText
+        android:id="@+id/edtAddMessageName"
+        android:layout_width="318dp"
+        android:layout_height="41dp"
+        android:layout_below="@+id/tvAddMessageName"
+        android:layout_alignStart="@+id/tvAddMessageName"
+        android:layout_alignLeft="@+id/tvAddMessageName"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/background_add_task"
+        android:ems="10"
+        android:hint="Name of Message"
+        android:inputType="textPersonName" />
+
+    <Spinner
+        android:id="@+id/spinAddMessageClass"
+        android:layout_width="316dp"
+        android:layout_height="42dp"
+        android:layout_below="@+id/tvAddMessageClass"
+        android:layout_alignStart="@+id/tvAddMessageClass"
+        android:layout_alignLeft="@+id/tvAddMessageClass"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginRight="43dp"
+        android:background="@drawable/background_add_task" />
+
+    <TextView
+        android:id="@+id/tvAddMessageClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edtAddMessageName"
+        android:layout_alignStart="@+id/edtAddMessageName"
+        android:layout_alignLeft="@+id/edtAddMessageName"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:text="Classification"
+        android:textColor="@color/OffWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/msyi" />
+
+    <TextView
+        android:id="@+id/tvAddMessageContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinAddMessageCourse"
+        android:layout_alignStart="@+id/spinAddMessageClass"
+        android:layout_alignLeft="@+id/spinAddMessageClass"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:inputType="textMultiLine"
+        android:isScrollContainer="true"
+        android:text="Content"
+        android:textColor="@color/OffWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/msyi" />
+
+    <Button
+        android:id="@+id/btnAddMessageCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edtAddMessageContent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="#72959595"
+        android:onClick="AddMessageButtonClick"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="CREATE"
+        android:textColor="@color/OffWhite"
+        android:textSize="24sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/tvAddMessageName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAddMessageHeading"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="55dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="20dp"
+        android:text="Heading"
+        android:textColor="@color/OffWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/msyi" />
+
+    <Spinner
+        android:id="@+id/spinAddMessageCourse"
+        android:layout_width="296dp"
+        android:layout_height="42dp"
+        android:layout_below="@+id/tvAddMessageCourseCode"
+        android:layout_alignStart="@+id/tvAddMessageCourseCode"
+        android:layout_alignLeft="@+id/tvAddMessageCourseCode"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="42dp"
+        android:background="@drawable/background_add_task" />
+
+    <TextView
+        android:id="@+id/tvAddMessageCourseCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinAddMessageClass"
+        android:layout_alignStart="@+id/spinAddMessageClass"
+        android:layout_alignLeft="@+id/spinAddMessageClass"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="22dp"
+        android:text="Course"
+        android:textColor="@color/OffWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/msyi" />
+
+</RelativeLayout>

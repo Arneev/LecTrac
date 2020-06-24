@@ -266,7 +266,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             if (Task_ID.charAt(0) == 'L'){
 
                 tableName = tblLocalLecTask;
-                String setting = "isDone = '1'";
+                String setting = "isDone = 1";
 
                 Log("isStudent, set isDone from Lecturer localDB");
                 localDB.doUpdate(tableName, setting, condition);

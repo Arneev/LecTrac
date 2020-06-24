@@ -8,6 +8,9 @@ import android.util.Log;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -19,6 +22,8 @@ public class HelperFunctions {
     final static int STUDENT_NUMBER_LENGTH = 7;
     final static int tblUserLength = 5;
     final static int passwordLength = 16;
+    final static SimpleDateFormat ddMMMyyyy = new SimpleDateFormat("dd-MMM-yyyy");
+    final static SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     //endregion
 
     //region Tables
@@ -130,6 +135,13 @@ public class HelperFunctions {
     public static String orderByDateAndTime(String query){
         query = "SELECT * FROM ( " + query + " ) ORDER BY Task_Due_Date DESC, Task_Due_Time ASC";
         return query;
+    }
+
+    public static String getCurrDate(){
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c);
+        return formattedDate;
     }
 
 
