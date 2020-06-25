@@ -6,4 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".TestMarksActivity">
 
+    <RelativeLayout
+        android:id="@+id/rlTestHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2196F3"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tvTestHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_marginRight="-2dp"
+            android:fontFamily="@font/abeezee"
+            android:gravity="center"
+            android:text="TESTS"
+            android:textColor="@color/OffWhite"
+            android:textSize="50sp" />
+
+        <Spinner
+            android:id="@+id/spinTestCourse"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tvTestHeading"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="53dp"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="57dp"
+            android:layout_marginRight="57dp"
+            android:background="@drawable/background_add_task" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlTestHeader"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="-3dp"
+        android:layout_marginTop="15dp" />
+
 </RelativeLayout>

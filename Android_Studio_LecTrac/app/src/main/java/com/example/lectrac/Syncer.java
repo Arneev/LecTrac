@@ -51,7 +51,7 @@ public class Syncer {
         if (isManual){
             if (!isOnline){
                 Log("The user is offline");
-                ShowUserError("You are not connected to the internet");
+                ShowUserError("You are not connected to the internet, if problem persists then contact support with " + errorProblemSync);
                 return;
             }
         }
@@ -468,10 +468,6 @@ public class Syncer {
 
         Log("SyncTest query is, " + onlineQuery);
         LocalLog("SyncTest query is, " + onlineQuery);
-
-
-        String localQuery = "SELECT * FROM " + tblTest;
-        Cursor cursor = localDB.doQuery(localQuery);
 
         JSONArray onlineArr = null;
 
