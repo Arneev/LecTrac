@@ -4,21 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login"
+    android:background="@drawable/background"
     tools:context=".AddNewMessage">
 
     <TextView
+        android:layout_centerHorizontal="true"
         android:id="@+id/tvAddMessageHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="19dp"
+        android:fontFamily="@font/raleway_light"
         android:gravity="center"
         android:text="Add Message"
-        android:textColor="@color/OffWhite"
-        android:textSize="45sp"
-        app:fontFamily="@font/abeezee" />
+        android:textAppearance="@style/AppTheme"
+        android:textColor="@color/subHeading"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/raleway_light" />
 
     <EditText
         android:id="@+id/edtAddMessageContent"
@@ -33,11 +38,13 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="2dp"
+        android:textColorHint="@color/hintColor"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
-        android:background="@drawable/background_add_task"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textColor="@color/mainText"
         android:singleLine="false"
         android:textSize="20sp"
         android:textStyle="normal"
@@ -51,13 +58,15 @@
         android:layout_alignStart="@+id/tvAddMessageName"
         android:layout_alignLeft="@+id/tvAddMessageName"
         android:layout_alignParentEnd="true"
+        android:textColor="@color/mainText"
+        android:textColorHint="@color/hintColor"
         android:layout_alignParentRight="true"
         android:layout_marginStart="-1dp"
         android:layout_marginLeft="-1dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/background_add_task"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:hint="Name of Message"
         android:inputType="textPersonName" />
@@ -70,14 +79,16 @@
         android:layout_alignStart="@+id/tvAddMessageClass"
         android:layout_alignLeft="@+id/tvAddMessageClass"
         android:layout_alignParentEnd="true"
+        android:textColorHint="@color/hintColor"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="0dp"
+        android:textColor="@color/mainText"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="43dp"
         android:layout_marginRight="43dp"
-        android:background="@drawable/background_add_task" />
+        android:background="@drawable/general_textview" />
 
     <TextView
         android:id="@+id/tvAddMessageClass"
@@ -90,7 +101,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="20dp"
         android:text="Classification"
-        android:textColor="@color/OffWhite"
+        android:textColor="@color/subSubHeading"
+        android:textColorHint="@color/subHeading"
         android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />
@@ -108,7 +120,8 @@
         android:inputType="textMultiLine"
         android:isScrollContainer="true"
         android:text="Content"
-        android:textColor="@color/OffWhite"
+        android:textColor="@color/subSubHeading"
+        android:textColorHint="@color/subHeading"
         android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />
@@ -120,14 +133,15 @@
         android:layout_below="@+id/edtAddMessageContent"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:background="#72959595"
+        android:background="@drawable/general_button"
+        android:fontFamily="@font/msyi"
         android:onClick="AddMessageButtonClick"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="CREATE"
-        android:textColor="@color/OffWhite"
+        android:textColor="@color/buttonTextColor"
         android:textSize="24sp"
-        android:textStyle="normal" />
+        android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/tvAddMessageName"
@@ -140,7 +154,8 @@
         android:layout_marginLeft="55dp"
         android:layout_marginTop="20dp"
         android:text="Heading"
-        android:textColor="@color/OffWhite"
+        android:textColor="@color/subSubHeading"
+        android:textColorHint="@color/subHeading"
         android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />
@@ -156,8 +171,10 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="4dp"
+        android:textColor="@color/mainText"
+        android:textColorHint="@color/hintColor"
         android:layout_marginEnd="42dp"
-        android:background="@drawable/background_add_task" />
+        android:background="@drawable/general_textview" />
 
     <TextView
         android:id="@+id/tvAddMessageCourseCode"
@@ -170,7 +187,8 @@
         android:layout_marginLeft="1dp"
         android:layout_marginTop="22dp"
         android:text="Course"
-        android:textColor="@color/OffWhite"
+        android:textColor="@color/subSubHeading"
+        android:textColorHint="@color/hintColor"
         android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />

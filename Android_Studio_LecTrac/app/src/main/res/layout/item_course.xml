@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
-    android:background="#FDE5D5">
+    android:background="@drawable/general_panel">
 
     <TextView
         android:id="@+id/tvCourseName"
@@ -16,8 +16,11 @@
         android:layout_marginStart="13dp"
         android:layout_marginLeft="13dp"
         android:layout_marginTop="25dp"
+        android:fontFamily="@font/abeezee"
         android:gravity="center_horizontal"
         android:text="Database Fundamnetal and BlaBla"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/headingTextColor"
         android:textSize="36sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />

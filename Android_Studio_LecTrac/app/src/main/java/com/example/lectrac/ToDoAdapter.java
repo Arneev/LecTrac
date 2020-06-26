@@ -243,7 +243,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             if (Task_ID.charAt(0) == 'L'){
 
                 if (!isOnline(context)){
-                    ShowUserError("Cannot delete task as you are offline");
+                    ShowUserError("Cannot delete task as you are offline",context);
                     return;
                 }
 

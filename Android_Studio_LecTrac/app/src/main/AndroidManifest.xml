@@ -20,10 +20,8 @@
         <activity android:name=".AddNewTaskActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".ForumActivity" />
         <activity android:name=".TestMarksActivity" />
         <activity android:name=".MessageBoardActivity" />
-        <activity android:name=".PersonalListActivity" />
         <activity android:name=".CourseListActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".DrawerActivity" />

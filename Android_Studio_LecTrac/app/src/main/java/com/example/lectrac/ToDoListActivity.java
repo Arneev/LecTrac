@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -49,6 +50,9 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
+
+        setNightMode(this);
+
         lecFilOption = 0;
         latestCourseFil = "All";
 
@@ -383,8 +387,6 @@ public class ToDoListActivity extends AppCompatActivity {
             list.add(courses[i]);
         }
 
-        list.add("None");
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -393,6 +395,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
     public void SetCourseChangeListener(){
 
+        final Context ct = this;
         spinCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -401,7 +404,7 @@ public class ToDoListActivity extends AppCompatActivity {
                     FilterOnChange(course);
                 } catch (InterruptedException e) {
                     Log(e.toString());
-                    ShowUserError("Failed to filter tasks, please contact support");
+                    ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }
@@ -429,6 +432,7 @@ public class ToDoListActivity extends AppCompatActivity {
     }
 
     public void SetLecSpinnerChangeListener(){
+        final Context ct = this;
 
         spinLecFilt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -439,7 +443,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log(e.toString());
                     Log("LecFilt error");
-                    ShowUserError("Failed to filter tasks, please contact support");
+                    ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }

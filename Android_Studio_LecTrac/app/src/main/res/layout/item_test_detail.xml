@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
-    android:background="#396E69"
+    android:background="@drawable/general_panel"
     android:paddingBottom="20dp">
 
     <TextView
@@ -14,10 +14,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="1dp"
         android:layout_marginTop="14dp"
-        android:fontFamily="@font/msyi"
+        android:fontFamily="@font/abeezee"
         android:gravity="center"
         android:text="Test 1"
-        android:textColor="@color/OffWhite"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/subHeading"
         android:textSize="36sp"
         android:textStyle="bold" />
 
@@ -33,7 +34,7 @@
         android:fontFamily="@font/msyi"
         android:gravity="center"
         android:text="COMS2002"
-        android:textColor="@color/Bisque"
+        android:textColor="@color/subSubHeading"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -50,7 +51,7 @@
         android:layout_marginTop="13dp"
         android:fontFamily="@font/msyi"
         android:text="71/80"
-        android:textColor="@color/MistyRose"
+        android:textColor="@color/mainText"
         android:textSize="45sp"
         android:textStyle="bold" />
 
@@ -72,7 +73,7 @@
         android:fontFamily="@font/msyi"
         android:gravity="center"
         android:text="85%"
-        android:textColor="@color/MistyRose"
+        android:textColor="@color/mainText"
         android:textSize="50sp"
         android:textStyle="bold" />
 

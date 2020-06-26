@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/mtEditTask"
+    <item
+        android:id="@+id/mtEditTask"
+        android:icon="@color/elipseOptionColor"
         android:title="Edit"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
-    <item android:id="@+id/mtDeleteTask"
+    <item
+        android:id="@+id/mtDeleteTask"
+        android:icon="@color/elipseOptionColor"
         android:title="Delete"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 
 </menu>

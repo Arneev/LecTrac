@@ -23,6 +23,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        setNightMode(this);
+
         localDB = new LocalDatabaseManager(SettingsActivity.this);
 
         try {
@@ -64,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
         Boolean isOnline = isOnline(SettingsActivity.this);
 
         if (!isOnline){
-            ShowUserError("Connect to the internet in order to save changes");
+            ShowUserError("Connect to the internet in order to save changes",this);
             return;
         }
 
@@ -95,6 +98,8 @@ public class SettingsActivity extends AppCompatActivity {
             Log(e.toString());
             Log("localInsert has failed");
         }
+
+        setNightMode(this);
 
         //Local Update done
 

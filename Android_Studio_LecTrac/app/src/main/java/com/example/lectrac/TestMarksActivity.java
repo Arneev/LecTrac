@@ -34,6 +34,8 @@ public class TestMarksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_marks);
 
+        setNightMode(this);
+
         localDB = new LocalDatabaseManager(this);
         courses = localDB.getCourses(localDB);
 
@@ -47,7 +49,7 @@ public class TestMarksActivity extends AppCompatActivity {
             startAdapter();
         }catch (Exception e){
             Log(e.toString());
-            ShowUserError("Failed to update tests");
+            ShowUserError("Failed to update tests",this);
         }
     }
 
@@ -65,7 +67,7 @@ public class TestMarksActivity extends AppCompatActivity {
         clearArr();
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no tests available");
+            ShowUserError("There are no tests available",this);
             rvTest.setAdapter(null);
             rvTest.setLayoutManager(new LinearLayoutManager(this));
             return;

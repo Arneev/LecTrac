@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/IndianRed"
     android:layout_marginBottom="20dp"
+    android:background="@drawable/general_panel"
     android:paddingBottom="25dp">
 
     <TextView
@@ -16,14 +16,14 @@
         android:layout_marginTop="14dp"
         android:gravity="center"
         android:text="Test Query"
-        android:textColor="@color/Moccasin"
-        android:textSize="36sp"
+        android:textColor="@color/subHeading"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />
 
     <TextView
         android:id="@+id/tvMessageClassification"
-        android:layout_width="206dp"
+        android:layout_width="174dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvMessageName"
         android:layout_alignParentStart="true"
@@ -33,8 +33,9 @@
         android:layout_marginTop="14dp"
         android:gravity="center"
         android:text="Information"
-        android:textColor="#FFCFE2"
+        android:textColor="@color/subSubHeading"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:fontFamily="@font/msyi" />
 
     <TextView
@@ -53,8 +54,9 @@
         android:layout_toRightOf="@+id/tvMessageClassification"
         android:gravity="center"
         android:text="COMS2012"
-        android:textColor="#FFCFE2"
+        android:textColor="@color/subSubHeading"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:fontFamily="@font/msyi" />
 
     <TextView
@@ -67,11 +69,12 @@
         android:layout_marginStart="-1dp"
         android:layout_marginLeft="-1dp"
         android:layout_marginTop="18dp"
+        android:fontFamily="@font/raleway_light"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urgent tamen et nihil remittunt. Rationis enim perfectio est virtus; Duo Reges: constructio interrete. At iste non dolendi status non vocatur voluptas.  Nonne videmus quanta perturbatio rerum omnium consequatur, quanta confusio? An hoc usque quaque, aliter in vita? Sed tamen intellego quid velit. Quid censes in Latino fore?  Restinguet citius, si ardentem acceperit. Non est igitur summum malum dolor. Quid autem habent admirationis, cum prope accesseris? Fortemne possumus dicere eundem illum Torquatum? At, si voluptas esset bonum, desideraret. Eam stabilem appellas. De quibus cupio scire quid sentias. "
-        android:textColor="@color/OffWhite"
-        android:textSize="20sp"
+        android:textColor="@color/mainText"
+        android:textSize="22sp"
         app:fontFamily="@font/msyi" />
 
     <TextView
@@ -83,8 +86,9 @@
         android:layout_marginTop="18dp"
         android:gravity="center"
         android:text="2020/07/28"
-        android:textColor="#FFCFE2"
+        android:textColor="@color/subSubHeading"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:fontFamily="@font/msyi" />
 
     <Button
@@ -95,12 +99,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="161dp"
-        android:layout_marginLeft="161dp"
-        android:layout_marginTop="29dp"
-        android:background="@color/Bisque"
+        android:layout_marginStart="163dp"
+        android:layout_marginLeft="163dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/general_button"
         android:fontFamily="@font/msyi"
         android:text="Delete"
+        android:textColor="@color/buttonTextColor"
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="visible" />

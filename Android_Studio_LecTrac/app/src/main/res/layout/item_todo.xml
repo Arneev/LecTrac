@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_marginBottom="20dp"
-    android:background="@color/DarkViolet"
+    android:background="@color/generalPanel"
     android:orientation="horizontal">
 
 
@@ -15,11 +15,12 @@
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="12dp"
+        android:fontFamily="@font/abeezee"
         android:text="Name"
-        android:textColor="@color/Bisque"
+        android:textColor="@color/subHeading"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:fontFamily="@font/pavanam" />
+        app:fontFamily="@font/abeezee" />
 
     <TextView
         android:id="@+id/tvTaskCourseName"
@@ -28,8 +29,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="8dp"
+        android:fontFamily="@font/msyi"
         android:text="Course"
-        android:textColor="@color/white"
+        android:textColor="@color/mainText"
         android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="@font/msyi" />
@@ -38,12 +40,19 @@
         android:id="@+id/tvExtra"
         android:layout_width="135dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTaskName"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="220dp"
         android:layout_marginLeft="220dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginBottom="9dp"
+        android:layout_toStartOf="@+id/ivOptions"
+        android:layout_toLeftOf="@+id/ivOptions"
         android:text="Extra"
-        android:textColor="@color/OffWhite"
-        android:textSize="18sp"
+        android:textColor="@color/subSubHeading"
+        android:textSize="23sp"
         android:textStyle="bold|italic"
         app:fontFamily="@font/msyi" />
 
@@ -58,11 +67,12 @@
         android:layout_centerVertical="true"
         android:layout_gravity="end"
         android:layout_marginTop="23dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginRight="27dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginBottom="27dp"
         android:background="#00FFFFFF"
-        android:src="@drawable/ic_options" />
+        android:src="@drawable/ic_options"
+        android:tint="@color/miniElipseButtonColor" />
 
 
 </RelativeLayout>

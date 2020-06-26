@@ -318,4 +318,19 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         return cursor.getString(index);
     }
 
+    public boolean isDarkMode(LocalDatabaseManager localDB){
+        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblUser);
+        cursor.moveToFirst();
+
+        int darkModeIdx = cursor.getColumnIndex("isDarkMode");
+
+        int iDarkMode = cursor.getInt(darkModeIdx);
+
+        if (iDarkMode == 1){
+            return true;
+        }
+
+        return false;
+    }
+
 }

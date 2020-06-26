@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#474747</color>
+    <color name="colorPrimaryDark">#272727</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="darkGrey">#2D313D</color>
+
+    <color name="login_form_details">#ccffffff</color>
+    <color name="login_form_details_light">#1affffff</color>
+    <color name="login_form_details_medium">#66ffffff</color>
+
+    <drawable name="background">@drawable/night_mode_background</drawable>
+    <color  name="mainText">#FFFFFF</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+    <color name="subText">#575757</color>
+    <color name="buttonColor">#535353</color>
+    <color name="textViewColor">#126C6C6C</color>
+    <color name="spinnerColor">#126C6C6C</color>
+    <color name="generalPanel">#0AFFFFFF</color>
+    <color name="headingPanel">#8B3D579C</color>
+    <color name="headingTextColor">@color/OffWhite</color>
+    <color name="subHeading">@color/MistyRose</color>
+    <color name="subSubHeading">@color/LightSteelBlue</color>
+    <color name ="spinnerBackground">#57FFFFFF</color>
+    <color name = "spinnerStroke">#3A3A3A</color>
+    <color name="iconColor">#FFFFFF</color>
+    <color name="miniElipseButtonColor">#FFFFFF</color>
+    <color name="elipseOptionColor">#818181</color>
+    <color name="actionBar">#333B81</color>
+    <color name = "standardContrast">#2D313D</color>
+    <color name = "antiContrast">#FFFFFF</color>
+    <color name = "itemBackground">#7C7C7C</color>
+    <color name = "nonItemBackground">#535353</color>
+    <color name = "fancyButtonText">#FFFFFF</color>
+    <color name = "hintColor">#D6D6D6</color>
+
+    //region You don't need to add in here BUT if you are, put it in here
+
+    //endregion
+
+</resources>

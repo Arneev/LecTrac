@@ -1,9 +1,14 @@
 package com.example.lectrac;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -59,10 +64,26 @@ public class HelperFunctions {
         Log.i("LocalDB",error);
     }
 
-    public static void ShowUserError(String error){
-        //Show Error, for now lets just Log
+    public static void ShowUserError(String error, Context context){
         Log(error);
-        //Change this in the future
+        Log("Supposed to alter dialog");
+
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(context,);
+
+        builder.setCancelable(true);
+        builder.setTitle("Problem");
+        builder.setMessage(error);
+
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public static boolean hasWhitespace(String line){
@@ -142,6 +163,23 @@ public class HelperFunctions {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c);
         return formattedDate;
+    }
+
+    public static boolean isDarkMode(Context context){
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+
+        return localDB.isDarkMode(localDB);
+    }
+
+    public static void setNightMode(Context context){
+        boolean isDark = isDarkMode(context);
+
+        if (isDark){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
 

@@ -43,6 +43,9 @@ public class MessageBoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
+
+        setNightMode(this);
+
         localDB = new LocalDatabaseManager(this);
 
 
@@ -81,7 +84,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no messages available");
+            ShowUserError("There are no messages available",this);
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -137,7 +140,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " WHERE " + condition1 + " AND " + condition2 + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no messages available");
+            ShowUserError("There are no messages available",this);
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;

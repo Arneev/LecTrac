@@ -54,7 +54,7 @@ public class AddNewMessage extends AppCompatActivity {
 
     public void AddMessageButtonClick(View v){
         if (!isOnline(this)){
-            ShowUserError("Please connect to the internet");
+            ShowUserError("Please connect to the internet",this);
             return;
         }
 
@@ -68,7 +68,7 @@ public class AddNewMessage extends AppCompatActivity {
 
 
         if (!CheckHeading(heading)){
-            ShowUserError("Please enter in a heading name");
+            ShowUserError("Please enter in a heading name",this);
             return;
         }
 
@@ -112,7 +112,7 @@ public class AddNewMessage extends AppCompatActivity {
             onlineDB.Insert(tblMessage,onlineCols,onlineVals);
         }catch (Exception e){
             Log(e.toString());
-            ShowUserError("Failed to update message online, check you internet connection");
+            ShowUserError("Failed to update message online, check you internet connection",this);
             return;
         }
 

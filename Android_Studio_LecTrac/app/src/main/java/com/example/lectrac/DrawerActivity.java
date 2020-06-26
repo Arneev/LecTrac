@@ -24,6 +24,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
+        setNightMode(this);
+
         // use the tool bar as action bar because the action bar was removed
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,10 +68,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 Intent i5 = new Intent(this, TestMarksActivity.class);
                 startActivity(i5);
                 break;
-            case R.id.nav_forum:
-                Intent i6 = new Intent(this, ForumActivity.class);
-                startActivity(i6);
-                break;
             case R.id.nav_settings:
                 Intent i7 = new Intent(this, SettingsActivity.class);
                 startActivity(i7);
@@ -82,6 +80,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         }
         return true;
     }
+
 
     //when we press the back button while the navigation bar is open, we don't want to leave
     //the activity immediately, we want to close the navigation drawer.

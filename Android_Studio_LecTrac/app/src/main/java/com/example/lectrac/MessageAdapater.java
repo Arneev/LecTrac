@@ -133,7 +133,7 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
         if (isLec){
 
             if (!isOnline(context)){
-                ShowUserError("Cannot delete task as you are offline");
+                ShowUserError("Cannot delete task as you are offline",context);
                 return;
             }
 
@@ -142,7 +142,7 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
             }
             catch(Exception e){
                 Log(e.toString());
-                ShowUserError("Failed to delete message, please try again");
+                ShowUserError("Failed to delete message, please try again",context);
                 return;
             }
 
