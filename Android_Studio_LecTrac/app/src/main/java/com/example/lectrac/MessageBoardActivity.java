@@ -4,20 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.lectrac.AddNewMessage.btnAddMessage;
 import static com.example.lectrac.HelperFunctions.*;
 
 public class MessageBoardActivity extends AppCompatActivity {
@@ -27,7 +23,6 @@ public class MessageBoardActivity extends AppCompatActivity {
     static RecyclerView rvMessages;
     static Spinner spinCourse;
     static Spinner spinClass;
-    static Button btnAddMessage;
 
     static String latestCourse;
     static String latestClass;
@@ -37,29 +32,16 @@ public class MessageBoardActivity extends AppCompatActivity {
     static ArrayList<String> arrContents = new ArrayList<>();
     static ArrayList<String> arrClassification = new ArrayList<>();
     static ArrayList<String> arrDate = new ArrayList<>();
-    static ArrayList<Integer> arrMessageID = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
-
-        setNightMode(this);
-
         localDB = new LocalDatabaseManager(this);
-
 
         rvMessages = findViewById(R.id.rvMessageItems);
         spinClass = findViewById(R.id.spinMessageClass);
         spinCourse = findViewById(R.id.spinMessageCourse);
-        btnAddMessage = findViewById(R.id.btnMessageAdd);
-
-        if (localDB.isLec()){
-            btnAddMessage.setVisibility(View.VISIBLE);
-        }
-        else{
-            btnAddMessage.setVisibility(View.GONE);
-        }
 
         clearArr();
 
@@ -71,20 +53,16 @@ public class MessageBoardActivity extends AppCompatActivity {
         latestCourse = "All";
         latestClass = "All";
 
-        try {
-            startAdapter();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        startAdapter();
     }
 
-    void startAdapter() throws ParseException {
+    void startAdapter() {
         clearArr();
 
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no messages available",this);
+            ShowUserError("There are no messages available");
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -97,50 +75,38 @@ public class MessageBoardActivity extends AppCompatActivity {
         int classIdx = cursor.getColumnIndex("Message_Classification");
         int dateIdx = cursor.getColumnIndex("Message_Date_Posted");
         int contentIdx = cursor.getColumnIndex("Message_Content");
-        int msgIdIdx = cursor.getColumnIndex("Message_ID");
-        int isDeletedIdx = cursor.getColumnIndex("Message_isDeleted");
 
 
         for (int i = 0; i < size; i++){
-
-            int isDeleted = cursor.getInt(isDeletedIdx);
-            if (isDeleted == 1){
-                cursor.moveToNext();
-                continue;
-            }
-
             String heading = cursor.getString(headingIdx);
             String courseCode = cursor.getString(courseIdx);
             String classification = cursor.getString(classIdx);
             String date = cursor.getString(dateIdx);
             String content = cursor.getString(contentIdx);
-            int msgId = cursor.getInt(msgIdIdx);
-
 
             arrHeading.add(heading);
             arrCourseCode.add(courseCode);
             arrClassification.add(classification);
             arrDate.add(date);
             arrContents.add(content);
-            arrMessageID.add(msgId);
 
             cursor.moveToNext();
         }
 
         MessageAdapater messageAdapater = new MessageAdapater(this, arrHeading,
-                arrCourseCode,arrContents,arrClassification,arrDate, arrMessageID);
+                arrCourseCode,arrContents,arrClassification,arrDate);
 
         rvMessages.setAdapter(messageAdapater);
         rvMessages.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    void startAdapter(String condition1, String condition2) throws ParseException {
+    void startAdapter(String condition1, String condition2) {
         clearArr();
 
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " WHERE " + condition1 + " AND " + condition2 + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no messages available",this);
+            ShowUserError("There are no messages available");
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -153,42 +119,32 @@ public class MessageBoardActivity extends AppCompatActivity {
         int classIdx = cursor.getColumnIndex("Message_Classification");
         int dateIdx = cursor.getColumnIndex("Message_Date_Posted");
         int contentIdx = cursor.getColumnIndex("Message_Content");
-        int msgIdIdx = cursor.getColumnIndex("Message_ID");
-        int isDeletedIdx = cursor.getColumnIndex("Message_isDeleted");
+
 
         for (int i = 0; i < size; i++){
-            int isDeleted = cursor.getInt(isDeletedIdx);
-            if (isDeleted == 1){
-                cursor.moveToNext();
-                continue;
-            }
-
             String heading = cursor.getString(headingIdx);
             String courseCode = cursor.getString(courseIdx);
             String classification = cursor.getString(classIdx);
             String date = cursor.getString(dateIdx);
             String content = cursor.getString(contentIdx);
-            int msgId = cursor.getInt(msgIdIdx);
 
             arrHeading.add(heading);
             arrCourseCode.add(courseCode);
             arrClassification.add(classification);
             arrDate.add(date);
             arrContents.add(content);
-            arrMessageID.add(msgId);
 
             cursor.moveToNext();
         }
 
-
         MessageAdapater messageAdapater = new MessageAdapater(this, arrHeading,
-                arrCourseCode,arrContents,arrClassification,arrDate, arrMessageID);
+                arrCourseCode,arrContents,arrClassification,arrDate);
 
         rvMessages.setAdapter(messageAdapater);
         rvMessages.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void adapterConditionMaker() throws ParseException {
+    public void adapterConditionMaker(){
         String conditionCourse;
         String conditionClass;
         if (latestCourse.equals("All")){
@@ -215,11 +171,6 @@ public class MessageBoardActivity extends AppCompatActivity {
         arrContents.clear();
         arrClassification.clear();
         arrDate.clear();
-        arrMessageID.clear();
-    }
-
-    public void AddMessageButton(View v){
-        startActivity(new Intent(this,AddNewMessage.class));
     }
 
     //region Spinner sort
@@ -246,11 +197,7 @@ public class MessageBoardActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String classification = parentView.getItemAtPosition(position).toString();
                 latestClass = classification;
-                try {
-                    adapterConditionMaker();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                adapterConditionMaker();
             }
 
             @Override
@@ -286,11 +233,7 @@ public class MessageBoardActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String course = parentView.getItemAtPosition(position).toString();
                 latestCourse = course;
-                try {
-                    adapterConditionMaker();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                adapterConditionMaker();
             }
 
             @Override

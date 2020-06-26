@@ -25,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
 
+
         exitRegistration();
     }
 
@@ -82,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                 t.start();
                 t.join();
 
-                startActivity(new Intent(RegisterActivity.this, DrawerActivity.class));
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
             }
             else{
                 Log("Failed to login, log in was NOT successful");

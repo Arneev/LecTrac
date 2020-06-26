@@ -23,8 +23,6 @@ public class CourseListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
-        setNightMode(this);
-
         rvCourseItems = findViewById(R.id.rvCourseItems);
 
         startAdapter();

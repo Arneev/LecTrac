@@ -2,13 +2,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid
-        android:color="@color/spinnerBackground"
+        android:color="#E5E8FF"
         />
     <stroke
         android:width="1dp"
-        android:color="@color/spinnerStroke"/>
+        android:color="#000C5D"/>
     <corners
-        android:radius="12dp"
+        android:radius="8dp"
         />
 
 </shape>

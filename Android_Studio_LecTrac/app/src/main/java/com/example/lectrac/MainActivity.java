@@ -1,11 +1,7 @@
 package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +17,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
-import static com.example.lectrac.HelperFunctions.ShowUserError;
-import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,18 +26,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static LocalDatabaseManager localDB;
-    static Context context;
 
     //OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         SetToDefault();
-
-        context = this;
-
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -53,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 if (localDB.isLoggedIn()){
                     //region Try Syncing
                     try {
-                        Syncer syncClass = new Syncer(context);
+                        Syncer syncClass = new Syncer(MainActivity.this);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {
@@ -65,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //endregion
 
-                    startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+                    startActivity(new Intent(MainActivity.this, CalendarActivity.class));
                     return;
                 }
 
@@ -79,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log(e.toString());
         }
 
         openRegistration();
@@ -97,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         String password =  tvPassword.getText().toString();
 
         Log("Attempting to LogInAttempt()");
-        boolean isSuccessful = loginManager.LogInAttempt(password,userID,context);
+        boolean isSuccessful = loginManager.LogInAttempt(password,userID,this);
 
         if (isSuccessful){
             Log("LOG IN IS SUCCESSFUL <3 :P");
@@ -119,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //endregion
 
-                    startActivity(new Intent(MainActivity.this, DrawerActivity.class));
+                    startActivity(new Intent(MainActivity.this, CalendarActivity.class));
                     return;
                 }
             });

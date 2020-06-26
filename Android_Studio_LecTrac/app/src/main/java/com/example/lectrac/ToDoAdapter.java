@@ -33,7 +33,7 @@ import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
 import static com.example.lectrac.HelperFunctions.tblTask;
 import static com.example.lectrac.HelperFunctions.tblUserTask;
 
-public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> { //implements Filterable
+public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> {
 
     Context context;
     Boolean isLec;
@@ -243,7 +243,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             if (Task_ID.charAt(0) == 'L'){
 
                 if (!isOnline(context)){
-                    ShowUserError("Cannot delete task as you are offline",context);
+                    ShowUserError("Cannot delete task as you are offline");
                     return;
                 }
 
@@ -266,7 +266,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             if (Task_ID.charAt(0) == 'L'){
 
                 tableName = tblLocalLecTask;
-                String setting = "isDone = 1";
+                String setting = "isDone = '1'";
 
                 Log("isStudent, set isDone from Lecturer localDB");
                 localDB.doUpdate(tableName, setting, condition);

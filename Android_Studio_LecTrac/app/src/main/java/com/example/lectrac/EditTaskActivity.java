@@ -119,7 +119,7 @@ public class EditTaskActivity extends AppCompatActivity {
         boolean blnDoUpdate = false;
 
         if (isTaskNameNull()){
-            ShowUserError("Enter a task name",this);
+            ShowUserError("Enter a task name");
         }
         else{
 
@@ -436,7 +436,7 @@ public class EditTaskActivity extends AppCompatActivity {
         }
         else{
             Log("No TaskID found");
-            ShowUserError("Please contact support - Task ID not found",this);
+            ShowUserError("Please contact support - Task ID not found");
         }
 
 

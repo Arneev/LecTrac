@@ -1,131 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     tools:context=".SettingsActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/heading_panel"
-        android:paddingBottom="40dp">
-
-        <TextView
-            android:id="@+id/tvSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
-            android:fontFamily="@font/raleway_light"
-            android:gravity="center"
-            android:lineSpacingExtra="24sp"
-            android:text="SETTINGS"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@color/headingTextColor"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:typeface="normal" />
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tvNickname"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_above="@+id/edtSettingsNickname"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="106dp"
-        android:layout_marginBottom="8dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/msyi"
-        android:gravity="center"
-        android:text="Nickname"
-        android:textAlignment="center"
-        android:textColor="@color/subSubHeading"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:layout_alignParentLeft="true" />
-
-    <EditText
-        android:id="@+id/edtSettingsNickname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/cbxSettingsDarkMode"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="72dp"
-        android:background="@drawable/general_textview"
-        android:ems="10"
-        android:fontFamily="@font/msyi"
-        android:gravity="center_horizontal"
-        android:inputType="textPersonName"
-        android:textAlignment="center"
-        android:textColor="@color/mainText"
-        android:textSize="24sp"
-        android:layout_alignParentLeft="true" />
-
 
     <Button
         android:id="@+id/btnSettingsSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="99dp"
-        android:layout_marginLeft="99dp"
-        android:layout_marginBottom="75dp"
-        android:background="@drawable/general_button"
+        android:layout_marginBottom="51dp"
         android:onClick="Save"
         android:text="Save"
-        android:textColor="@color/buttonTextColor" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSettingsSync" />
+
+    <TextView
+        android:id="@+id/tvNickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginBottom="22dp"
+        android:text="Nickname"
+        app:layout_constraintBottom_toTopOf="@+id/edtSettingsNickname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSettings" />
+
+    <EditText
+        android:id="@+id/edtSettingsNickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="76dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/tvDarkMode"
+        app:layout_constraintStart_toStartOf="@+id/tvNickname"
+        app:layout_constraintTop_toBottomOf="@+id/tvNickname" />
+
+    <TextView
+        android:id="@+id/tvDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginBottom="22dp"
+        android:text="Dark Mode"
+        app:layout_constraintBottom_toTopOf="@+id/cbxSettingsDarkMode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtSettingsNickname" />
+
+    <CheckBox
+        android:id="@+id/cbxSettingsDarkMode"
+        android:layout_width="205dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="63dp"
+        android:text="Dark Mode"
+        app:layout_constraintBottom_toTopOf="@+id/btnSettingsSync"
+        app:layout_constraintStart_toStartOf="@+id/tvDarkMode"
+        app:layout_constraintTop_toBottomOf="@+id/tvDarkMode" />
 
     <Button
         android:id="@+id/btnSettingsSync"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSettingsSave"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="88dp"
-        android:background="@drawable/general_button"
+        android:layout_marginBottom="74dp"
         android:onClick="SettingSync"
         android:text="Sync With Cloud"
-        android:textColor="@color/buttonTextColor" />
+        app:layout_constraintBottom_toTopOf="@+id/btnSettingsSave"
+        app:layout_constraintEnd_toEndOf="@+id/cbxSettingsDarkMode"
+        app:layout_constraintTop_toBottomOf="@+id/cbxSettingsDarkMode" />
 
-    <CheckBox
-        android:id="@+id/cbxSettingsDarkMode"
+    <TextView
+        android:id="@+id/tvSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSettingsSync"
-        android:layout_alignStart="@+id/tvNickname"
-        android:layout_alignLeft="@+id/tvNickname"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginLeft="118dp"
-        android:layout_marginEnd="133dp"
-        android:layout_marginRight="133dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:fontFamily="@font/msyi"
-        android:text="Dark Mode"
-        android:textColor="@color/mainText"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="33dp"
+        android:layout_marginBottom="129dp"
+        android:lineSpacingExtra="24sp"
+        android:text="SETTINGS"
+        android:textAllCaps="false"
+        android:textSize="48sp"
+        android:typeface="normal"
+        app:fontFamily="@font/msyi"
+        app:layout_constraintBottom_toTopOf="@+id/tvNickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

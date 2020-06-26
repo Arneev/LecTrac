@@ -21,8 +21,6 @@ import static com.example.lectrac.HelperFunctions.*;
 public class Syncer {
 
     static boolean isLec;
-    static Context context;
-    static boolean isManual;
 
 
     Syncer(Context context, boolean isManual) throws InterruptedException, ParseException, JSONException, IOException {
@@ -46,15 +44,14 @@ public class Syncer {
         Sync(context,false);
     }
 
-    public void Sync(Context ct, boolean isManual) throws JSONException, IOException, InterruptedException, ParseException {
-        context = ct;
+    public void Sync(Context context, boolean isManual) throws JSONException, IOException, InterruptedException, ParseException {
+
         boolean isOnline = isOnline(context);
 
-        this.isManual = isManual;
         if (isManual){
             if (!isOnline){
                 Log("The user is offline");
-                ShowUserError("You are not connected to the internet, if problem persists then contact support with " + errorProblemSync);
+                ShowUserError("You are not connected to the internet");
                 return;
             }
         }
@@ -472,6 +469,10 @@ public class Syncer {
         Log("SyncTest query is, " + onlineQuery);
         LocalLog("SyncTest query is, " + onlineQuery);
 
+
+        String localQuery = "SELECT * FROM " + tblTest;
+        Cursor cursor = localDB.doQuery(localQuery);
+
         JSONArray onlineArr = null;
 
         try {
@@ -750,13 +751,6 @@ public class Syncer {
 
     public static void EmptyLocalTable(LocalDatabaseManager localDB, String tableName){
         localDB.DoDeleteEntire(tableName);
-    }
-
-    public static void ShowUserError(String error){
-        if (isManual){
-            HelperFunctions.ShowUserError(error,context);
-        }
-        return;
     }
 
 

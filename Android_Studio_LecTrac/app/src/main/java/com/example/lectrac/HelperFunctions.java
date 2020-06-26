@@ -1,21 +1,13 @@
 package com.example.lectrac;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.view.ContextThemeWrapper;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -27,8 +19,6 @@ public class HelperFunctions {
     final static int STUDENT_NUMBER_LENGTH = 7;
     final static int tblUserLength = 5;
     final static int passwordLength = 16;
-    final static SimpleDateFormat ddMMMyyyy = new SimpleDateFormat("dd-MMM-yyyy");
-    final static SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     //endregion
 
     //region Tables
@@ -64,26 +54,10 @@ public class HelperFunctions {
         Log.i("LocalDB",error);
     }
 
-    public static void ShowUserError(String error, Context context){
+    public static void ShowUserError(String error){
+        //Show Error, for now lets just Log
         Log(error);
-        Log("Supposed to alter dialog");
-
-        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(context,);
-
-        builder.setCancelable(true);
-        builder.setTitle("Problem");
-        builder.setMessage(error);
-
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        //Change this in the future
     }
 
     public static boolean hasWhitespace(String line){
@@ -156,30 +130,6 @@ public class HelperFunctions {
     public static String orderByDateAndTime(String query){
         query = "SELECT * FROM ( " + query + " ) ORDER BY Task_Due_Date DESC, Task_Due_Time ASC";
         return query;
-    }
-
-    public static String getCurrDate(){
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = df.format(c);
-        return formattedDate;
-    }
-
-    public static boolean isDarkMode(Context context){
-        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-
-        return localDB.isDarkMode(localDB);
-    }
-
-    public static void setNightMode(Context context){
-        boolean isDark = isDarkMode(context);
-
-        if (isDark){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
     }
 
 

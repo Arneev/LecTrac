@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ToDoListActivity">
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp"
-        android:background="@color/headingPanel"
+        android:background="@color/DarkBlue"
         android:paddingBottom="20dp">
 
         <Button
@@ -24,11 +24,11 @@
             android:layout_width="51dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginLeft="17dp"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="23dp"
-            android:layout_marginRight="23dp"
+            android:layout_toEndOf="@+id/tvTitle"
+            android:layout_toRightOf="@+id/tvTitle"
             android:background="@drawable/btn_add_new"
             android:gravity="center_horizontal"
             android:text="+"
@@ -44,10 +44,10 @@
             android:layout_below="@+id/tvTitle"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginStart="22dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginTop="19dp"
-            android:background="@drawable/general_spinner"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="37dp"
+            android:background="@drawable/background_add_task"
             android:visibility="visible"
             app:layout_constraintHorizontal_bias="0.492" />
 
@@ -55,34 +55,33 @@
             android:id="@+id/spinFilterLec"
             android:layout_width="180dp"
             android:layout_height="36dp"
-            android:layout_alignTop="@+id/spinFilterCourses"
+            android:layout_below="@+id/btnAddNew"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginStart="13dp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="-2dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginRight="22dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_toEndOf="@+id/spinFilterCourses"
             android:layout_toRightOf="@+id/spinFilterCourses"
-            android:background="@drawable/general_spinner" />
+            android:background="@drawable/background_add_task" />
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="300dp"
+            android:layout_width="237dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="33dp"
             android:layout_marginLeft="33dp"
-            android:layout_marginTop="25dp"
-            android:fontFamily="@font/raleway_light"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
             android:text="To-Do List"
-            android:textColor="@color/headingTextColor"
-            android:textSize="50sp"
-            android:textStyle="bold" />
+            android:textColor="@color/OffWhite"
+            android:textSize="32sp" />
     </RelativeLayout>
 
     <TextView
@@ -98,10 +97,12 @@
         android:gravity="center_horizontal"
         android:text="End of Tasks"
         android:textAlignment="center"
-        android:textColor="@color/textViewColor"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:visibility="visible"
-        app:fontFamily="@font/msyi" />
+        app:fontFamily="@font/msyi"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="1dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvToDoItems"
@@ -111,7 +112,8 @@
         android:layout_below="@+id/rlTemp"
         android:layout_alignParentStart="true"
         android:layout_marginTop="14dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_alignParentLeft="true">
 
     </androidx.recyclerview.widget.RecyclerView>
 
