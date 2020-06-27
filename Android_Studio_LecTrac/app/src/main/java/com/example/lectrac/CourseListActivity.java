@@ -11,6 +11,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,11 +33,13 @@ import static com.example.lectrac.HelperFunctions.*;
 public class CourseListActivity extends AppCompatActivity {
 
     static RecyclerView rvCourseItems;
+    static ErrorClass ec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        ec = new ErrorClass(this);
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -164,21 +169,7 @@ public class CourseListActivity extends AppCompatActivity {
 
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
 
-        t.start();
-    }
 
 
 }

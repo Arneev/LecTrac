@@ -10,6 +10,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -26,12 +29,14 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    static ErrorClass ec;
+    
     public static LocalDatabaseManager localDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        ec = new ErrorClass(this);
         setNightMode(this);
 
         setDrawer();
@@ -103,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
         Boolean isOnline = isOnline(SettingsActivity.this);
 
         if (!isOnline){
-            ShowUserError("Connect to the internet in order to save changes",this);
+            ec.ShowUserError("Connect to the internet in order to save changes",this);
             return;
         }
 
@@ -167,20 +172,6 @@ public class SettingsActivity extends AppCompatActivity {
         syncer.ManualSync(SettingsActivity.this);
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
 
-        t.start();
-    }
 
 }

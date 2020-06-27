@@ -18,6 +18,7 @@ public class CourseDetailsAdapter extends RecyclerView.Adapter<CourseDetailsAdap
     String[] arrLecName;
     String[] arrEmail;
 
+
     public CourseDetailsAdapter(Context ct, String[] lecName, String[] lecEmail){
         context = ct;
         arrLecName = lecName;

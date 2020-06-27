@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +48,7 @@ import static com.example.lectrac.HelperFunctions.*;
 public class CalendarActivity extends AppCompatActivity {
 
     private CompactCalendarView cCalendarView;
+    static ErrorClass ec;
 
     String calendarDate;
     ArrayList<String> arrTaskNames = new ArrayList<>();
@@ -72,6 +76,7 @@ public class CalendarActivity extends AppCompatActivity {
         localDB = new LocalDatabaseManager(this);
         //setNightMode(this);
         setDrawer();
+        ec = new ErrorClass(this);
 
         cCalendarView = (CompactCalendarView) findViewById(R.id.cvCalendar);
         recyclerView = (RecyclerView) findViewById(R.id.rvCalendarEvents);
@@ -371,21 +376,6 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
-
-        t.start();
-    }
 
     // end region
 }

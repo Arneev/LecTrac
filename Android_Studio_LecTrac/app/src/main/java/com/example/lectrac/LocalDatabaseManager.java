@@ -338,4 +338,5 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         return false;
     }
 
+
 }

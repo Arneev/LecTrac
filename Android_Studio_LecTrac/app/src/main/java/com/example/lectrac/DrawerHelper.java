@@ -8,8 +8,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -107,8 +109,11 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_logout:
                 LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-                localDB.doDelete(tblUser);
+                context.deleteDatabase("LecTrac.db");
+
+                triggerRebirth(context);
                 Intent i7 = new Intent(context, MainActivity.class);
+
                 context.startActivity(i7);
         }
         return true;
@@ -124,6 +129,15 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    public static void triggerRebirth(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+        context.startActivity(mainIntent);
+        Runtime.getRuntime().exit(0);
     }
 
 }

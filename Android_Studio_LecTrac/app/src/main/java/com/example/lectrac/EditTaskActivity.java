@@ -12,6 +12,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -31,7 +34,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.ShowUserError;
 import static com.example.lectrac.HelperFunctions.errorLecNoCourse;
 import static com.example.lectrac.HelperFunctions.quote;
 import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
@@ -41,6 +43,7 @@ import static com.example.lectrac.HelperFunctions.tblUserTask;
 public class EditTaskActivity extends AppCompatActivity {
 
     int position;
+    static ErrorClass ec;
 
     public static String newTaskName, newDueDate, newDueTime, newCourseCode;
     public static String taskID, oldTaskName, oldCourseCode, oldDate, oldTime;
@@ -62,7 +65,7 @@ public class EditTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task);
-
+        ec = new ErrorClass(this);
         // get values passed from Adapter class
 
         Intent intent = getIntent();
@@ -121,7 +124,7 @@ public class EditTaskActivity extends AppCompatActivity {
         boolean blnDoUpdate = false;
 
         if (isTaskNameNull()){
-            ShowUserError("Enter a task name",this);
+            ec.ShowUserError("Enter a task name",this);
         }
         else{
 
@@ -438,7 +441,7 @@ public class EditTaskActivity extends AppCompatActivity {
         }
         else{
             Log("No TaskID found");
-            ShowUserError("Please contact support - Task ID not found",this);
+            ec.ShowUserError("Please contact support - Task ID not found",this);
         }
 
 
@@ -539,20 +542,6 @@ public class EditTaskActivity extends AppCompatActivity {
         startActivity(new Intent(this, ToDoListActivity.class));
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
 
-        t.start();
-    }
     //endregion
 }

@@ -6,6 +6,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +25,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewMessage extends AppCompatActivity {
 
+    static ErrorClass ec;
     static LocalDatabaseManager localDB;
     static OnlineDatabaseManager onlineDB;
 
@@ -37,6 +41,8 @@ public class AddNewMessage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_message);
+
+        ec = new ErrorClass(this);
 
 
         edtHeading = findViewById(R.id.edtAddMessageName);
@@ -55,7 +61,7 @@ public class AddNewMessage extends AppCompatActivity {
 
     public void AddMessageButtonClick(View v){
         if (!isOnline(this)){
-            ShowUserError("Please connect to the internet",this);
+            ec.ShowUserError("Please connect to the internet",this);
             return;
         }
 
@@ -69,7 +75,7 @@ public class AddNewMessage extends AppCompatActivity {
 
 
         if (!CheckHeading(heading)){
-            ShowUserError("Please enter in a heading name",this);
+            ec.ShowUserError("Please enter in a heading name");
             return;
         }
 
@@ -113,7 +119,7 @@ public class AddNewMessage extends AppCompatActivity {
             onlineDB.Insert(tblMessage,onlineCols,onlineVals);
         }catch (Exception e){
             Log(e.toString());
-            ShowUserError("Failed to update message online, check you internet connection",this);
+            ec.ShowUserError("Failed to update message online, check you internet connection");
             return;
         }
 
@@ -170,21 +176,6 @@ public class AddNewMessage extends AppCompatActivity {
 
     //region Helper Function
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
-
-        t.start();
-    }
 
     @Override
     public void onBackPressed(){

@@ -11,6 +11,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +29,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class TestMarksActivity extends AppCompatActivity {
 
+    static ErrorClass ec;
     static String[] courses;
     static LocalDatabaseManager localDB;
 
@@ -42,7 +46,7 @@ public class TestMarksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_marks);
-
+        ec = new ErrorClass(this);
         setNightMode(this);
 
         setDrawer();
@@ -60,7 +64,7 @@ public class TestMarksActivity extends AppCompatActivity {
             startAdapter();
         }catch (Exception e){
             Log(e.toString());
-            ShowUserError("Failed to update tests",this);
+            ec.ShowUserError("Failed to update tests",this);
         }
     }
 
@@ -104,7 +108,7 @@ public class TestMarksActivity extends AppCompatActivity {
         clearArr();
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no tests available",this);
+            ec.ShowUserError("There are no tests available",this);
             rvTest.setAdapter(null);
             rvTest.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -191,20 +195,6 @@ public class TestMarksActivity extends AppCompatActivity {
         });
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
 
-        t.start();
-    }
     //endregion
 }

@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.ShowUserError;
 import static com.example.lectrac.HelperFunctions.errorLecNoCourse;
 import static com.example.lectrac.HelperFunctions.isOnline;
 import static com.example.lectrac.HelperFunctions.quote;
@@ -36,6 +35,7 @@ import static com.example.lectrac.HelperFunctions.tblUserTask;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> { //implements Filterable
 
+    static ErrorClass ec;
     Context context;
     Boolean isLec;
     ArrayList<String> arrTaskNames = new ArrayList<String>();
@@ -51,6 +51,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
     public ToDoAdapter(Context cont, Boolean blnLec, ArrayList<String> names, ArrayList<String> courses, ArrayList<String> ids){
 
         context = cont;
+        ec = new ErrorClass(context);
         isLec = blnLec;
         arrTaskNames = names;
         arrTaskCourses = courses;
@@ -244,7 +245,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             if (Task_ID.charAt(0) == 'L'){
 
                 if (!isOnline(context)){
-                    ShowUserError("Cannot delete task as you are offline",context);
+                    ec.ShowUserError("Cannot delete task as you are offline",context);
                     return;
                 }
 
@@ -292,22 +293,5 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
         Log("Task deleted");
     }
-
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
-
-        t.start();
-    }
-
-
+    
 }

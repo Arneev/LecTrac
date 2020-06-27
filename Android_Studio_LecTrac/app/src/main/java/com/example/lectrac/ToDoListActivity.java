@@ -16,6 +16,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
@@ -37,6 +40,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class ToDoListActivity extends AppCompatActivity {
 
+    static ErrorClass ec;
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
@@ -57,7 +61,7 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
-
+        ec = new ErrorClass(this);
         setNightMode(this);
 
         setDrawer();
@@ -440,7 +444,7 @@ public class ToDoListActivity extends AppCompatActivity {
                     FilterOnChange(course);
                 } catch (InterruptedException e) {
                     Log(e.toString());
-                    ShowUserError("Failed to filter tasks, please contact support",ct);
+                    ec.ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }
@@ -479,7 +483,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log(e.toString());
                     Log("LecFilt error");
-                    ShowUserError("Failed to filter tasks, please contact support",ct);
+                    ec.ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }
@@ -492,21 +496,7 @@ public class ToDoListActivity extends AppCompatActivity {
         });
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
 
-        t.start();
-    }
     //endregion
 
 }

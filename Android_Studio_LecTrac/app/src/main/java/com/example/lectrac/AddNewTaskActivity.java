@@ -13,6 +13,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +47,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     public static String[] courses;
     public static LocalDatabaseManager localDB = null;
+    static ErrorClass ec;
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -59,6 +63,8 @@ public class AddNewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
         setNightMode(this);
+
+        ec = new ErrorClass(this);
 
         localDB = new LocalDatabaseManager(this);
 
@@ -216,7 +222,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
 
         if (isTaskNameNull()){
-            ShowUserError("Enter a task name",this);
+            ec.ShowUserError("Enter a task name",this);
             return;
         }
         else{
@@ -245,10 +251,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
             if (isLec){
                 if (courseSize > 0){
-                    ShowUserError("You have to enter a course code, cannot be empty",this);
+                    ec.ShowUserError("You have to enter a course code, cannot be empty",this);
                 }
                 else if (courseSize == 0){
-                    ShowUserError("Contact support with " + errorLecNoCourse,this);
+                    ec.ShowUserError("Contact support with " + errorLecNoCourse,this);
                 }
                 return;
             }
@@ -478,22 +484,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
     //endregion
 
     //region Helper Function
-
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
-
-        t.start();
-    }
 
     @Override
     public void onBackPressed(){

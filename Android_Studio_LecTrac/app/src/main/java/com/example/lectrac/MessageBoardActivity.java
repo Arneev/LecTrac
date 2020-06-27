@@ -12,6 +12,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import static com.example.lectrac.HelperFunctions.Log;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
@@ -36,6 +40,7 @@ public class MessageBoardActivity extends AppCompatActivity {
     static Spinner spinCourse;
     static Spinner spinClass;
     static Button btnAddMessage;
+    static ErrorClass ec;
 
     static String latestCourse;
     static String latestClass;
@@ -53,7 +58,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message_board);
 
         setNightMode(this);
-
+        ec = new ErrorClass(this);
         setDrawer();
 
         localDB = new LocalDatabaseManager(this);
@@ -121,7 +126,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no messages available",this);
+            ec.ShowUserError("There are no messages available",this);
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -177,7 +182,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " WHERE " + condition1 + " AND " + condition2 + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ShowUserError("There are no messages available",this);
+            ec.ShowUserError("There are no messages available",this);
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -338,21 +343,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         });
     }
 
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
 
-        t.start();
-    }
     //endregion
 
 }
