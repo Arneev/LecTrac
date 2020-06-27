@@ -1,6 +1,5 @@
 package com.example.lectrac;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -84,20 +83,25 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
         if (isLec){
 
+            // this text view is set to italic, and the width is wrap_contents. So:
+            // android:layout_width="wrap_content" , gives you a rectangle for wrapped content.
+            // All will work well for normal text (non-italic).
+            // Solution as suggested is to have a space at the end of the text
+
             if (taskID.charAt(0) == 'L'){
-                holder.myText3.setText("Posted");
+                holder.myText3.setText("Posted ");
             }
             else {
-                holder.myText3.setText("Not Posted");
+                holder.myText3.setText("Not Posted ");
             }
         }
         else {
 
             if (taskID.charAt(0) == 'L'){
-                holder.myText3.setText("Course Task");
+                holder.myText3.setText("Course Task ");
             }
             else {
-                holder.myText3.setText("You");
+                holder.myText3.setText("You ");
             }
         }
 
@@ -291,22 +295,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         this.notifyDataSetChanged();
 
         Log("Task deleted");
-    }
-
-    public void ShowUserError(final String error, final Context context){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HelperFunctions.ShowUserError(error,context);
-                    }
-                });
-            }
-        });
-
-        t.start();
     }
 
 
