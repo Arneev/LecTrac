@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:orientation="vertical"
-    android:background="@color/DarkViolet"
+    android:background="@drawable/background"
     android:gravity="bottom"
+    android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     //this file creates the header at the top of the navigation bar which displays the app logo and
     //the username
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="127dp"
-        android:layout_height="79dp"
-        android:src="@drawable/logo" />
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvNavUsername"
+        android:layout_width="204dp"
+        android:layout_height="133dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:fontFamily="@font/raleway_light"
+        android:gravity="center"
         android:paddingTop="8dp"
-        android:text="username"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-</LinearLayout>
+        android:text="Pravesh Ranchod"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/mainText"
+        android:textSize="30sp" />
+</RelativeLayout>

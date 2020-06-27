@@ -56,6 +56,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
+        setNightMode(this);
 
         localDB = new LocalDatabaseManager(this);
 
@@ -213,7 +214,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
 
         if (isTaskNameNull()){
-            ShowUserError("Enter a task name");
+            ShowUserError("Enter a task name",this);
             return;
         }
         else{
@@ -242,10 +243,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
             if (isLec){
                 if (courseSize > 0){
-                    ShowUserError("You have to enter a course code, cannot be empty");
+                    ShowUserError("You have to enter a course code, cannot be empty",this);
                 }
                 else if (courseSize == 0){
-                    ShowUserError("Contact support with " + errorLecNoCourse);
+                    ShowUserError("Contact support with " + errorLecNoCourse,this);
                 }
                 return;
             }

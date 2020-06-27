@@ -23,7 +23,9 @@
         android:textColor="@color/subHeading"
         android:textSize="50sp"
         android:textStyle="bold"
-        app:fontFamily="@font/raleway_light" />
+        app:fontFamily="@font/raleway_light"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp" />
 
     <EditText
         android:id="@+id/edtAddMessageContent"
@@ -174,7 +176,9 @@
         android:textColor="@color/mainText"
         android:textColorHint="@color/hintColor"
         android:layout_marginEnd="42dp"
-        android:background="@drawable/general_textview" />
+        android:background="@drawable/general_textview"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="42dp" />
 
     <TextView
         android:id="@+id/tvAddMessageCourseCode"

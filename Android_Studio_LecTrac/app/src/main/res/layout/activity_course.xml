@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -17,22 +18,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="109dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@android:color/holo_orange_light"
-            android:orientation="vertical">
+            android:background="@drawable/heading_panel"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/tvCourseHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="81dp"
+                android:layout_width="305dp"
+                android:layout_height="104dp"
                 android:layout_gravity="center"
+                android:fontFamily="@font/raleway_light"
                 android:gravity="center"
                 android:text="COURSES"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="#FFFDE3"
-                android:textSize="82sp"
-                app:fontFamily="@font/msyi" />
+                android:textColor="@color/headingTextColor"
+                android:textSize="57sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/raleway_light" />
 
         </LinearLayout>
 

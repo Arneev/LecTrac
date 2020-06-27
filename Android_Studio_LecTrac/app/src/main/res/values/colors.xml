@@ -25,7 +25,41 @@
     <color name="PaleTurquoise">#AFEEEE</color>
     <color name="OffWhite">#F4F4F4</color>
 
+    //night mode
+    <color name="darkGrey">#2D313D</color>
+
     <color name="login_form_details">#ccffffff</color>
-    <color name="login_form_details_light">#1affffff</color>
-    <color name="login_form_details_medium">#66ffffff</color>
+    <color name="login_form_details_light">#D08F8F8F</color>
+    <color name="login_form_details_medium">#D51E1E1E</color>
+
+    <drawable name="background">@drawable/login</drawable>
+    <color  name="mainText">#FFFFFF</color>
+    <color name="subText">#8D8F97</color>
+    <color name="buttonColor">#FFFFFF</color>
+    <color name="buttonTextColor">#000000</color>
+    <color name="textViewColor">#126C6C6C</color>
+    <color name="spinnerColor">#C5C5C5</color>
+    <color name="generalPanel">@color/DarkViolet</color>
+    <color name="headingPanel">#2DFFFFFF</color>
+    <color name="headingTextColor">@color/OffWhite</color>
+    <color name="subHeading">@color/MistyRose</color>
+    <color name="subSubHeading">@color/LightSteelBlue</color>
+    <color name ="spinnerBackground">#E5E8FF</color>
+    <color name = "spinnerStroke">#000C5D</color>
+    <color name="iconColor">#000000</color>
+    <color name="miniElipseButtonColor">#000000</color>
+    <color name="elipseOptionColor">#FFFFFF</color>
+    <color name="actionBar">@color/DarkViolet</color>
+    <color name = "standardContrast">#FFFFFF</color>
+    <color name = "antiContrast">#2D313D</color>
+    <color name = "itemBackground">#FFFFFF</color>
+    <color name = "nonItemBackground">#FFFFFF</color>
+    <color name = "fancyButtonText">#000000</color>
+    <color name = "hintColor">#000000</color>
+    <color name = "transparent">#00FFFFFF</color>
+
+    //region KEY ENTER YOUR NEW COLORS IN HERE PLS
+
+    //endregion
+
 </resources>

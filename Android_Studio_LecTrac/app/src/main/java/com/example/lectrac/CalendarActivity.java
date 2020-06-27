@@ -21,9 +21,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.applandeo.materialcalendarview.CalendarView;
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.material.navigation.NavigationView;
@@ -51,7 +48,6 @@ public class CalendarActivity extends AppCompatActivity {
     private DrawerLayout drawer;
 
     private CompactCalendarView cCalendarView;
-    private List<EventDay> mEventDays = new ArrayList<>();
 
     String calendarDate;
     ArrayList<String> arrTaskNames = new ArrayList<>();
