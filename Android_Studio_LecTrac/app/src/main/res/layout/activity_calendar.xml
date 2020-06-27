@@ -38,7 +38,8 @@
             android:textAlignment="center"
             android:textColor="@color/headingTextColor"
             android:textSize="50sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
 
         <RelativeLayout
             android:id="@+id/rlCal2"
@@ -161,7 +162,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/nonItemBackground"
-        android:visibility="visible"
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/miniElipseButtonColor"
         app:itemTextColor="@color/miniElipseButtonColor"

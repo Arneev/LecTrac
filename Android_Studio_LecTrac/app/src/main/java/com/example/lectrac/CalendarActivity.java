@@ -43,8 +43,6 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    private DrawerLayout drawer;
-
     private CompactCalendarView cCalendarView;
 
     String calendarDate;
@@ -101,7 +99,7 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 

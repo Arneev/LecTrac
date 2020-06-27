@@ -1,6 +1,9 @@
 package com.example.lectrac;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,12 +15,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -53,6 +59,8 @@ public class ToDoListActivity extends AppCompatActivity {
 
         setNightMode(this);
 
+        setDrawer();
+
         lecFilOption = 0;
         latestCourseFil = "All";
 
@@ -75,6 +83,33 @@ public class ToDoListActivity extends AppCompatActivity {
         moveToAddTask();
 
     }
+
+
+    // drawer
+
+    public void setDrawer(){
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(ToDoListActivity.this, toolbar, drawer, navigationView);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+
+
+    // end of drawer
+
 
     void StartAdapter() throws InterruptedException {
         arrOnlyTaskNames.clear();

@@ -49,7 +49,7 @@
     <color name="iconColor">#000000</color>
     <color name="miniElipseButtonColor">#000000</color>
     <color name="elipseOptionColor">#FFFFFF</color>
-    <color name="actionBar">@color/DarkViolet</color>
+    <color name="actionBar">@color/transparent</color>
     <color name = "standardContrast">#FFFFFF</color>
     <color name = "antiContrast">#2D313D</color>
     <color name = "itemBackground">#FFFFFF</color>
@@ -57,7 +57,7 @@
     <color name = "fancyButtonText">#000000</color>
     <color name = "hintColor">#000000</color>
     <color name = "transparent">#00FFFFFF</color>
-    <color name = "calendarTopColor">@color/IndianRed</color>
+    <color name = "calendarTopColor">@color/DarkViolet</color>
     <color name = "calendarBackground">#00FFFFFF</color>
     <color name = "calendarText">#000000</color>
 

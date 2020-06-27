@@ -1,13 +1,19 @@
 package com.example.lectrac;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.solver.widgets.Helper;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 
@@ -26,6 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         setNightMode(this);
 
+        setDrawer();
+
         localDB = new LocalDatabaseManager(SettingsActivity.this);
 
         try {
@@ -37,6 +45,32 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
     }
+
+    // drawer
+
+    public void setDrawer(){
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(SettingsActivity.this, toolbar, drawer, navigationView);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+
+
+    // end of drawer
+
 
     public void SetStartValues(){
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblUser);

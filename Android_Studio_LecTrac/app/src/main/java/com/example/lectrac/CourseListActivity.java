@@ -1,14 +1,20 @@
 package com.example.lectrac;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 
@@ -49,6 +55,8 @@ public class CourseListActivity extends AppCompatActivity {
 
         setNightMode(this);
 
+        setDrawer();
+
         rvCourseItems = findViewById(R.id.rvCourseItems);
 
         try {
@@ -58,6 +66,33 @@ public class CourseListActivity extends AppCompatActivity {
         }
         startAdapter();
     }
+
+
+    // drawer
+
+    public void setDrawer(){
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(CourseListActivity.this, toolbar, drawer, navigationView);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+
+
+    // end of drawer
+
 
     void startAdapter(){
 
