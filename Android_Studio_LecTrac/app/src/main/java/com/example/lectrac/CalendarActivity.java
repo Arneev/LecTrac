@@ -44,6 +44,8 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class CalendarActivity extends AppCompatActivity {
 
+    DrawerLayout drawer;
+
     private CompactCalendarView cCalendarView;
 
     String calendarDate;
@@ -68,6 +70,8 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+
 
         localDB = new LocalDatabaseManager(this);
         //setNightMode(this);
@@ -102,7 +106,7 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
@@ -383,6 +387,15 @@ public class CalendarActivity extends AppCompatActivity {
                 cCalendarView.scrollLeft();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
     }
 
     // end region

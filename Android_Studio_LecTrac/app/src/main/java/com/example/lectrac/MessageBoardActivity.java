@@ -3,6 +3,7 @@ package com.example.lectrac;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,8 @@ import static com.example.lectrac.AddNewMessage.btnAddMessage;
 import static com.example.lectrac.HelperFunctions.*;
 
 public class MessageBoardActivity extends AppCompatActivity {
+
+    DrawerLayout drawer;
 
     static LocalDatabaseManager localDB;
 
@@ -100,7 +103,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
@@ -351,6 +354,15 @@ public class MessageBoardActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
     }
 
     //endregion

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.solver.widgets.Helper;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.database.Cursor;
@@ -24,6 +25,8 @@ import java.text.ParseException;
 import static com.example.lectrac.HelperFunctions.*;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    DrawerLayout drawer;
 
     public static LocalDatabaseManager localDB;
     @Override
@@ -59,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
@@ -182,5 +185,14 @@ public class SettingsActivity extends AppCompatActivity {
         syncer.ManualSync(SettingsActivity.this);
     }
 
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
+    }
 
 }

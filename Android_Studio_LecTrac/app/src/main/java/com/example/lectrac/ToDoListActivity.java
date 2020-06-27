@@ -3,6 +3,7 @@ package com.example.lectrac;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,8 @@ import static com.example.lectrac.HelperFunctions.*;
 
 
 public class ToDoListActivity extends AppCompatActivity {
+
+    DrawerLayout drawer;
 
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
@@ -98,7 +101,7 @@ public class ToDoListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
@@ -507,6 +510,17 @@ public class ToDoListActivity extends AppCompatActivity {
 
         });
     }
+
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
+    }
+
     //endregion
 
 }

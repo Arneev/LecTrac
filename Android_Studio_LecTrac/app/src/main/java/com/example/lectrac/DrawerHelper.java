@@ -122,19 +122,10 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    //when we press the back button while the navigation bar is open, we don't want to leave
-    //the activity immediately, we want to close the navigation drawer.
-    @Override
-    public void onBackPressed() {
-
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     public void setName(View header){
+
+        Log("Set name in navigation view");
 
         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
         TextView userName = header.findViewById(R.id.tvNavUsername);
@@ -143,6 +134,7 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
         Cursor cursor = localDB.doQuery("SELECT * FROM USER WHERE User_ID = " + userID);
 
         if (cursor.getCount() == 0){
+            Log(userID);
             userName.setText("LecTrac");
             return;
         }
