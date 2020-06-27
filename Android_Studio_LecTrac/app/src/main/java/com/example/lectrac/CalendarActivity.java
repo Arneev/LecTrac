@@ -39,9 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.tblUser;
-
+import static com.example.lectrac.HelperFunctions.*;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -61,7 +59,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     CalendarAdapter calendarAdapter;
-    LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+    static LocalDatabaseManager localDB;
 
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     Button btnScrollRight, btnScrollLeft;
@@ -72,6 +70,8 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
+        localDB = new LocalDatabaseManager(this);
+        //setNightMode(this);
         setDrawer();
 
         cCalendarView = (CompactCalendarView) findViewById(R.id.cvCalendar);

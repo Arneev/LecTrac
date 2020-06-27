@@ -33,6 +33,9 @@
     <color name = "nonItemBackground">#535353</color>
     <color name = "fancyButtonText">#FFFFFF</color>
     <color name = "hintColor">#D6D6D6</color>
+    <color name = "calendarTopColor">#4F61AF</color>
+    <color name = "calendarBackground">#272727</color>
+    <color name = "calendarText">#FFFFFF</color>
 
     //region You don't need to add in here BUT if you are, put it in here
 

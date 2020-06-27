@@ -68,22 +68,45 @@ public class HelperFunctions {
         Log(error);
         Log("Supposed to alter dialog");
 
-        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        android.app.AlertDialog.Builder builder = null;
 
-        builder.setCancelable(true);
-        builder.setTitle("Problem");
-        builder.setMessage(error);
+        if (isDarkMode(context)){
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
+            builder.setCancelable(true);
+            builder.setTitle("Problem");
+            builder.setMessage(error);
 
-            }
-        });
+            builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+
+            builder.setCancelable(true);
+            builder.setTitle("Problem");
+            builder.setMessage(error);
+
+            builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
     }
 
     public static boolean hasWhitespace(String line){
@@ -167,8 +190,8 @@ public class HelperFunctions {
 
     public static boolean isDarkMode(Context context){
         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-
-        return localDB.isDarkMode(localDB);
+        boolean b = localDB.isDarkMode(context);
+        return b;
     }
 
     public static void setNightMode(Context context){

@@ -75,6 +75,7 @@ public class Syncer {
         if (!syncValidity(localDB)){
             Log("syncValidity Failed");
             ShowUserError("There was a problem syncing, try again, if problem persists contact support");
+            localDB.close();
             return;
         }
 
@@ -94,8 +95,7 @@ public class Syncer {
         SyncMessages(localDB,onlineDB);
         SyncTests(localDB,onlineDB);
 
-
-
+        localDB.close();
     }
 
 

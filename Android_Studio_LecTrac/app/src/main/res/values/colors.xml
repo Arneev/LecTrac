@@ -57,6 +57,9 @@
     <color name = "fancyButtonText">#000000</color>
     <color name = "hintColor">#000000</color>
     <color name = "transparent">#00FFFFFF</color>
+    <color name = "calendarTopColor">@color/IndianRed</color>
+    <color name = "calendarBackground">#00FFFFFF</color>
+    <color name = "calendarText">#000000</color>
 
     //region KEY ENTER YOUR NEW COLORS IN HERE PLS
 
