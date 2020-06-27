@@ -6,8 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -171,7 +169,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         syncer.ManualSync(SettingsActivity.this);
     }
-
 
 
 }

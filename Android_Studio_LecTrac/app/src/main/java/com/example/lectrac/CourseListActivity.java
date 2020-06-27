@@ -7,8 +7,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -168,8 +166,6 @@ public class CourseListActivity extends AppCompatActivity {
         rvCourseItems.setLayoutManager(new LinearLayoutManager(this));
 
     }
-
-
 
 
 }

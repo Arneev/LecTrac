@@ -2,7 +2,6 @@ package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -176,12 +175,10 @@ public class AddNewMessage extends AppCompatActivity {
 
     //region Helper Function
 
-
     @Override
     public void onBackPressed(){
         startActivity(new Intent(this, MessageBoardActivity.class));
     }
 
     //endregion
-
 }

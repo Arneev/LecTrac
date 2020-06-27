@@ -1,6 +1,5 @@
 package com.example.lectrac;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
@@ -768,6 +767,6 @@ public class Syncer {
             ec.ShowUserMessage(message);
         }
     }
-    
+
     //endregion
 }

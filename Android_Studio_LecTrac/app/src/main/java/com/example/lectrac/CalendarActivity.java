@@ -1,7 +1,6 @@
 package com.example.lectrac;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -375,7 +374,6 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
     }
-
 
     // end region
 }

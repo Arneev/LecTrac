@@ -33,7 +33,7 @@
     <color name="login_form_details_medium">#D51E1E1E</color>
 
     <drawable name="background">@drawable/login</drawable>
-    <color  name="mainText">#FFFFFF</color>
+    <color  name="mainText">@color/black</color>
     <color name="subText">#8D8F97</color>
     <color name="buttonColor">#FFFFFF</color>
     <color name="buttonTextColor">#000000</color>

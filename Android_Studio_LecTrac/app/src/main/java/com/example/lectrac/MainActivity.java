@@ -3,7 +3,6 @@ package com.example.lectrac;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -187,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
         startActivity(new Intent(this, RegisterActivity.class));
     }
-
 
     //endregion
 

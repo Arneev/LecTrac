@@ -3,12 +3,8 @@
 
 package com.example.lectrac;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -666,6 +662,7 @@ public class RegisterLoginManager{
                     ec.ShowUserError("Incorrect password, try again or click on forgot password",context);
                 }
 
+
             }catch (Exception e ){
                 Log("For some weird reason, cannot get JSONObject");
                 ec.ShowUserError("Please ensure student number is correct and try again," +
@@ -700,6 +697,7 @@ public class RegisterLoginManager{
                         ec.ShowUserError("Incorrect password, try again or click on forgot password",context);
                     }
 
+
                 }catch (Exception e ){
                     Log("For some weird reason, cannot get JSONObject");
                     ec.ShowUserError("Please ensure lecturer id is correct and try again," +
@@ -714,7 +712,6 @@ public class RegisterLoginManager{
             //endregion
         }
         else if (size > 1){
-
             ec.ShowUserError("There seems to be 2 accounts with the same student number," +
                     " please contact the support team",context);
         }
@@ -723,8 +720,6 @@ public class RegisterLoginManager{
 
     }
     //endregion
-
-
 
 
 }
