@@ -49,6 +49,7 @@ final public class OnlineDatabaseManager {
         httpBuilder.addQueryParameter("query", query);
         url = httpBuilder.build().toString();
 
+        Log(url);
         //Request
         final Request request = new Request.Builder()
                 .url(url)

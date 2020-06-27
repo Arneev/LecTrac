@@ -3,8 +3,12 @@
 
 package com.example.lectrac;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -656,6 +660,9 @@ public class RegisterLoginManager{
                 if (hashPass.equals(hashPassFromDB)){
                     return true;
                 }
+                else{
+                    ShowUserError("Incorrect password, try again or click on forgot password",context);
+                }
 
             }catch (Exception e ){
                 Log("For some weird reason, cannot get JSONObject");
@@ -687,6 +694,9 @@ public class RegisterLoginManager{
                     if (hashPass.equals(hashPassFromDB)){
                         return true;
                     }
+                    else{
+                        ShowUserError("Incorrect password, try again or click on forgot password",context);
+                    }
 
                 }catch (Exception e ){
                     Log("For some weird reason, cannot get JSONObject");
@@ -702,6 +712,7 @@ public class RegisterLoginManager{
             //endregion
         }
         else if (size > 1){
+
             ShowUserError("There seems to be 2 accounts with the same student number," +
                     " please contact the support team",context);
         }
@@ -711,5 +722,21 @@ public class RegisterLoginManager{
     }
     //endregion
 
+
+    public void ShowUserError(final String error, final Context context){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HelperFunctions.ShowUserError(error,context);
+                    }
+                });
+            }
+        });
+
+        t.start();
+    }
 
 }

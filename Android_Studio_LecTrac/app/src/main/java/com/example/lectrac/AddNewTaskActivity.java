@@ -3,9 +3,11 @@ package com.example.lectrac;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -476,6 +478,22 @@ public class AddNewTaskActivity extends AppCompatActivity {
     //endregion
 
     //region Helper Function
+
+    public void ShowUserError(final String error, final Context context){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HelperFunctions.ShowUserError(error,context);
+                    }
+                });
+            }
+        });
+
+        t.start();
+    }
 
     @Override
     public void onBackPressed(){

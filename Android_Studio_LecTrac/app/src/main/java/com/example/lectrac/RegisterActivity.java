@@ -2,6 +2,8 @@ package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -112,5 +114,20 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    public void ShowUserError(final String error, final Context context){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HelperFunctions.ShowUserError(error,context);
+                    }
+                });
+            }
+        });
+
+        t.start();
+    }
     //endregion
 }

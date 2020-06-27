@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -489,6 +490,22 @@ public class ToDoListActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void ShowUserError(final String error, final Context context){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HelperFunctions.ShowUserError(error,context);
+                    }
+                });
+            }
+        });
+
+        t.start();
     }
     //endregion
 
