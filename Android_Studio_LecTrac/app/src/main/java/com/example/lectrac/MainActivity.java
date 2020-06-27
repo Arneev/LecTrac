@@ -8,12 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,26 +21,24 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
-import static com.example.lectrac.HelperFunctions.Log;
+import static com.example.lectrac.HelperFunctions.ShowUserError;
 import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    static ErrorClass ec;
+    public static void Log(String error){
+        Log.i("Perso",error);
+    }
+
     static LocalDatabaseManager localDB;
     static Context context;
-    static Button loginBtn;
 
     //OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ec = new ErrorClass(this);
-        loginBtn = findViewById(R.id.btnLogin);
-        setButtonListener();
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         SetToDefault();
 
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if (localDB.isLoggedIn()){
                     //region Try Syncing
                     try {
-                        Syncer syncClass = new Syncer(context,false,true);
+                        Syncer syncClass = new Syncer(context);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {
@@ -93,27 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setButtonListener(){
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    LoginButtonClick();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void LoginButtonClick() throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
+    public void LoginButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         RegisterLoginManager loginManager = new RegisterLoginManager();
 
         TextView tvUserID = (TextView)findViewById(R.id.edtUserID);
@@ -128,14 +102,13 @@ public class MainActivity extends AppCompatActivity {
         if (isSuccessful){
             Log("LOG IN IS SUCCESSFUL <3 :P");
 
-            final Thread t = new Thread(new Runnable() {
+            Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     //region Try Syncing
-                    try{
-                        Syncer syncClass = new Syncer(MainActivity.this, true,true);
-                    }
-                    catch (InterruptedException e) {
+                    try {
+                        Syncer syncClass = new Syncer(MainActivity.this, true);
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {
                         e.printStackTrace();

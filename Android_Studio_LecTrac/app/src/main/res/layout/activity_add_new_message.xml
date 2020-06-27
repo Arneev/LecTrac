@@ -137,7 +137,6 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/general_button"
         android:fontFamily="@font/msyi"
-        android:onClick="AddMessageButtonClick"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="CREATE"

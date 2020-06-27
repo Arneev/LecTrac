@@ -15,9 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
@@ -39,7 +37,6 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class ToDoListActivity extends AppCompatActivity {
 
-    static ErrorClass ec;
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
@@ -60,7 +57,7 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
-        ec = new ErrorClass(this);
+
         setNightMode(this);
 
         setDrawer();
@@ -93,6 +90,10 @@ public class ToDoListActivity extends AppCompatActivity {
 
     public void setDrawer(){
 
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
         // use the tool bar as action bar because the action bar was removed
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
@@ -100,8 +101,20 @@ public class ToDoListActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
 
-        final DrawerHelper drawerHelper = new DrawerHelper(ToDoListActivity.this, toolbar, drawer, navigationView);
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(ToDoListActivity.this, toolbar,
+                                                            drawer, navigationView, header);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -443,7 +456,7 @@ public class ToDoListActivity extends AppCompatActivity {
                     FilterOnChange(course);
                 } catch (InterruptedException e) {
                     Log(e.toString());
-                    ec.ShowUserError("Failed to filter tasks, please contact support",ct);
+                    ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }
@@ -482,7 +495,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log(e.toString());
                     Log("LecFilt error");
-                    ec.ShowUserError("Failed to filter tasks, please contact support",ct);
+                    ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }

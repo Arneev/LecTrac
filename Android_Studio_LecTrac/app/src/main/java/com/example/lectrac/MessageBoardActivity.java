@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import static com.example.lectrac.HelperFunctions.Log;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
@@ -38,7 +35,6 @@ public class MessageBoardActivity extends AppCompatActivity {
     static Spinner spinCourse;
     static Spinner spinClass;
     static Button btnAddMessage;
-    static ErrorClass ec;
 
     static String latestCourse;
     static String latestClass;
@@ -56,7 +52,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message_board);
 
         setNightMode(this);
-        ec = new ErrorClass(this);
+
         setDrawer();
 
         localDB = new LocalDatabaseManager(this);
@@ -96,6 +92,10 @@ public class MessageBoardActivity extends AppCompatActivity {
 
     public void setDrawer(){
 
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
         // use the tool bar as action bar because the action bar was removed
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
@@ -103,8 +103,20 @@ public class MessageBoardActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
 
-        final DrawerHelper drawerHelper = new DrawerHelper(MessageBoardActivity.this, toolbar, drawer, navigationView);
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(MessageBoardActivity.this, toolbar,
+                drawer, navigationView, header);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -124,7 +136,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ec.ShowUserError("There are no messages available",this);
+            ShowUserError("There are no messages available",this);
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -180,7 +192,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblMessage + " WHERE " + condition1 + " AND " + condition2 + " ORDER BY Message_Date_Posted DESC");
 
         if (!cursor.moveToFirst()){
-            ec.ShowUserError("There are no messages available",this);
+            ShowUserError("There are no messages available",this);
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(new LinearLayoutManager(this));
             return;
@@ -340,6 +352,7 @@ public class MessageBoardActivity extends AppCompatActivity {
 
         });
     }
+
     //endregion
 
 }

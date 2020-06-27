@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,7 +22,6 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewMessage extends AppCompatActivity {
 
-    static ErrorClass ec;
     static LocalDatabaseManager localDB;
     static OnlineDatabaseManager onlineDB;
 
@@ -36,19 +33,21 @@ public class AddNewMessage extends AppCompatActivity {
 
     static String[] courses;
 
+    private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_message);
-
-        ec = new ErrorClass(this);
 
 
         edtHeading = findViewById(R.id.edtAddMessageName);
         spinClass = findViewById(R.id.spinAddMessageClass);
         edtContent = findViewById(R.id.edtAddMessageContent);
         spinCourse = findViewById(R.id.spinAddMessageCourse);
-        btnAddMessage = findViewById(R.id.btnMessageAdd);
+        btnAddMessage = findViewById(R.id.btnAddMessageCreate);
+
+        addOnClick();
 
         localDB = new LocalDatabaseManager(this);
         onlineDB = new OnlineDatabaseManager();
@@ -58,9 +57,10 @@ public class AddNewMessage extends AppCompatActivity {
 
     }
 
-    public void AddMessageButtonClick(View v){
+    public void AddMessageButtonSave(){
+
         if (!isOnline(this)){
-            ec.ShowUserError("Please connect to the internet",this);
+            ShowUserError("Please connect to the internet",this);
             return;
         }
 
@@ -74,7 +74,7 @@ public class AddNewMessage extends AppCompatActivity {
 
 
         if (!CheckHeading(heading)){
-            ec.ShowUserError("Please enter in a heading name");
+            ShowUserError("Please enter in a heading name",this);
             return;
         }
 
@@ -118,7 +118,7 @@ public class AddNewMessage extends AppCompatActivity {
             onlineDB.Insert(tblMessage,onlineCols,onlineVals);
         }catch (Exception e){
             Log(e.toString());
-            ec.ShowUserError("Failed to update message online, check you internet connection");
+            ShowUserError("Failed to update message online, check you internet connection",this);
             return;
         }
 
@@ -174,6 +174,23 @@ public class AddNewMessage extends AppCompatActivity {
     //endregion
 
     //region Helper Function
+
+    public void addOnClick(){
+
+        btnAddMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                AddMessageButtonSave();
+            }
+        });
+    }
 
     @Override
     public void onBackPressed(){

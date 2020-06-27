@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +45,6 @@ import static com.example.lectrac.HelperFunctions.*;
 public class CalendarActivity extends AppCompatActivity {
 
     private CompactCalendarView cCalendarView;
-    static ErrorClass ec;
 
     String calendarDate;
     ArrayList<String> arrTaskNames = new ArrayList<>();
@@ -75,7 +72,6 @@ public class CalendarActivity extends AppCompatActivity {
         localDB = new LocalDatabaseManager(this);
         //setNightMode(this);
         setDrawer();
-        ec = new ErrorClass(this);
 
         cCalendarView = (CompactCalendarView) findViewById(R.id.cvCalendar);
         recyclerView = (RecyclerView) findViewById(R.id.rvCalendarEvents);
@@ -100,6 +96,8 @@ public class CalendarActivity extends AppCompatActivity {
 
     public void setDrawer(){
 
+        boolean isLec = localDB.isLec();
+
         // use the tool bar as action bar because the action bar was removed
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
@@ -107,8 +105,20 @@ public class CalendarActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
 
-        final DrawerHelper drawerHelper = new DrawerHelper(CalendarActivity.this, toolbar, drawer, navigationView);
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(CalendarActivity.this, toolbar,
+                                                            drawer, navigationView, header);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

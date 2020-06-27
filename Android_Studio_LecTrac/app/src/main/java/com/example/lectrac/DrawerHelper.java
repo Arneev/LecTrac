@@ -8,12 +8,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import static com.example.lectrac.HelperFunctions.*;
@@ -23,10 +24,15 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     Context context;
 
-    public DrawerHelper(Context cont, Toolbar toolbar, DrawerLayout drawerLayout, NavigationView navigationView ){
+    public DrawerHelper(Context cont, Toolbar toolbar, DrawerLayout drawerLayout,
+                        NavigationView navigationView, View header ){
 
         context = cont;
         drawer = drawerLayout;
+
+        // set name
+        setName(header);
+
 
         // create menu button (toggle)
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle((Activity) context, drawer, toolbar,
@@ -109,11 +115,8 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_logout:
                 LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-                context.deleteDatabase("LecTrac.db");
-
-                triggerRebirth(context);
+                localDB.doDelete(tblUser);
                 Intent i7 = new Intent(context, MainActivity.class);
-
                 context.startActivity(i7);
         }
         return true;
@@ -131,13 +134,24 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public static void triggerRebirth(Context context) {
-        PackageManager packageManager = context.getPackageManager();
-        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
-        ComponentName componentName = intent.getComponent();
-        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
-        context.startActivity(mainIntent);
-        Runtime.getRuntime().exit(0);
+    public void setName(View header){
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+        TextView userName = header.findViewById(R.id.tvNavUsername);
+
+        String userID = localDB.getUserID(localDB);
+        Cursor cursor = localDB.doQuery("SELECT * FROM USER WHERE User_ID = " + userID);
+
+        if (cursor.getCount() == 0){
+            userName.setText("LecTrac");
+            return;
+        }
+
+        cursor.moveToFirst();
+        int NickIndex = cursor.getColumnIndex("Nickname");
+        String nickname = cursor.getString(NickIndex);
+
+        userName.setText(nickname);
     }
 
 }

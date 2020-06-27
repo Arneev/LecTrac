@@ -24,7 +24,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class RegisterLoginManager{
 
-    static ErrorClass ec;
+
     //region Constants
 
     //endregion
@@ -43,7 +43,6 @@ public class RegisterLoginManager{
     boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass, Context ct) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
         //userID sorted out
         context = ct;
-        ec = new ErrorClass(ct);
         if (userID.length() != 0){
             userID = userID.trim();
 
@@ -52,7 +51,7 @@ public class RegisterLoginManager{
             }
 
             if (alreadyReg(userID)){
-                ec.ShowUserError("You already registered before",context);
+                ShowUserError("You already registered before",context);
                 return false;
             }
         }
@@ -60,10 +59,10 @@ public class RegisterLoginManager{
         //region Getting JSON Object
         userInWITS = null;
 
-        boolean found = foundObj(quote(userID));
+        boolean found = foundObj(tblWITS, "User_ID = " + quote(userID));
 
         if (!found){
-            ec.ShowUserError("There is no WITS User ID with that user ID, please contact support",context);
+            ShowUserError("There is no WITS User ID with that user ID, please contact support",context);
             return false;
         }
 
@@ -132,12 +131,12 @@ public class RegisterLoginManager{
             }
 
             if (confirmPass.length() == 0){
-                ec.ShowUserError("Please confirm your password",context);
+                ShowUserError("Please confirm your password",context);
                 return false;
             }
 
             if (!confirmPass.equals(password)){
-                ec.ShowUserError("Make sure your password and confirm password are matching",context);
+                ShowUserError("Make sure your password and confirm password are matching",context);
                 return false;
             }
 
@@ -157,12 +156,12 @@ public class RegisterLoginManager{
             Log(password);
 
             if (!tempPassword.equals(password)){
-                ec.ShowUserError("Enter your WITS password",context);
+                ShowUserError("Enter your WITS password",context);
                 return false;
             }
         }
         else{
-            ec.ShowUserError("Enter your WITS password",context);
+            ShowUserError("Enter your WITS password",context);
             return false;
         }
 
@@ -263,7 +262,7 @@ public class RegisterLoginManager{
         }catch (Exception e){
             Log(e.toString());
             Log("OnlineDB insert failed");
-            ec.ShowUserError("Oops, please contact support",context);
+            ShowUserError("Oops, please contact support",context);
             return false;
         }
 
@@ -300,32 +299,32 @@ public class RegisterLoginManager{
         }
 
         if (!containSpecial){
-            ec.ShowUserError("Make sure there is at least one special character",context);
+            ShowUserError("Make sure there is at least one special character",context);
             return false;
         }
 
         if (!isDigit){
-            ec.ShowUserError("Make sure there is at least one number",context);
+            ShowUserError("Make sure there is at least one number",context);
             return false;
         }
 
         if (!isLower){
-            ec.ShowUserError("Make sure there is at least one lower case character",context);
+            ShowUserError("Make sure there is at least one lower case character",context);
             return false;
         }
 
         if (!isUpper) {
-            ec.ShowUserError("Make sure there is at least one upper case character",context);
+            ShowUserError("Make sure there is at least one upper case character",context);
             return false;
         }
 
         if (hasWhiteSpace){
-            ec.ShowUserError("Cannot have whitespace in password",context);
+            ShowUserError("Cannot have whitespace in password",context);
             return false;
         }
 
         if (password.length() < 8){
-            ec.ShowUserError("Make sure your password is at least 8 characters long",context);
+            ShowUserError("Make sure your password is at least 8 characters long",context);
             return false;
         }
 
@@ -334,7 +333,7 @@ public class RegisterLoginManager{
 
     boolean RuntimeCorrectUserID(@NotNull String userID){
         if (userID.length() != 7){
-            ec.ShowUserError("Enter a valid user ID",context);
+            ShowUserError("Enter a valid user ID",context);
             return false;
         }
         return true;
@@ -343,12 +342,12 @@ public class RegisterLoginManager{
     boolean correctUserID(String userID) throws InterruptedException {
         Log("Correct UserID");
         if (userID.length() != 7){
-            ec.ShowUserError("Enter a valid user ID",context);
+            ShowUserError("Enter a valid user ID",context);
             return false;
         }
 
         if (hasWhitespace(userID)){
-            ec.ShowUserError("Cannot have a space in User ID",context);
+            ShowUserError("Cannot have a space in User ID",context);
             return false;
         }
 
@@ -357,12 +356,12 @@ public class RegisterLoginManager{
             int iUserID = Integer.parseInt(userID);
 
             if (iUserID < 0 || iUserID > 9999999){
-                ec.ShowUserError("Enter a valid user ID",context);
+                ShowUserError("Enter a valid user ID",context);
                 return false;
             }
 
         }catch(Exception e){
-            ec.ShowUserError("Enter a valid user ID",context);
+            ShowUserError("Enter a valid user ID",context);
             return false;
         }
 
@@ -370,9 +369,9 @@ public class RegisterLoginManager{
 
     }
 
-    boolean foundObj(String userID) throws InterruptedException, IOException, JSONException {
+    boolean foundObj(String tableName, String condition) throws InterruptedException, IOException, JSONException {
         Log("foundObj");
-        String query = "SELECT * FROM WITS WHERE User_ID = " + quote(userID);
+        String query = "SELECT * FROM " + tableName + " WHERE " + condition;
         JSONArray arr = onlineDB.getJSONArr(query);
 
         int size = arr.length();
@@ -400,12 +399,12 @@ public class RegisterLoginManager{
         int size = email.length();
 
         if (size > 128){
-            ec.ShowUserError("Use another email address that is shorter",context);
+            ShowUserError("Use another email address that is shorter",context);
             return false;
         }
 
         if (hasWhitespace(email)){
-            ec.ShowUserError("email address cannot have a space",context);
+            ShowUserError("email address cannot have a space",context);
             return false;
         }
 
@@ -415,7 +414,7 @@ public class RegisterLoginManager{
             return true;
         }
 
-        ec.ShowUserError("Enter a valid email address",context);
+        ShowUserError("Enter a valid email address",context);
         return false;
     }
 
@@ -423,13 +422,13 @@ public class RegisterLoginManager{
         Log("correctSurname");
         for(char c : surname.toCharArray()) {
             if(Character.isDigit(c)) {
-                ec.ShowUserError("There cannot be a number in your surname...",context);
+                ShowUserError("There cannot be a number in your surname...",context);
                 return false;
             }
 
             if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '^'
                     || c == '&' || c == '*' || c == '(' || c == ')') {
-                ec.ShowUserError("Cannot have special characters",context);
+                ShowUserError("Cannot have special characters",context);
                 return false;
             }
         }
@@ -441,18 +440,18 @@ public class RegisterLoginManager{
         Log("correctFirstName");
         for(char c : firstName.toCharArray()) {
             if(Character.isDigit(c)) {
-                ec.ShowUserError("There cannot be a number in your name...",context);
+                ShowUserError("There cannot be a number in your name...",context);
                 return false;
             }
 
             if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '^'
                     || c == '&' || c == '*' || c == '(' || c == ')') {
-                ec.ShowUserError("Cannot have special characters",context);
+                ShowUserError("Cannot have special characters",context);
                 return false;
             }
 
             if (c == ' '){
-                ec.ShowUserError("Cannot have a space in your first name",context);
+                ShowUserError("Cannot have a space in your first name",context);
                 return false;
             }
         }
@@ -482,18 +481,18 @@ public class RegisterLoginManager{
                 return false;
             }catch (Exception e){
                 Log("Cannot get classification fromm WITS table, classification column");
-                ec.ShowUserError("Problem getting data, contact support",context);
+                ShowUserError("Problem getting data, contact support",context);
             }
         }
 
         if (size == 0){
-            ec.ShowUserError("Enter a valid user ID",context);
+            ShowUserError("Enter a valid user ID",context);
             Log("isLecturer arr is empty");
             Log("isLecturerWITS BIG ERROR");
         }
 
         if (size > 1){
-            ec.ShowUserError("Contact support and give them " + errorCodeMoreThanOne,context);
+            ShowUserError("Contact support and give them " + errorCodeMoreThanOne,context);
         }
 
         return false;
@@ -504,7 +503,6 @@ public class RegisterLoginManager{
     //region LogIn
     boolean LogInAttempt(String password, String userID, Context ct) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         context = ct;
-        ec = new ErrorClass(ct);
         userInLT = null;
 
         Log("LogInAttempt");
@@ -588,15 +586,15 @@ public class RegisterLoginManager{
                 return true;
             }else if (tempSize == 0){
                 Log("No lecturer or student match, please register");
-                ec.ShowUserError("No matching user with this user ID",context);
+                ShowUserError("No matching user with this user ID",context);
             }
             else if (tempSize > 1){
-                ec.ShowUserError("There seems to be 2 accounts with the same user ID," +
+                ShowUserError("There seems to be 2 accounts with the same user ID," +
                         " please contact the support team",context);
             }
         }
         else if (size > 1){
-            ec.ShowUserError("There seems to be 2 accounts with the same user ID," +
+            ShowUserError("There seems to be 2 accounts with the same user ID," +
                     " please contact the support team",context);
         }
 
@@ -613,16 +611,16 @@ public class RegisterLoginManager{
             int intStudentID = Integer.parseInt(studentID);
 
             if (intStudentID < 0){
-                ec.ShowUserError("Enter valid student number",context);
+                ShowUserError("Enter valid student number",context);
                 return false;
             }
         }catch (Exception e){
-            ec.ShowUserError("Enter valid student number",context);
+            ShowUserError("Enter valid student number",context);
             return false;
         }
 
         if (studentID.length() != STUDENT_NUMBER_LENGTH){
-            ec.ShowUserError("Enter valid student number",context);
+            ShowUserError("Enter valid student number",context);
             return false;
         }
 
@@ -635,7 +633,7 @@ public class RegisterLoginManager{
     boolean checkPassword(String password, String userID) throws NoSuchAlgorithmException, InterruptedException, IOException, JSONException {
         Log("checkPassword");
         if (hasWhitespace(password)){
-            ec.ShowUserError("No whitespaces are allowed in password",context);
+            ShowUserError("No whitespaces are allowed in password",context);
             return false;
         }
 
@@ -658,14 +656,10 @@ public class RegisterLoginManager{
                 if (hashPass.equals(hashPassFromDB)){
                     return true;
                 }
-                else{
-                    ec.ShowUserError("Incorrect password, try again or click on forgot password",context);
-                }
-
 
             }catch (Exception e ){
                 Log("For some weird reason, cannot get JSONObject");
-                ec.ShowUserError("Please ensure student number is correct and try again," +
+                ShowUserError("Please ensure student number is correct and try again," +
                         " if the problem persists contact the support team",context);
             }
         }
@@ -679,7 +673,7 @@ public class RegisterLoginManager{
             int lecArrSize = lecArr.length();
             if (lecArrSize == 0){
                 Log("No Student or Lecturer with ID, please register");
-                ec.ShowUserError("There is no matching user with this userID",context);
+                ShowUserError("There is no matching user with this userID",context);
             }
 
             if (lecArrSize == 1){
@@ -693,26 +687,22 @@ public class RegisterLoginManager{
                     if (hashPass.equals(hashPassFromDB)){
                         return true;
                     }
-                    else{
-                        ec.ShowUserError("Incorrect password, try again or click on forgot password",context);
-                    }
-
 
                 }catch (Exception e ){
                     Log("For some weird reason, cannot get JSONObject");
-                    ec.ShowUserError("Please ensure lecturer id is correct and try again," +
+                    ShowUserError("Please ensure lecturer id is correct and try again," +
                             " if the problem persists contact the support team",context);
                 }
             }
 
             if (lecArrSize > 1){
-                ec.ShowUserError("There seems to be 2 accounts with the same user IDs," +
+                ShowUserError("There seems to be 2 accounts with the same user IDs," +
                         " please contact the support team",context);
             }
             //endregion
         }
         else if (size > 1){
-            ec.ShowUserError("There seems to be 2 accounts with the same student number," +
+            ShowUserError("There seems to be 2 accounts with the same student number," +
                     " please contact the support team",context);
         }
 
