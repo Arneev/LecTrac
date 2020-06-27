@@ -58,8 +58,9 @@
     <color name = "hintColor">#000000</color>
     <color name = "transparent">#00FFFFFF</color>
     <color name = "calendarTopColor">@color/DarkViolet</color>
-    <color name = "calendarBackground">#00FFFFFF</color>
+    <color name = "calendarBackground">#FFFFFF</color>
     <color name = "calendarText">#000000</color>
+    <color name="toolbarIcon">#FF000000</color>
 
     //region KEY ENTER YOUR NEW COLORS IN HERE PLS
 

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ec = new ErrorClass(this);
         setNightMode(this);
+        setIconsToAppearMode();
 
         setDrawer();
 
@@ -122,6 +125,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         String sDarkMode;
 
+        SharedPreferences.Editor editor = getSharedPreferences(myPrefName, MODE_WORLD_WRITEABLE).edit();
+        editor.clear();
+        editor.apply(); // commit changes
+        editor.putBoolean("isDarkMode",isDarkMode);
+        editor.apply();
+
         if (isDarkMode){
             sDarkMode = "1";
         }
@@ -139,6 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         setNightMode(this);
+        setIconsToAppearMode();
 
         //Local Update done
 
@@ -168,6 +178,17 @@ public class SettingsActivity extends AppCompatActivity {
         Syncer syncer = new Syncer(SettingsActivity.this);
 
         syncer.ManualSync(SettingsActivity.this);
+    }
+
+    public void setIconsToAppearMode(){
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+
+        if (isDarkMode(this)){
+            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+        }
+        else{
+            toolbar.setNavigationIcon(R.drawable.ic_list);
+        }
     }
 
 

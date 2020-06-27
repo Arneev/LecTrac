@@ -3,15 +3,21 @@ package com.example.lectrac;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -32,6 +38,7 @@ public class HelperFunctions {
     final static int passwordLength = 16;
     final static SimpleDateFormat ddMMMyyyy = new SimpleDateFormat("dd-MMM-yyyy");
     final static SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+    final static String myPrefName = "myPrefs";
     //endregion
 
     //region Tables
@@ -58,6 +65,13 @@ public class HelperFunctions {
     //endregion
 
 //================================================================================================//
+
+    public static int getIconCol(Context context){
+        if (isDarkMode(context)){
+            return Color.WHITE;
+        }
+        return Color.BLACK;
+    }
 
     public static void Log(String error){
         Log.i("Perso",error);
@@ -147,9 +161,9 @@ public class HelperFunctions {
     }
 
     public static boolean isDarkMode(Context context){
-        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-        boolean b = localDB.isDarkMode(context);
-        return b;
+        SharedPreferences pref = context.getSharedPreferences(myPrefName,Context.MODE_PRIVATE);
+        boolean isDark = pref.getBoolean("isDarkMode",false);
+        return isDark;
     }
 
     public static void setNightMode(Context context){

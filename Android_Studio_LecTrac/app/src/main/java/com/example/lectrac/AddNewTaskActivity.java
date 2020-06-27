@@ -60,10 +60,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
-        setNightMode(this);
+
 
         ec = new ErrorClass(this);
-
+        setNightMode(this);
         localDB = new LocalDatabaseManager(this);
 
         // is user a student or lecturer?

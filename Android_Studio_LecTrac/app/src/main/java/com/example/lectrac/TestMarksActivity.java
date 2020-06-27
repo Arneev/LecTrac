@@ -46,6 +46,7 @@ public class TestMarksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test_marks);
         ec = new ErrorClass(this);
         setNightMode(this);
+        setIconsToAppearMode();
 
         setDrawer();
 
@@ -191,6 +192,17 @@ public class TestMarksActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void setIconsToAppearMode(){
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+
+        if (isDarkMode(this)){
+            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+        }
+        else{
+            toolbar.setNavigationIcon(R.drawable.ic_list);
+        }
     }
 
     //endregion

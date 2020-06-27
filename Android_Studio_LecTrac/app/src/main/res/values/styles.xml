@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -13,5 +14,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/toolbarIcon</item>
+    </style>
 
 </resources>

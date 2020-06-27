@@ -10,114 +10,122 @@
     tools:openDrawer="start">
 
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background">
-
-    <RelativeLayout
-        android:id="@+id/rlMessages"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:background="@drawable/heading_panel"
-        android:paddingBottom="30dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp">
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarTop"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/actionBar"
-            android:paddingBottom="5dp"
-            app:title=""
-            app:titleTextColor="@color/miniElipseButtonColor" />
-
-        <TextView
-            android:id="@+id/tvMessageHeading"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:background="@drawable/background">
 
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:fontFamily="@font/raleway_light"
-            android:gravity="center"
-            android:text="MESSAGES"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/headingTextColor"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            app:fontFamily="@font/raleway_light" />
+            <RelativeLayout
+                android:id="@+id/rlMessages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:background="@drawable/heading_panel"
+                android:paddingBottom="30dp">
 
-        <Spinner
-            android:id="@+id/spinMessageCourse"
-            android:layout_width="165dp"
-            android:layout_height="36dp"
-            android:layout_below="@+id/tvMessageHeading"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="26dp"
-            android:background="@drawable/general_spinner" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarTop1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/actionBar"
+                    android:paddingBottom="5dp"
+                    app:title=""
+                    app:titleTextColor="@color/miniElipseButtonColor" />
 
-        <Spinner
-            android:id="@+id/spinMessageClass"
-            android:layout_width="165dp"
-            android:layout_height="36dp"
-            android:layout_alignTop="@+id/spinMessageCourse"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="23dp"
-            android:layout_marginLeft="23dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginRight="28dp"
-            android:layout_toEndOf="@+id/spinMessageCourse"
-            android:layout_toRightOf="@+id/spinMessageCourse"
-            android:background="@drawable/general_spinner" />
+                <TextView
+                    android:id="@+id/tvMessageHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <Button
-            android:id="@+id/btnMessageAdd"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_below="@+id/spinMessageClass"
-            android:layout_marginTop="23dp"
-            android:background="@drawable/btn_add_new"
-            android:onClick="AddMessageButton"
-            android:layout_centerHorizontal="true"
-            android:text="+"
-            android:textColor="@color/buttonTextColor"
-            android:textSize="24sp"
-            android:visibility="visible" />
+                    android:layout_below="@+id/toolbarTop"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="0dp"
+                    android:fontFamily="@font/raleway_light"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="MESSAGES"
+                    android:textColor="@color/headingTextColor"
+                    android:textSize="50sp"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/raleway_light" />
 
-    </RelativeLayout>
+                <Spinner
+                    android:id="@+id/spinMessageCourse"
+                    android:layout_width="165dp"
+                    android:layout_height="36dp"
+                    android:layout_below="@+id/tvMessageHeading"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="26dp"
+                    android:background="@drawable/general_spinner" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMessageItems"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlMessages"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="1dp" />
+                <Spinner
+                    android:id="@+id/spinMessageClass"
+                    android:layout_width="165dp"
+                    android:layout_height="36dp"
+                    android:layout_alignTop="@+id/spinMessageCourse"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="23dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginRight="28dp"
+                    android:layout_toEndOf="@+id/spinMessageCourse"
+                    android:layout_toRightOf="@+id/spinMessageCourse"
+                    android:background="@drawable/general_spinner" />
 
-</RelativeLayout>
+                <Button
+                    android:id="@+id/btnMessageAdd"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_below="@+id/spinMessageClass"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="23dp"
+                    android:background="@drawable/btn_add_new"
+                    android:onClick="AddMessageButton"
+                    android:text="+"
+                    android:textColor="@color/buttonTextColor"
+                    android:textSize="24sp"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMessageItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlMessages"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:clipChildren="false"
+                android:clipToPadding="false" />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

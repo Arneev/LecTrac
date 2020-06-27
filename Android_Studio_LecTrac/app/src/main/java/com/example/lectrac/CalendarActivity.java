@@ -1,9 +1,11 @@
 package com.example.lectrac;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,7 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,7 +77,7 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
 
         localDB = new LocalDatabaseManager(this);
-        //setNightMode(this);
+
         setDrawer();
         ec = new ErrorClass(this);
 
@@ -93,6 +97,8 @@ public class CalendarActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        setNightMode(this);
+        setIconsToAppearMode();
     }
 
 
@@ -376,4 +382,22 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     // end region
+
+    public void setIconsToAppearMode(){
+        Button btnArrowCalLeft = findViewById(R.id.btnCalendarLeft);
+        Button btnArrowCalRight = findViewById(R.id.btnCalendarRight);
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+
+        if (isDarkMode(this)){
+            btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left_white);
+            btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right_white);
+            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+        }
+        else{
+            btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left);
+            btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
+            toolbar.setNavigationIcon(R.drawable.ic_list);
+        }
+    }
+
 }

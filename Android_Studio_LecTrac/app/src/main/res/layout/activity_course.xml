@@ -33,13 +33,13 @@
             android:paddingBottom="20dp">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarTop"
+                android:id="@+id/toolbarTop1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/actionBar"
                 android:paddingBottom="5dp"
                 app:title=""
-                app:titleTextColor="@color/miniElipseButtonColor" />
+                app:titleTextColor="@color/transparent" />
 
             <TextView
                 android:id="@+id/tvCourseHeading"

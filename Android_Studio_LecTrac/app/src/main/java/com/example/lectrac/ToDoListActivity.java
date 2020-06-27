@@ -62,7 +62,7 @@ public class ToDoListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todo_list);
         ec = new ErrorClass(this);
         setNightMode(this);
-
+        setIconsToAppearMode();
         setDrawer();
 
         lecFilOption = 0;
@@ -495,5 +495,17 @@ public class ToDoListActivity extends AppCompatActivity {
         });
     }
     //endregion
+
+
+    public void setIconsToAppearMode(){
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+
+        if (isDarkMode(this)){
+            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+        }
+        else{
+            toolbar.setNavigationIcon(R.drawable.ic_list);
+        }
+    }
 
 }

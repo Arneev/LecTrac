@@ -26,7 +26,7 @@
     <color name="iconColor">#FFFFFF</color>
     <color name="miniElipseButtonColor">#FFFFFF</color>
     <color name="elipseOptionColor">#818181</color>
-    <color name="actionBar">#333B81</color>
+    <color name="actionBar">#373737</color>
     <color name = "standardContrast">#2D313D</color>
     <color name = "antiContrast">#FFFFFF</color>
     <color name = "itemBackground">#7C7C7C</color>
@@ -34,8 +34,9 @@
     <color name = "fancyButtonText">#FFFFFF</color>
     <color name = "hintColor">#D6D6D6</color>
     <color name = "calendarTopColor">#4F61AF</color>
-    <color name = "calendarBackground">#272727</color>
+    <color name = "calendarBackground">#3E3D3D</color>
     <color name = "calendarText">#FFFFFF</color>
+    <color name="toolbarIcon">#FFFFFFFF</color>
 
     //region You don't need to add in here BUT if you are, put it in here
 

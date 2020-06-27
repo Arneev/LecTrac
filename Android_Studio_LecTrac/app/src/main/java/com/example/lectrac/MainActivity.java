@@ -2,11 +2,13 @@ package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +28,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
 import static com.example.lectrac.HelperFunctions.Log;
+import static com.example.lectrac.HelperFunctions.isDarkMode;
+import static com.example.lectrac.HelperFunctions.myPrefName;
 import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.Syncer.*;
 
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.btnLogin);
         setButtonListener();
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         SetToDefault();
 
         context = this;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 localDB = new LocalDatabaseManager(MainActivity.this);
 
                 if (localDB.isLoggedIn()){
+                    setNightMode(context);
                     //region Try Syncing
                     try {
                         Syncer syncClass = new Syncer(context,false,true);
@@ -73,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
                     startActivity(new Intent(MainActivity.this, CalendarActivity.class));
                     return;
+                }
+                else{
+                    SharedPreferences.Editor editor = getSharedPreferences(myPrefName, Context.MODE_PRIVATE).edit();
+                    editor.putBoolean("isDarkMode", false);
+                    editor.apply();
                 }
 
             }
@@ -133,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     //region Try Syncing
                     try{
-                        Syncer syncClass = new Syncer(MainActivity.this, true,true);
+                        Syncer syncClass = new Syncer(MainActivity.this, false,true);
                     }
                     catch (InterruptedException e) {
                         e.printStackTrace();

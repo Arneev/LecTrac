@@ -55,12 +55,12 @@ public class MessageBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
 
-        setNightMode(this);
         ec = new ErrorClass(this);
+        setNightMode(this);
+        setIconsToAppearMode();
+
         setDrawer();
-
         localDB = new LocalDatabaseManager(this);
-
 
         rvMessages = findViewById(R.id.rvMessageItems);
         spinClass = findViewById(R.id.spinMessageClass);
@@ -339,6 +339,16 @@ public class MessageBoardActivity extends AppCompatActivity {
             }
 
         });
+    }
+    public void setIconsToAppearMode(){
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+
+        if (isDarkMode(this)){
+            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+        }
+        else{
+            toolbar.setNavigationIcon(R.drawable.ic_list);
+        }
     }
     //endregion
 

@@ -9,77 +9,85 @@
     tools:context=".TestMarksActivity"
     tools:openDrawer="start">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background">
-
-    <RelativeLayout
-        android:id="@+id/rlTestHeader"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/heading_panel"
-        android:paddingBottom="20dp">
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarTop"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/actionBar"
-            android:paddingBottom="5dp"
-            app:title=""
-            app:titleTextColor="@color/miniElipseButtonColor" />
-
-        <TextView
-            android:id="@+id/tvTestHeading"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:fontFamily="@font/raleway_light"
-            android:gravity="center"
-            android:text="TESTS"
-            android:textColor="@color/headingTextColor"
-            android:textSize="55sp"
-            android:textStyle="bold" />
+            android:background="@drawable/background">
 
-        <Spinner
-            android:id="@+id/spinTestCourse"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/tvTestHeading"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="53dp"
-            android:layout_marginLeft="53dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="57dp"
-            android:layout_marginRight="57dp"
-            android:background="@drawable/general_spinner" />
+            <RelativeLayout
+                android:id="@+id/rlTestHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/heading_panel"
+                android:paddingBottom="20dp">
 
-    </RelativeLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarTop1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/actionBar"
+                    android:paddingBottom="5dp"
+                    app:title=""
+                    app:titleTextColor="@color/transparent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlTestHeader"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="-3dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="-3dp" />
+                <TextView
+                    android:id="@+id/tvTestHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbarTop"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginRight="2dp"
+                    android:fontFamily="@font/raleway_light"
+                    android:gravity="center"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="TESTS"
+                    android:textColor="@color/headingTextColor"
+                    android:textSize="55sp"
+                    android:textStyle="bold" />
 
-</RelativeLayout>
+                <Spinner
+                    android:id="@+id/spinTestCourse"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/tvTestHeading"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="53dp"
+                    android:layout_marginLeft="53dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="57dp"
+                    android:layout_marginRight="57dp"
+                    android:background="@drawable/general_spinner" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlTestHeader"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="-3dp"
+                android:layout_marginLeft="-3dp"
+                android:layout_marginTop="15dp" />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

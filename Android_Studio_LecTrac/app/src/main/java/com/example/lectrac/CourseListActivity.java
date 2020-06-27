@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,6 +60,7 @@ public class CourseListActivity extends AppCompatActivity {
         t.start();
 
         setNightMode(this);
+        setIconsToAppearMode();
 
         setDrawer();
 
@@ -167,5 +169,15 @@ public class CourseListActivity extends AppCompatActivity {
 
     }
 
+    public void setIconsToAppearMode(){
+        Toolbar toolbar = findViewById(R.id.toolbarTop1);
+
+        if (isDarkMode(this)){
+            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+        }
+        else{
+            toolbar.setNavigationIcon(R.drawable.ic_list);
+        }
+    }
 
 }
