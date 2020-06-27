@@ -10,12 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -35,9 +31,13 @@ import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    static ErrorClass ec;
+    public static void Log(String error){
+        Log.i("Perso",error);
+    }
+
     static LocalDatabaseManager localDB;
     static Context context;
+    static ErrorClass ec;
     static Button loginBtn;
 
     //OnCreate
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ec = new ErrorClass(this);
         loginBtn = findViewById(R.id.btnLogin);
         setButtonListener();
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                     setNightMode(context);
                     //region Try Syncing
                     try {
-                        Syncer syncClass = new Syncer(context,false,true);
+                        Syncer syncClass = new Syncer(context);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {
@@ -101,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void setButtonListener(){
+        loginBtn = findViewById(R.id.btnLogin);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,10 +138,11 @@ public class MainActivity extends AppCompatActivity {
         if (isSuccessful){
             Log("LOG IN IS SUCCESSFUL <3 :P");
 
-            final Thread t = new Thread(new Runnable() {
+            Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     //region Try Syncing
+
                     try{
                         Syncer syncClass = new Syncer(MainActivity.this, false,true);
                     }

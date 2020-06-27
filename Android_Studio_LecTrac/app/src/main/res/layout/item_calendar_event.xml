@@ -6,6 +6,7 @@
     android:layout_marginBottom="20dp"
     android:background="@color/generalPanel"
     android:orientation="horizontal"
+    android:screenOrientation="portrait"
     android:paddingBottom="5dp">
 
 

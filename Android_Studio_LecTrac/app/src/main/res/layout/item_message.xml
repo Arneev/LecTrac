@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
+    android:screenOrientation="portrait"
     android:background="@drawable/general_panel"
     android:paddingBottom="25dp">
 
@@ -89,7 +90,8 @@
         android:textColor="@color/subSubHeading"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:fontFamily="@font/msyi" />
+        app:fontFamily="@font/msyi"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:id="@+id/btnMessageDelete"

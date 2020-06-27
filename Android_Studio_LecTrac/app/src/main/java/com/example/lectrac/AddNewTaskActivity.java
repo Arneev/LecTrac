@@ -11,9 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -45,14 +43,15 @@ public class AddNewTaskActivity extends AppCompatActivity {
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     public static String[] courses;
     public static LocalDatabaseManager localDB = null;
-    static ErrorClass ec;
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    static boolean createdOne;
+    private long mLastClickTime = 0;
+
 
     ToDoAdapter toDoAdapter;
     RecyclerView recyclerView;
+    static ErrorClass ec;
 
     Boolean isLec, mustPost;
 
@@ -60,7 +59,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
-
 
         ec = new ErrorClass(this);
         setNightMode(this);
@@ -410,6 +408,14 @@ public class AddNewTaskActivity extends AppCompatActivity {
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+
                 try {
                     if (isLec) {
                         isPosted();

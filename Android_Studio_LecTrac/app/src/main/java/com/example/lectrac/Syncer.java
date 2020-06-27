@@ -2,10 +2,6 @@ package com.example.lectrac;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import static com.example.lectrac.HelperFunctions.Log;
 
 import androidx.constraintlayout.solver.widgets.Helper;
 
@@ -24,15 +20,12 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class Syncer {
 
-    static ErrorClass ec;
     static boolean isLec;
     static Context context;
     static boolean isManual;
-    static boolean syncAll;
 
 
-    Syncer(Context context, boolean isManual, boolean synA) throws InterruptedException, ParseException, JSONException, IOException {
-        syncAll = synA;
+    Syncer(Context context, boolean isManual) throws InterruptedException, ParseException, JSONException, IOException {
         if (isManual){
             ManualSync(context);
         }
@@ -42,7 +35,6 @@ public class Syncer {
     }
 
     Syncer(Context context) throws InterruptedException, ParseException, JSONException, IOException {
-        syncAll = false;
         Sync(context);
     }
 
@@ -54,12 +46,11 @@ public class Syncer {
         Sync(context,false);
     }
 
-    public void Sync(Context ct, boolean isMan) throws JSONException, IOException, InterruptedException, ParseException {
+    public void Sync(Context ct, boolean isManual) throws JSONException, IOException, InterruptedException, ParseException {
         context = ct;
-        ec = new ErrorClass(ct);
         boolean isOnline = isOnline(context);
 
-        isManual = isMan;
+        this.isManual = isManual;
         if (isManual){
             if (!isOnline){
                 Log("The user is offline");
@@ -90,7 +81,7 @@ public class Syncer {
 
         isLec = localDB.isLec();
 
-        if (isManual || syncAll){
+        if (isManual){
             //Have to Sync these first for primary key and foreign key relationship
             SyncCourses(localDB,onlineDB);
             SyncLecturer(localDB,onlineDB);
@@ -104,13 +95,12 @@ public class Syncer {
         SyncMessages(localDB,onlineDB);
         SyncTests(localDB,onlineDB);
 
-        ShowUserMessage("Finished Sync");
         localDB.close();
     }
 
 
     //region Mini Sync Functions
-    public boolean syncValidity(LocalDatabaseManager localDB){
+    public static boolean syncValidity(LocalDatabaseManager localDB){
         Cursor cursor = localDB.doQuery("SELECT * FROM USER");
         int iCount = cursor.getCount();
         cursor.moveToFirst();
@@ -125,7 +115,7 @@ public class Syncer {
         return true;
     }
 
-    public void SyncLecReg(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
+    public static void SyncLecReg(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
         Log("About to sync lecRegistered ");
         LocalLog("About to sync lecRegistered");
 
@@ -179,7 +169,7 @@ public class Syncer {
         }
     }
 
-    public void SyncMessages(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException, IOException, InterruptedException, ParseException {
+    public static void SyncMessages(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException, IOException, InterruptedException, ParseException {
         Log("About to sync messages");
         LocalLog("About to sync messages");
 
@@ -320,7 +310,7 @@ public class Syncer {
 
     }
 
-    public void SyncTasks(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
+    public static void SyncTasks(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
         Log("About to sync lec tasks");
         LocalLog("About to sync lec tasks");
 
@@ -459,7 +449,7 @@ public class Syncer {
 
     }
 
-    public void SyncTests(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
+    public static void SyncTests(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
         Log("About to sync test ");
         LocalLog("About to sync lec tests");
 
@@ -511,7 +501,7 @@ public class Syncer {
 
     }
 
-    public void SyncLecturer(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
+    public static void SyncLecturer(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
         Log("About to sync lecturer ");
         LocalLog("About to sync lecturer");
 
@@ -565,7 +555,7 @@ public class Syncer {
         }
     }
 
-    public void SyncCourses(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
+    public static void SyncCourses(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
         Log("About to sync course ");
         LocalLog("About to sync course");
 
@@ -612,7 +602,7 @@ public class Syncer {
 
     //region HelperFunctions
 
-    public void LocalInsertLecReg(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+    public static void LocalInsertLecReg(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
         String[] values = new String[2];
 
         String lecID = obj.getString("Lecturer_ID");
@@ -625,10 +615,11 @@ public class Syncer {
             localDB.doInsert(tblRegistered,values);
         }catch (Exception e){
             Log("Problem sync course");
+            ShowUserError("Problem syncing, please contact support");
         }
     }
 
-    public void LocalInsertMessages(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+    public static void LocalInsertMessages(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
 
         String isDeleted = "0";
         String[] values = new String[8];
@@ -654,11 +645,12 @@ public class Syncer {
             localDB.doInsert(tblMessage,values);
         }catch (Exception e){
             Log("Problem sync messages");
+            ShowUserError("Problem syncing, please contact support");
         }
 
     }
 
-    public void LocalInsertTask(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+    public static void LocalInsertTask(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
 
         String isDone = "0";
         String[] values = new String[7];
@@ -682,11 +674,12 @@ public class Syncer {
             localDB.doInsert(tblLocalLecTask,values);
         }catch (Exception e){
             Log("Problem sync task");
+            ShowUserError("Problem syncing, please contact support");
         }
 
     }
 
-    public void LocalInsertTest(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+    public static void LocalInsertTest(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
 
         String[] values = new String[5];
 
@@ -706,11 +699,12 @@ public class Syncer {
             localDB.doInsert(tblTest,values);
         }catch (Exception e){
             Log("Problem sync test");
+            ShowUserError("Problem syncing, please contact support");
         }
 
     }
 
-    public void LocalInsertLecturer(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+    public static void LocalInsertLecturer(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
 
         String[] values = new String[5];
 
@@ -730,11 +724,12 @@ public class Syncer {
             localDB.doInsert(tblLecturer,values);
         }catch (Exception e){
             Log("Problem sync lec");
+            ShowUserError("Problem syncing, please contact support");
         }
 
     }
 
-    public void LocalInsertCourse(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
+    public static void LocalInsertCourse(LocalDatabaseManager localDB, JSONObject obj) throws JSONException {
 
         String[] values = new String[2];
 
@@ -748,6 +743,7 @@ public class Syncer {
             localDB.doInsert(tblCourse,values);
         }catch (Exception e){
             Log("Problem sync course");
+            ShowUserError("Problem syncing, please contact support");
         }
 
     }
@@ -756,17 +752,13 @@ public class Syncer {
         localDB.DoDeleteEntire(tableName);
     }
 
-    public void ShowUserError(String error){
+    public static void ShowUserError(String error){
         if (isManual){
-            ec.ShowUserError(error);
+            HelperFunctions.ShowUserError(error,context);
         }
+        return;
     }
 
-    public void ShowUserMessage(String message){
-        if (isManual){
-            ec.ShowUserMessage(message);
-        }
-    }
 
     //endregion
 }

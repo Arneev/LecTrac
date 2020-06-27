@@ -26,7 +26,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
     ArrayList<String> arrTaskNames = new ArrayList<>();
     ArrayList<String> arrTaskCourses = new ArrayList<>();
     ArrayList<String> arrTaskTimes = new ArrayList<>();
-    static ErrorClass ec;
 
 
     public CalendarAdapter (Context cont, ArrayList<String> names, ArrayList<String> courses, ArrayList<String> times){

@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="175dp"
     android:background="@drawable/background"
     android:gravity="bottom"
     android:orientation="vertical"
+    android:screenOrientation="portrait"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -14,19 +15,24 @@
 
     <TextView
         android:id="@+id/tvNavUsername"
-        android:layout_width="204dp"
-        android:layout_height="133dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="318dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/imgNavLogo"
+        android:layout_marginBottom="-45dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="42dp"
         android:fontFamily="@font/raleway_light"
-        android:gravity="center"
-        android:paddingTop="8dp"
-        android:text="Pravesh Ranchod"
-        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/mainText"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/imgNavLogo"
+        android:layout_width="155dp"
+        android:layout_height="95dp"
+        android:src="@drawable/logo"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp" />
 </RelativeLayout>

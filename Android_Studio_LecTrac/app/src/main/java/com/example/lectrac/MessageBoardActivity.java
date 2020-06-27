@@ -3,6 +3,7 @@ package com.example.lectrac;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import static com.example.lectrac.HelperFunctions.Log;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
@@ -32,16 +30,18 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class MessageBoardActivity extends AppCompatActivity {
 
+    DrawerLayout drawer;
+
     static LocalDatabaseManager localDB;
 
     static RecyclerView rvMessages;
     static Spinner spinCourse;
     static Spinner spinClass;
     static Button btnAddMessage;
-    static ErrorClass ec;
 
     static String latestCourse;
     static String latestClass;
+    static ErrorClass ec;
 
     static ArrayList<String> arrHeading = new ArrayList<>();
     static ArrayList<String> arrCourseCode = new ArrayList<>();
@@ -58,6 +58,9 @@ public class MessageBoardActivity extends AppCompatActivity {
         ec = new ErrorClass(this);
         setNightMode(this);
         setIconsToAppearMode();
+
+        setDrawer();
+
 
         setDrawer();
         localDB = new LocalDatabaseManager(this);
@@ -96,15 +99,31 @@ public class MessageBoardActivity extends AppCompatActivity {
 
     public void setDrawer(){
 
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
         // use the tool bar as action bar because the action bar was removed
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
 
-        final DrawerHelper drawerHelper = new DrawerHelper(MessageBoardActivity.this, toolbar, drawer, navigationView);
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(MessageBoardActivity.this, toolbar,
+                drawer, navigationView, header);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -340,6 +359,7 @@ public class MessageBoardActivity extends AppCompatActivity {
 
         });
     }
+
     public void setIconsToAppearMode(){
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
@@ -350,6 +370,17 @@ public class MessageBoardActivity extends AppCompatActivity {
             toolbar.setNavigationIcon(R.drawable.ic_list);
         }
     }
+
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
+    }
+
     //endregion
 
 }

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:paddingTop="20dp"
+    android:screenOrientation="portrait"
     android:paddingBottom="20dp">
 
     <TextView

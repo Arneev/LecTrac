@@ -3,15 +3,14 @@ package com.example.lectrac;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,9 +26,11 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class TestMarksActivity extends AppCompatActivity {
 
-    static ErrorClass ec;
+    DrawerLayout drawer;
+
     static String[] courses;
     static LocalDatabaseManager localDB;
+    static ErrorClass ec;
 
     Spinner spinCourse;
     RecyclerView rvTest;
@@ -44,6 +45,7 @@ public class TestMarksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_marks);
+
         ec = new ErrorClass(this);
         setNightMode(this);
         setIconsToAppearMode();
@@ -71,15 +73,31 @@ public class TestMarksActivity extends AppCompatActivity {
 
     public void setDrawer(){
 
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
         // use the tool bar as action bar because the action bar was removed
         Toolbar toolbar = findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
 
-        final DrawerHelper drawerHelper = new DrawerHelper(TestMarksActivity.this, toolbar, drawer, navigationView);
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(TestMarksActivity.this, toolbar,
+                drawer, navigationView, header);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -194,14 +212,25 @@ public class TestMarksActivity extends AppCompatActivity {
         });
     }
 
-    public void setIconsToAppearMode(){
+
+    public void setIconsToAppearMode() {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
-        if (isDarkMode(this)){
+        if (isDarkMode(this)) {
             toolbar.setNavigationIcon(R.drawable.ic_list_white);
-        }
-        else{
+        } else {
             toolbar.setNavigationIcon(R.drawable.ic_list);
+
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+
         }
     }
 

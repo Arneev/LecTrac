@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
+    android:screenOrientation="portrait"
     tools:openDrawer="start">
 
     <RelativeLayout
@@ -26,7 +27,7 @@
             android:paddingBottom="40dp">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarTop1"
+                android:id="@+id/toolbarTop"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/actionBar"
@@ -104,10 +105,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbxSettingsDarkMode"
-            android:layout_alignBottom="@+id/btnSettingsSync"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="93dp"
+            android:layout_marginTop="75dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="0dp"
@@ -124,7 +124,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="99dp"
             android:layout_marginLeft="99dp"
-            android:layout_marginTop="78dp"
+            android:layout_marginTop="59dp"
             android:background="@drawable/general_button"
             android:onClick="Save"
             android:text="Save"
@@ -156,14 +156,16 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
+
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/nonItemBackground"
-        android:visibility="gone"
+        android:visibility="visible"
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/miniElipseButtonColor"
         app:itemTextColor="@color/miniElipseButtonColor"
         app:menu="@menu/drawer_menu" />
 
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

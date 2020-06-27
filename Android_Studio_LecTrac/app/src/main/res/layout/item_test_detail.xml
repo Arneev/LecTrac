@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
+    android:screenOrientation="portrait"
     android:background="@drawable/general_panel"
     android:paddingBottom="20dp">
 
@@ -20,7 +21,9 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/subHeading"
         android:textSize="36sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="1dp" />
 
     <TextView
         android:id="@+id/tvTestItemCourse"
