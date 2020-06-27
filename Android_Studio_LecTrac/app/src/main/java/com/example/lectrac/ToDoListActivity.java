@@ -43,6 +43,7 @@ public class ToDoListActivity extends AppCompatActivity {
     OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
+    static ErrorClass ec;
     ToDoAdapter toDoAdapter;
     RecyclerView recyclerView;
     Spinner spinCourse;
@@ -61,6 +62,7 @@ public class ToDoListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
 
+        ec = new ErrorClass(this);
         setNightMode(this);
         setIconsToAppearMode();
         setDrawer();
@@ -459,7 +461,7 @@ public class ToDoListActivity extends AppCompatActivity {
                     FilterOnChange(course);
                 } catch (InterruptedException e) {
                     Log(e.toString());
-                    ShowUserError("Failed to filter tasks, please contact support",ct);
+                    ec.ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }
@@ -498,7 +500,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log(e.toString());
                     Log("LecFilt error");
-                    ShowUserError("Failed to filter tasks, please contact support",ct);
+                    ec.ShowUserError("Failed to filter tasks, please contact support",ct);
                     e.printStackTrace();
                 }
             }

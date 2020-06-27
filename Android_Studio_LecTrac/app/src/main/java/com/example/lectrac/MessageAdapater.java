@@ -27,12 +27,14 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
     ArrayList<String> arrDate;
     ArrayList<Integer> arrMsgId;
     Boolean isLec;
+    static ErrorClass ec;
 
     static LocalDatabaseManager localDB;
     static OnlineDatabaseManager onlineDB;
 
     public MessageAdapater(Context ct, ArrayList<String> head, ArrayList<String> courseCode, ArrayList<String> contents, ArrayList<String> classification, ArrayList<String> date, ArrayList<Integer> id) throws ParseException {
         context = ct;
+        ec = new ErrorClass(context);
         arrHeading = head;
         arrCourseCode = courseCode;
         arrContents = contents;
@@ -133,7 +135,7 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
         if (isLec){
 
             if (!isOnline(context)){
-                ShowUserError("Cannot delete task as you are offline",context);
+                ec.ShowUserError("Cannot delete task as you are offline",context);
                 return;
             }
 
@@ -142,7 +144,7 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
             }
             catch(Exception e){
                 Log(e.toString());
-                ShowUserError("Failed to delete message, please try again",context);
+                ec.ShowUserError("Failed to delete message, please try again",context);
                 return;
             }
 

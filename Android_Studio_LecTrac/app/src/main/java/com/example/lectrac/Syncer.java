@@ -23,9 +23,12 @@ public class Syncer {
     static boolean isLec;
     static Context context;
     static boolean isManual;
+    static ErrorClass ec;
+    static boolean syncAll;
 
 
-    Syncer(Context context, boolean isManual) throws InterruptedException, ParseException, JSONException, IOException {
+    Syncer(Context context, boolean isManual, boolean syncA) throws InterruptedException, ParseException, JSONException, IOException {
+        syncAll = syncA;
         if (isManual){
             ManualSync(context);
         }
@@ -35,6 +38,7 @@ public class Syncer {
     }
 
     Syncer(Context context) throws InterruptedException, ParseException, JSONException, IOException {
+        syncAll = false;
         Sync(context);
     }
 
@@ -81,7 +85,7 @@ public class Syncer {
 
         isLec = localDB.isLec();
 
-        if (isManual){
+        if (isManual || syncAll){
             //Have to Sync these first for primary key and foreign key relationship
             SyncCourses(localDB,onlineDB);
             SyncLecturer(localDB,onlineDB);
@@ -95,6 +99,7 @@ public class Syncer {
         SyncMessages(localDB,onlineDB);
         SyncTests(localDB,onlineDB);
 
+        ShowUserMessage("Finished Sync");
         localDB.close();
     }
 
@@ -754,11 +759,16 @@ public class Syncer {
 
     public static void ShowUserError(String error){
         if (isManual){
-            HelperFunctions.ShowUserError(error,context);
+            ec.ShowUserError(error,context);
         }
         return;
     }
 
+    public static void ShowUserMessage(String message){
+        if (isManual){
+            ec.ShowUserMessage(message);
+        }
+    }
 
     //endregion
 }

@@ -185,7 +185,7 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
     public void setIconsToAppearMode(){
-        Toolbar toolbar = findViewById(R.id.toolbarTop1);
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
 
         if (isDarkMode(this)){
             toolbar.setNavigationIcon(R.drawable.ic_list_white);

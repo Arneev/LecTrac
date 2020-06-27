@@ -78,51 +78,6 @@ public class HelperFunctions {
         Log.i("LocalDB",error);
     }
 
-    public static void ShowUserError(String error, Context context){
-        Log(error);
-        Log("Supposed to alter dialog");
-
-        android.app.AlertDialog.Builder builder = null;
-
-        if (isDarkMode(context)){
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-
-            builder.setCancelable(true);
-            builder.setTitle("Problem");
-            builder.setMessage(error);
-
-            builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-
-                }
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
-        else {
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-
-            builder.setCancelable(true);
-            builder.setTitle("Problem");
-            builder.setMessage(error);
-
-            builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-
-                }
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
-
-    }
-
     public static boolean hasWhitespace(String line){
         int size = line.length();
 

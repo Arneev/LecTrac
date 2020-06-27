@@ -29,7 +29,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.ShowUserError;
 import static com.example.lectrac.HelperFunctions.errorLecNoCourse;
 import static com.example.lectrac.HelperFunctions.quote;
 import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
@@ -54,13 +53,16 @@ public class EditTaskActivity extends AppCompatActivity {
     ArrayList<String> arrOnlyTaskIDs = new ArrayList<>();
 
     String tableName = "";
+    
+    static ErrorClass ec;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task);
-
+        
+        ec = new ErrorClass(this);
         // get values passed from Adapter class
 
         Intent intent = getIntent();
@@ -119,7 +121,7 @@ public class EditTaskActivity extends AppCompatActivity {
         boolean blnDoUpdate = false;
 
         if (isTaskNameNull()){
-            ShowUserError("Enter a task name",this);
+            ec.ShowUserError("Enter a task name",this);
         }
         else{
 
@@ -436,7 +438,7 @@ public class EditTaskActivity extends AppCompatActivity {
         }
         else{
             Log("No TaskID found");
-            ShowUserError("Please contact support - Task ID not found",this);
+            ec.ShowUserError("Please contact support - Task ID not found",this);
         }
 
 

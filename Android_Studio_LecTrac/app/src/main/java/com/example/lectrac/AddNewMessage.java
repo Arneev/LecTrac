@@ -30,6 +30,7 @@ public class AddNewMessage extends AppCompatActivity {
     static EditText edtContent;
     static Spinner spinCourse;
     public static Button btnAddMessage;
+    static ErrorClass ec;
 
     static String[] courses;
 
@@ -40,7 +41,7 @@ public class AddNewMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_message);
 
-
+        ec = new ErrorClass(this);
         edtHeading = findViewById(R.id.edtAddMessageName);
         spinClass = findViewById(R.id.spinAddMessageClass);
         edtContent = findViewById(R.id.edtAddMessageContent);
@@ -60,7 +61,7 @@ public class AddNewMessage extends AppCompatActivity {
     public void AddMessageButtonSave(){
 
         if (!isOnline(this)){
-            ShowUserError("Please connect to the internet",this);
+            ec.ShowUserError("Please connect to the internet",this);
             return;
         }
 
@@ -74,7 +75,7 @@ public class AddNewMessage extends AppCompatActivity {
 
 
         if (!CheckHeading(heading)){
-            ShowUserError("Please enter in a heading name",this);
+            ec.ShowUserError("Please enter in a heading name",this);
             return;
         }
 
@@ -118,7 +119,7 @@ public class AddNewMessage extends AppCompatActivity {
             onlineDB.Insert(tblMessage,onlineCols,onlineVals);
         }catch (Exception e){
             Log(e.toString());
-            ShowUserError("Failed to update message online, check you internet connection",this);
+            ec.ShowUserError("Failed to update message online, check you internet connection",this);
             return;
         }
 

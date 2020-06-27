@@ -29,6 +29,7 @@ import static com.example.lectrac.HelperFunctions.*;
 public class SettingsActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
+    static ErrorClass ec;
 
     public static LocalDatabaseManager localDB;
     @Override
@@ -36,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        ec = new ErrorClass(this);
         setNightMode(this);
         setIconsToAppearMode();
 
@@ -124,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
         Boolean isOnline = isOnline(SettingsActivity.this);
 
         if (!isOnline){
-            ShowUserError("Connect to the internet in order to save changes",this);
+            ec.ShowUserError("Connect to the internet in order to save changes",this);
             return;
         }
 
