@@ -59,12 +59,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
         holder.myName.setText(arrTaskNames.get(position));
         holder.myCourse.setText(arrTaskCourses.get(position));
 
-        if (arrTaskTimes.get(position).equals("null")){
+        if (arrTaskTimes.get(position).equals("NULL")){
             holder.myTime.setVisibility(View.INVISIBLE);
         }
         else{
 
-            holder.myTime.setText("Due at: " + arrTaskTimes.get(position));
+            String display = "Due at: " + arrTaskTimes.get(position).substring(0,5);
+            holder.myTime.setText(display);
         }
 
         holder.ivOptions.setOnClickListener(new View.OnClickListener() {

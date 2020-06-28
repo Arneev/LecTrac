@@ -16,14 +16,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/background">
 
-        <ProgressBar
-            android:id="@+id/progBar_Settings"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
         <RelativeLayout
             android:id="@+id/rlSettTemp2"
             android:layout_width="match_parent"
@@ -31,7 +23,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/heading_panel"
             android:paddingBottom="40dp">
 
             <androidx.appcompat.widget.Toolbar
@@ -47,24 +38,17 @@
                 android:id="@+id/tvSettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbarTop"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="11dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginRight="3dp"
+                android:background="@drawable/heading_panel"
                 android:fontFamily="@font/raleway_light"
-                android:gravity="center"
-                android:lineSpacingExtra="24sp"
-                android:paddingTop="10dp"
-                android:text="SETTINGS"
+                android:gravity="center_horizontal"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Settings"
                 android:textAlignment="center"
-                android:textAllCaps="false"
                 android:textColor="@color/headingTextColor"
                 android:textSize="50sp"
-                android:textStyle="bold"
-                android:typeface="normal" />
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -90,19 +74,15 @@
 
         <EditText
             android:id="@+id/edtSettingsNickname"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvNickname"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="-2dp"
-            android:layout_marginLeft="-2dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/general_textview"
             android:ems="10"
             android:fontFamily="@font/msyi"
             android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="@color/mainText"
@@ -119,9 +99,9 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="0dp"
-            android:background="@drawable/general_button"
+            android:background="@drawable/fancy_button"
             android:onClick="SettingSync"
-            android:text="Sync With Cloud"
+            android:text=" Sync With Cloud "
             android:textColor="@color/buttonTextColor" />
 
         <Button
@@ -133,7 +113,7 @@
             android:layout_marginStart="99dp"
             android:layout_marginLeft="99dp"
             android:layout_marginTop="59dp"
-            android:background="@drawable/general_button"
+            android:background="@drawable/fancy_button"
             android:onClick="Save"
             android:text="Save"
             android:textColor="@color/buttonTextColor" />
@@ -164,15 +144,12 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:visibility="gone"
         android:background="@color/nonItemBackground"
-        android:visibility="visible"
-        app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/miniElipseButtonColor"
-        app:itemTextColor="@color/miniElipseButtonColor"
-        app:menu="@menu/drawer_menu" />
+        app:itemTextColor="@color/miniElipseButtonColor" />
 
 
 

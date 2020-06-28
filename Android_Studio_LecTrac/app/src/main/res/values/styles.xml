@@ -18,4 +18,8 @@
         <item name="android:tint">@color/toolbarIcon</item>
     </style>
 
+    <style name="ToolbarIconLight" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorSecondary">@color/black</item>
+    </style>
+    
 </resources>

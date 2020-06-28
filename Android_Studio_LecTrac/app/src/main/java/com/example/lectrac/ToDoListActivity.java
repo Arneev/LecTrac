@@ -40,6 +40,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
 
+    OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
     static ErrorClass ec;
@@ -529,10 +530,10 @@ public class ToDoListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
         if (isDarkMode(this)){
-            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+            toolbar.getContext().setTheme(R.style.ToolbarIconDark);
         }
         else{
-            toolbar.setNavigationIcon(R.drawable.ic_list);
+            toolbar.getContext().setTheme(R.style.ToolbarIconLight);
         }
     }
 

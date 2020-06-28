@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +31,7 @@ public class AddNewMessage extends AppCompatActivity {
     static EditText edtContent;
     static Spinner spinCourse;
     public static Button btnAddMessage;
+    static Button btnBack;
     static ErrorClass ec;
 
     static String[] courses;
@@ -48,6 +50,7 @@ public class AddNewMessage extends AppCompatActivity {
         spinCourse = findViewById(R.id.spinAddMessageCourse);
         btnAddMessage = findViewById(R.id.btnAddMessageCreate);
 
+        cancelAddTaskClick();
         addOnClick();
 
         localDB = new LocalDatabaseManager(this);
@@ -196,6 +199,17 @@ public class AddNewMessage extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         startActivity(new Intent(this, MessageBoardActivity.class));
+    }
+
+    public void cancelAddTaskClick(){
+        Button btnCancel = findViewById(R.id.btnBackButton);
+
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddNewMessage.this, MessageBoardActivity.class));
+            }
+        });
     }
 
     //endregion
