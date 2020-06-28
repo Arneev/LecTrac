@@ -7,7 +7,7 @@ $link = mysqli_connect("127.0.0.1", $username, $password, $database);
 $output=array();
 //end standard connect
 
-$userID = $_REQUEST["lecturerId"];
+$userID = $_REQUEST["studentId"];
 $firstName = $_REQUEST["firstName"];
 $lastName = $_REQUEST["lastName"];
 $email = $_REQUEST["email"];
@@ -17,8 +17,7 @@ $password = $_REQUEST["password"];
 $sql = "INSERT INTO LECTURER VALUES(?,?,?,?,?,?)";
 
 $stmt = $link->prepare($sql);
-$stmt->bind_param("ssssss",$userID,);
-$stmt->bind_param("s",$userID,$firstName,$lastName,$email,$nick,$password);
+$stmt->bind_param("ssssss",$userID,$firstName,$lastName,$email,$nick,$password);
 
 if ($result = $stmt->get_result()) {
 	while ($row=$result->fetch_assoc()){

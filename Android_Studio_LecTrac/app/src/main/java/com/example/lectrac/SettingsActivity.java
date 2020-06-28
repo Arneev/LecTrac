@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -30,12 +31,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
     static ErrorClass ec;
+    static ProgressBar progressBar;
 
     public static LocalDatabaseManager localDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        progressBar = findViewById(R.id.progBar_Settings);
 
         ec = new ErrorClass(this);
         setNightMode(this);
@@ -126,9 +129,10 @@ public class SettingsActivity extends AppCompatActivity {
         Boolean isOnline = isOnline(SettingsActivity.this);
 
         if (!isOnline){
-            ec.ShowUserError("Connect to the internet in order to save changes",this);
+            ec.ShowUserError("Connect to the internet in order to save changes");
             return;
         }
+        ec.startProgressBar(progressBar);
 
 
         TextView edtNick = findViewById(R.id.edtSettingsNickname);
@@ -188,13 +192,15 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
-
+        ec.endProgressBar(progressBar);
     }
 
     public void SettingSync(View v) throws InterruptedException, JSONException, ParseException, IOException {
+        ec.startProgressBar(progressBar);
         Syncer syncer = new Syncer(SettingsActivity.this);
 
         syncer.ManualSync(SettingsActivity.this);
+        ec.endProgressBar(progressBar);
     }
 
     public void setIconsToAppearMode(){

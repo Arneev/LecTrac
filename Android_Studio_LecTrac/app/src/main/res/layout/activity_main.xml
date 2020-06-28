@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:screenOrientation="portrait"
     android:background="@drawable/background"
     tools:context=".MainActivity">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_right"
-        app:layout_constraintGuide_begin="24dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="731dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_end="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_left" />
 
     <EditText
         android:id="@+id/edtUserID"
         android:layout_width="305dp"
         android:layout_height="56dp"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/imgHeading"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="38dp"
         android:autofillHints="username"
         android:background="@drawable/general_textview"
         android:ems="10"
@@ -40,17 +23,15 @@
         android:padding="16dp"
         android:textColor="@color/buttonTextColor"
         android:textColorHint="@color/hintColor"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/edtPassword"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/imgHeading"
-        tools:ignore="LabelFor" />
+        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="305dp"
         android:layout_height="56dp"
+        android:layout_below="@+id/edtUserID"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
         android:autofillHints="username"
         android:background="@drawable/general_textview"
         android:ems="10"
@@ -62,97 +43,127 @@
         android:textColor="@color/buttonTextColor"
         android:textColorHint="@color/hintColor"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/edtUserID"
-        tools:ignore="LabelFor" />
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnForgotPassSubmit"
+        android:layout_width="150dp"
+        android:layout_height="42dp"
+        android:layout_below="@id/edtUserID"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="128dp"
+        android:background="@drawable/general_button"
+        android:fontFamily="@font/msyi"
+        android:text="Submit"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="150dp"
         android:layout_height="42dp"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/edtUserID"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="126dp"
         android:background="@drawable/general_button"
         android:fontFamily="@font/msyi"
-        android:onClick="LoginButtonClick"
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="@color/buttonTextColor"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/lblForgotPassword"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/lblForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/edtUserID"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="198dp"
+        android:clickable="true"
         android:fontFamily="@font/msyi"
         android:text="Forgot Password?"
         android:textColor="@color/login_form_details"
         android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/footer_line"
-        app:layout_constraintEnd_toStartOf="@id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        android:textStyle="bold" />
 
     <View
         android:id="@+id/footer_line"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#fff"
-        app:layout_constraintBottom_toBottomOf="@+id/create_acc"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/lblForgotPassword" />
+        android:layout_width="350dp"
+        android:layout_height="2dp"
+        android:layout_below="@+id/lblForgotPassword"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:background="#fff" />
 
     <TextView
         android:id="@+id/create_acc"
-        android:layout_width="wrap_content"
+        android:layout_width="148dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/footer_line"
+        android:layout_alignStart="@+id/lblForgotPassword"
+        android:layout_alignLeft="@+id/lblForgotPassword"
+        android:layout_alignEnd="@+id/lblForgotPassword"
+        android:layout_alignRight="@+id/lblForgotPassword"
+        android:layout_marginStart="-3dp"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="-2dp"
+        android:layout_marginRight="-2dp"
         android:fontFamily="@font/msyi"
         android:text="Create Account"
+        android:textAlignment="center"
+        android:gravity="center"
         android:textColor="@color/login_form_details"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline_right"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/footer_line" />
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/IMGlogo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
         android:contentDescription="@null"
         android:src="@drawable/logo"
-        android:tint="@color/miniElipseButtonColor"
-        app:layout_constraintBottom_toTopOf="@+id/imgHeading"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:tint="@color/miniElipseButtonColor" />
 
     <ImageView
         android:id="@+id/imgHeading"
         android:layout_width="326dp"
         android:layout_height="79dp"
+        android:layout_below="@+id/IMGlogo"
+        android:layout_alignStart="@+id/IMGlogo"
+        android:layout_alignLeft="@+id/IMGlogo"
+        android:layout_alignEnd="@+id/IMGlogo"
+        android:layout_alignRight="@+id/IMGlogo"
+        android:layout_marginStart="-70dp"
+        android:layout_marginLeft="-70dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="-82dp"
+        android:layout_marginRight="-82dp"
         android:contentDescription="@null"
         android:src="@drawable/name"
-        android:tint="@color/miniElipseButtonColor"
-        app:layout_constraintBottom_toTopOf="@+id/edtUserID"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_bias="0.783"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/IMGlogo" />
+        android:tint="@color/miniElipseButtonColor" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/progbar_login"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/transparent"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

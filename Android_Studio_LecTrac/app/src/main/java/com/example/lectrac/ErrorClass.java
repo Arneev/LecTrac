@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import static com.example.lectrac.HelperFunctions.*;
 
@@ -142,6 +144,42 @@ public class ErrorClass {
             dialog.show();
         }
 
+    }
+
+    public void startProgressBar(final ProgressBar progressBar, Context context){
+        ((Activity)context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void endProgressBar(final ProgressBar progressBar,Context context){
+        ((Activity)context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void startProgressBar(final ProgressBar progressBar){
+        ((Activity)pubCont).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void endProgressBar(final ProgressBar progressBar){
+        ((Activity)pubCont).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
 

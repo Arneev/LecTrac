@@ -115,7 +115,7 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_logout:
                 LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-                localDB.doDelete(tblUser);
+                context.deleteDatabase("LecTrac.db");
                 Intent i7 = new Intent(context, MainActivity.class);
                 context.startActivity(i7);
         }

@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="DarkBlue">#3023AE</color>
-    <color name="DarkTurquoise">#00CED1</color>
-    <color name="DarkViolet">#9400D3</color>
+    <color name="DarkTurquoise">#00CCFF</color>
+    <color name="DarkViolet">#B200FF</color>
     <color name="IndianRed">#CD5C5C</color>
     <color name="Plum">#DDA0DD</color>
     <color name="Crimson">#DC143C</color>
@@ -63,7 +63,10 @@
     <color name="toolbarIcon">#FF000000</color>
 
     //region KEY ENTER YOUR NEW COLORS IN HERE PLS
-
+    <color name = "progBar">#3A3A3A</color>
+    <color name = "progress_start">#454545</color>
+    <color name = "progress_end">#171717</color>
     //endregion
+
 
 </resources>

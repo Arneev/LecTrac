@@ -39,7 +39,9 @@
     <color name="toolbarIcon">#FFFFFFFF</color>
 
     //region You don't need to add in here BUT if you are, put it in here
-
+    <color name = "progBar">#FFFFFF</color>
+    <color name = "progress_start">#FFFFFF</color>
+    <color name = "progress_end">#454545</color>
     //endregion
 
 </resources>

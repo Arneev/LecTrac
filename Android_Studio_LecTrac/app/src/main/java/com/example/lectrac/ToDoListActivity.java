@@ -40,7 +40,6 @@ public class ToDoListActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
 
-    OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
     static ErrorClass ec;

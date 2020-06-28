@@ -232,6 +232,17 @@ final public class OnlineDatabaseManager {
                 "SELECT * FROM LECTURER WHERE Lecturer_ID = " + quote(userID));
     }
 
+    public boolean isLec(String userID) throws InterruptedException, JSONException, IOException {
+        boolean isLec = isEmpty(tblLecturer,"Lecturer_ID = " + quote(userID));
+        return  isLec;
+
+    }
+
+    public boolean isInStudent(String userID) throws InterruptedException, JSONException, IOException {
+        boolean studentEmpty = isEmpty(tblStudent,"Student_ID = " + quote(userID));
+        return studentEmpty;
+    }
+
 
 
 }
