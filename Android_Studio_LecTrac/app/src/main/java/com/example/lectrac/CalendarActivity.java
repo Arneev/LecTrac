@@ -235,10 +235,10 @@ public class CalendarActivity extends AppCompatActivity {
 
         for (int index = 0; index < cursor.getCount(); index++) {
 
-            if (!cursor.getString(indexDate).equals("NULL")){
-                arrCalendarDates.add(cursor.getString(indexDate));
-            }
-            cursor.moveToNext();
+//            if (!cursor.getString(indexDate).equals("NULL")){
+  //              arrCalendarDates.add(cursor.getString(indexDate));
+    //        }
+      //      cursor.moveToNext();
         }
     }
 

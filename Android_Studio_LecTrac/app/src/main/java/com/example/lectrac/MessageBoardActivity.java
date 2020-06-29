@@ -362,6 +362,7 @@ public class MessageBoardActivity extends AppCompatActivity {
 
     public void setIconsToAppearMode(){
         Toolbar toolbar = findViewById(R.id.toolbarTop);
+        Spinner spinClass = findViewById(R.id.spinMessageClass);
 
         if (isDarkMode(this)){
             toolbar.getContext().setTheme(R.style.ToolbarIconDark);

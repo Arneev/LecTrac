@@ -38,7 +38,7 @@
     <color name="buttonColor">@color/Plum</color>
     <color name="buttonTextColor">#000000</color>
     <color name="textViewColor">#126C6C6C</color>
-    <color name="spinnerColor">#C5C5C5</color>
+    <color name="spinnerColor">@color/white</color>
     <color name="generalPanel">@color/Plum</color>
     <color name="headingPanel">#2DFFFFFF</color>
     <color name="headingTextColor">@color/white</color>

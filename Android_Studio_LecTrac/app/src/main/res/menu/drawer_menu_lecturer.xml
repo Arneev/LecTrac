@@ -17,10 +17,6 @@
             android:title="To-Do List" />
 
         <item
-            android:id="@+id/nav_courses"
-            android:icon="?attr/actionModePasteDrawable"
-            android:title="Courses" />
-        <item
             android:id="@+id/nav_messageBoard"
             android:icon="@drawable/ic_message_board"
             android:title="Message Board" />

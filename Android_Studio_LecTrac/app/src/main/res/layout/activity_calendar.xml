@@ -148,12 +148,8 @@
                     android:id="@+id/rvCalendarEvents"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:layout_below="@+id/tvCalendarDate"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginRight="0dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
                     android:visibility="visible">
 
                 </androidx.recyclerview.widget.RecyclerView>
@@ -180,9 +176,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/nonItemBackground"
-        android:visibility="visible"
         app:itemIconTint="@color/miniElipseButtonColor"
-        app:itemTextColor="@color/miniElipseButtonColor" />
+        app:itemTextColor="@color/miniElipseButtonColor"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
