@@ -201,7 +201,7 @@ public class CalendarActivity extends AppCompatActivity {
             assert tempDate != null;
             epoch = tempDate.getTime() + 'L';
 
-            Event event = new Event(Color.RED, epoch, null);
+            Event event = new Event(Color.BLUE, epoch, null);
             cCalendarView.addEvent(event);
         }
 
@@ -257,16 +257,17 @@ public class CalendarActivity extends AppCompatActivity {
     public void setUpDate(){
 
         final TextView tvDate = findViewById(R.id.tvCalendarDate);
+        final DateFormat displayFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
         // current date onCreate
         Date currDate = Calendar.getInstance().getTime();
-        tvDate.setText(format.format(currDate));
+        tvDate.setText(displayFormat.format(currDate));
 
         cCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
 
-                calendarDate = format.format(dateClicked);
+                calendarDate = displayFormat.format(dateClicked);
                 tvDate.setText(calendarDate);
                 Log(calendarDate);
 
@@ -414,12 +415,12 @@ public class CalendarActivity extends AppCompatActivity {
         if (isDarkMode(this)){
             btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left_white);
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right_white);
-            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+            toolbar.getContext().setTheme(R.style.ToolbarIconDark);
         }
         else{
             btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left);
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
-            toolbar.setNavigationIcon(R.drawable.ic_list);
+            toolbar.getContext().setTheme(R.style.ToolbarIconLight);
         }
     }
 

@@ -37,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
     static Button saveButton;
     static Context context;
 
+
     public static LocalDatabaseManager localDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,8 +142,6 @@ public class SettingsActivity extends AppCompatActivity {
             return;
         }
 
-
-
         TextView edtNick = findViewById(R.id.edtSettingsNickname);
         CheckBox cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
 
@@ -222,16 +221,19 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
+
+
 
     public void setIconsToAppearMode(){
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
         if (isDarkMode(this)){
-            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+            toolbar.getContext().setTheme(R.style.ToolbarIconDark);
         }
         else{
-            toolbar.setNavigationIcon(R.drawable.ic_list);
+            toolbar.getContext().setTheme(R.style.ToolbarIconLight);
         }
     }
 

@@ -635,9 +635,6 @@ public class RegisterLoginManager{
                 if (hashPass.equals(hashPassFromDB)){
                     return true;
                 }
-                else{
-                    ec.ShowUserError("Incorrect password");
-                }
 
             }catch (Exception e ){
                 Log("For some weird reason, cannot get JSONObject");
@@ -667,9 +664,6 @@ public class RegisterLoginManager{
 
                     if (hashPass.equals(hashPassFromDB)){
                         return true;
-                    }
-                    else{
-                        ec.ShowUserError("Incorrect password");
                     }
 
                 }catch (Exception e ){

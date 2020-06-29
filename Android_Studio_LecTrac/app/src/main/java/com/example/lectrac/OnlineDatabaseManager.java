@@ -23,12 +23,12 @@ import java.util.concurrent.CountDownLatch;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.arch.core.util.Function;
- import okhttp3.Call;
- import okhttp3.Callback;
- import okhttp3.HttpUrl;
- import okhttp3.OkHttpClient;
- import okhttp3.Request;
- import okhttp3.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.example.lectrac.HelperFunctions.*;
 
@@ -279,7 +279,7 @@ final public class OnlineDatabaseManager {
         for (int i = 0; i < size; i++){
             toAdd += arrayName + "[]="+ arrayVals[i];
 
-                toAdd += "&";
+            toAdd += "&";
 
         }
 
@@ -377,72 +377,72 @@ final public class OnlineDatabaseManager {
     //region Queries
 
 
-        JSONArray insert_lecturer_lecturerarr(String[] vals) throws InterruptedException {
-            String[] params = new String[6];
-            params[0] = "userID";
-            params[1] = "firstName";
-            params[2] = "lastName";
-            params[3] = "email";
-            params[4] = "nick";
-            params[5] = "password";
+    JSONArray insert_lecturer_lecturerarr(String[] vals) throws InterruptedException {
+        String[] params = new String[6];
+        params[0] = "userID";
+        params[1] = "firstName";
+        params[2] = "lastName";
+        params[3] = "email";
+        params[4] = "nick";
+        params[5] = "password";
 
-            return Query( insert_lecturer_lecturerarr,params,vals);
-        }
+        return Query( insert_lecturer_lecturerarr,params,vals);
+    }
 
-        JSONArray insert_student_studentarr(String[] vals) throws InterruptedException {
-            String[] params = new String[6];
-            params[0] = "userID";
-            params[1] = "firstName";
-            params[2] = "lastName";
-            params[3] = "email";
-            params[4] = "nick";
-            params[5] = "password";
+    JSONArray insert_student_studentarr(String[] vals) throws InterruptedException {
+        String[] params = new String[6];
+        params[0] = "userID";
+        params[1] = "firstName";
+        params[2] = "lastName";
+        params[3] = "email";
+        params[4] = "nick";
+        params[5] = "password";
 
-            return Query( insert_student_studentarr,params,vals);
-        }
+        return Query( insert_student_studentarr,params,vals);
+    }
 
-        JSONArray select_course_enrolled_userid_union_select_registered_userid(String userID) throws InterruptedException {
+    JSONArray select_course_enrolled_userid_union_select_registered_userid(String userID) throws InterruptedException {
 
-            return Query( select_course_enrolled_userid_union_select_registered_userid,"userID",userID);
-        }
-
-
-        JSONArray select_lecturer_registered_coursearr(String[] courses) throws InterruptedException {
-            return Query( select_lecturer_registered_coursearr,"course",courses);
-        }
-
-        JSONArray select_registered_coursearr(String[] courses) throws InterruptedException {
-            return Query( select_registered_coursearr,"course",courses);
-        }
-
-        JSONArray select_student_studentid(String userID) throws InterruptedException {
-            return Query( select_student_studentid,"studentID",userID);
-        }
-        JSONArray select_task_coursearr(String[] courses) throws InterruptedException {
-            return Query( select_task_coursearr,"course",courses);
-        }
-        JSONArray select_message_coursearr(String[] courses) throws InterruptedException {
-            return Query( select_message_coursearr,"course",courses);
-        }
-
-        JSONArray select_wits_userid(String userID) throws InterruptedException {
-            return Query( select_wits_userid,"userID",userID);
-        }
-
-        JSONArray select_test_wrote_coursearr_userid(String[] course, String userID) throws InterruptedException {
-            return Query( select_test_wrote_coursearr_userid,"course",course,"userID",userID);
-        }
-
-        JSONArray update_lecturer_password_userid(String userID) throws InterruptedException {
-            return Query( update_lecturer_password_userid,"userID",userID);
-        }
-
-        JSONArray update_student_password_userid(String userID) throws InterruptedException {
-            return Query( update_student_password_userid,"userID",userID);
-        }
+        return Query( select_course_enrolled_userid_union_select_registered_userid,"userID",userID);
+    }
 
 
-        //endregion
+    JSONArray select_lecturer_registered_coursearr(String[] courses) throws InterruptedException {
+        return Query( select_lecturer_registered_coursearr,"course",courses);
+    }
+
+    JSONArray select_registered_coursearr(String[] courses) throws InterruptedException {
+        return Query( select_registered_coursearr,"course",courses);
+    }
+
+    JSONArray select_student_studentid(String userID) throws InterruptedException {
+        return Query( select_student_studentid,"studentID",userID);
+    }
+    JSONArray select_task_coursearr(String[] courses) throws InterruptedException {
+        return Query( select_task_coursearr,"course",courses);
+    }
+    JSONArray select_message_coursearr(String[] courses) throws InterruptedException {
+        return Query( select_message_coursearr,"course",courses);
+    }
+
+    JSONArray select_wits_userid(String userID) throws InterruptedException {
+        return Query( select_wits_userid,"userID",userID);
+    }
+
+    JSONArray select_test_wrote_coursearr_userid(String[] course, String userID) throws InterruptedException {
+        return Query( select_test_wrote_coursearr_userid,"course",course,"userID",userID);
+    }
+
+    JSONArray update_lecturer_password_userid(String userID) throws InterruptedException {
+        return Query( update_lecturer_password_userid,"userID",userID);
+    }
+
+    JSONArray update_student_password_userid(String userID) throws InterruptedException {
+        return Query( update_student_password_userid,"userID",userID);
+    }
+
+
+    //endregion
 
     //region Keys
     JSONArray delete_message_messageid(String messageID) throws InterruptedException {

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
     android:screenOrientation="portrait"
-    android:background="@color/generalPanel"
+    android:background="@color/blueBackground"
     android:orientation="horizontal">
 
 
@@ -52,7 +52,7 @@
         android:layout_toEndOf="@+id/tvTaskCourseName"
         android:layout_toRightOf="@+id/tvTaskCourseName"
         android:text="Extra"
-        android:textColor="@color/subSubHeading"
+        android:textColor="@color/subHeading"
         android:textSize="22sp"
         android:textStyle="bold|italic"
         app:fontFamily="@font/msyi" />

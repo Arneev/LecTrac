@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -27,15 +24,9 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
 import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.STUDENT_NUMBER_LENGTH;
-import static com.example.lectrac.HelperFunctions.hasWhitespace;
 import static com.example.lectrac.HelperFunctions.isDarkMode;
 import static com.example.lectrac.HelperFunctions.myPrefName;
-import static com.example.lectrac.HelperFunctions.passwordLength;
-import static com.example.lectrac.HelperFunctions.quote;
 import static com.example.lectrac.HelperFunctions.setNightMode;
-import static com.example.lectrac.HelperFunctions.tblLecturer;
-import static com.example.lectrac.HelperFunctions.tblStudent;
 import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,11 +40,8 @@ public class MainActivity extends AppCompatActivity {
     static ErrorClass ec;
     static Button loginBtn;
     static TextView lblForgotPass;
-    static Button forgotPassButton;
-    static TextView tvPass;
-    static TextView tvUsername;
     static boolean onForgotPass;
-    static ProgressBar progressBar;
+    static TextView tvPass;
 
     //OnCreate
     @Override
@@ -61,21 +49,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        onForgotPass = false;
         ec = new ErrorClass(this);
-
         loginBtn = findViewById(R.id.btnLogin);
         lblForgotPass = findViewById(R.id.lblForgotPassword);
-        forgotPassButton = findViewById(R.id.btnForgotPassSubmit);
         tvPass = findViewById(R.id.edtPassword);
-        tvUsername = findViewById(R.id.edtUserID);
-        progressBar = findViewById(R.id.progbar_login);
-
-
-        ec.endProgressBar(progressBar);
-        setLoginButtonListener();
         setLblForgotPassListener();
-
+        setButtonListener();
 
         SetToDefault();
 
@@ -129,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setLoginButtonListener(){
+    public void setButtonListener(){
         loginBtn = findViewById(R.id.btnLogin);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void LoginButtonClick() throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
-        ec.startProgressBar(progressBar);
         RegisterLoginManager loginManager = new RegisterLoginManager();
 
         TextView tvUserID = (TextView)findViewById(R.id.edtUserID);
@@ -185,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //endregion
 
-                    //endProgressBar();
                     startActivity(new Intent(MainActivity.this, CalendarActivity.class));
                     return;
                 }
@@ -193,15 +170,14 @@ public class MainActivity extends AppCompatActivity {
 
             t.start();
             t.join();
-
         }
         else{
             Log("LOG IN IS NOT SUCCESSFUL :(");
-            ec.endProgressBar(progressBar);
         }
     }
 
     private void openRegistration(){
+
         TextView openRegister = (TextView) findViewById(R.id.create_acc);
         openRegister.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -226,35 +202,17 @@ public class MainActivity extends AppCompatActivity {
         lblForgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setForgotButtonListener();
 
-                loginBtn.setVisibility(View.GONE);
-                tvPass.setVisibility(View.GONE);
-                forgotPassButton.setVisibility(View.VISIBLE);
                 onForgotPass = true;
             }
         });
     }
 
-    public void setForgotButtonListener(){
-        forgotPassButton = findViewById(R.id.btnForgotPassSubmit);
 
-        forgotPassButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userID = tvUsername.getText().toString();
+    //region moveToForgot Password stuff
+    /*
 
-                if (!checkStudentID(userID)){
-                    return;
-                }
-
-                if (resetPassword(userID)) {
-                    GoBackToOrig();
-                }
-            }
-        });
-    }
-
+    requires import static com.example.lectrac.HelperFunctions.*;
     public boolean resetPassword(String userID){
         OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
@@ -283,12 +241,6 @@ public class MainActivity extends AppCompatActivity {
         return  false;
     }
 
-    public void GoBackToOrig(){
-        loginBtn.setVisibility(View.VISIBLE);
-        tvPass.setVisibility(View.VISIBLE);
-        forgotPassButton.setVisibility(View.GONE);
-        onForgotPass = false;
-    }
 
     boolean checkStudentID(String studentID){
         Log("checkStudentID");
@@ -318,19 +270,15 @@ public class MainActivity extends AppCompatActivity {
         return true;
 
     }
+    */
 
-
-
+    //endregion
 
 
     //region Helper Function
 
     @Override
     public void onBackPressed(){
-        if (onForgotPass){
-            GoBackToOrig();
-            return;
-        }
         startActivity(new Intent(this, RegisterActivity.class));
     }
 

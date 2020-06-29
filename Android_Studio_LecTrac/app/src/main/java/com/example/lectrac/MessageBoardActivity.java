@@ -364,10 +364,10 @@ public class MessageBoardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
         if (isDarkMode(this)){
-            toolbar.setNavigationIcon(R.drawable.ic_list_white);
+            toolbar.getContext().setTheme(R.style.ToolbarIconDark);
         }
         else{
-            toolbar.setNavigationIcon(R.drawable.ic_list);
+            toolbar.getContext().setTheme(R.style.ToolbarIconLight);
         }
     }
 

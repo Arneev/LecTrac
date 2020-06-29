@@ -9,16 +9,18 @@
     tools:context=".CalendarActivity"
     tools:openDrawer="start">
 
-    <ScrollView
+
+        <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background">
 
+
         <RelativeLayout
             android:id="@+id/rlCal1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background">
+            android:layout_height="wrap_content">
+
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarTop"
@@ -33,7 +35,6 @@
                 android:id="@+id/tvCalendarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbarTop"
                 android:layout_marginTop="11dp"
                 android:background="@drawable/heading_panel"
                 android:fontFamily="@font/raleway_light"
@@ -172,8 +173,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/nonItemBackground"
-        android:visibility="visible"
-        app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/miniElipseButtonColor"
         app:itemTextColor="@color/miniElipseButtonColor"/>
 

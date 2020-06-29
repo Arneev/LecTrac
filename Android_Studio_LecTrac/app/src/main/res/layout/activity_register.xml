@@ -31,7 +31,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="firstName"
-        android:background="@drawable/general_button"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:fontFamily="@font/msyi"
         android:hint="Student/Lecturer ID"
@@ -52,7 +52,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="firstName"
-        android:background="@drawable/general_button"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:fontFamily="@font/msyi"
         android:hint="First Name"
@@ -71,7 +71,8 @@
         android:id="@+id/btnCreateAcc"
         android:layout_width="150dp"
         android:layout_height="42dp"
-        android:background="@drawable/general_button"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/fancy_button"
         android:fontFamily="@font/msyi"
         android:onClick="RegisterButtonClick"
         android:text="Create Account"
@@ -81,15 +82,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/edtConfirmPassword" />
+        app:layout_constraintStart_toStartOf="@id/guideline_left" />
 
     <EditText
         android:id="@+id/edtSettingsNickname"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="nickname"
-        android:background="@drawable/general_button"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:fontFamily="@font/msyi"
         android:hint="Nickname"
@@ -109,7 +109,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="email"
-        android:background="@drawable/general_button"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:fontFamily="@font/msyi"
         android:hint="Email Address"
@@ -129,7 +129,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="surname"
-        android:background="@drawable/general_button"
+        android:background="@drawable/general_textview"
         android:ems="10"
         android:fontFamily="@font/msyi"
         android:hint="Surname"
@@ -142,27 +142,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/edtFirstName"
-        tools:ignore="LabelFor" />
-
-    <EditText
-        android:id="@+id/edtConfirmPassword"
-        android:layout_width="305dp"
-        android:layout_height="wrap_content"
-        android:autofillHints="password"
-        android:background="@drawable/general_button"
-        android:ellipsize="start"
-        android:ems="10"
-        android:fontFamily="@font/msyi"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:padding="16dp"
-        android:textColor="@color/buttonTextColor"
-        android:textColorHint="@color/hintColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCreateAcc"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
         tools:ignore="LabelFor" />
 
     <TextView
@@ -200,7 +179,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:autofillHints="password"
-        android:background="@drawable/general_button"
+        android:background="@drawable/general_textview"
         android:ellipsize="start"
         android:ems="10"
         android:fontFamily="@font/msyi"
@@ -210,10 +189,10 @@
         android:textColor="@color/buttonTextColor"
         android:textColorHint="@color/hintColor"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/edtConfirmPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/edtSettingsNickname"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreateAcc"
         tools:ignore="LabelFor" />
 
     <ImageView
