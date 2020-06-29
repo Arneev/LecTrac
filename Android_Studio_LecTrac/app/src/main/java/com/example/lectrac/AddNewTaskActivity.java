@@ -255,7 +255,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         // data
         String tableName = tblUserTask;
         String[] columns = {"Task_Name", "Task_Due_Date", "Task_Due_Time","isDone","Course_Code"};
-        String[] data = {sTaskName, sDueDate, sDueTime, "0", sCourseCode};
+        String[] data = {quote(sTaskName), quote(sDueDate), quote(sDueTime), "0", quote(sCourseCode)};
 
         // save new task to local database
 
@@ -284,7 +284,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
                 Log("isLec and about to insert into onlineDB");
 
-                String[] lecData = {sTaskName,sDueDate,sCourseCode,userID,sDueTime};
+                String[] lecData = {unquote(sTaskName),unquote(sDueDate),unquote(sCourseCode),userID,unquote(sDueTime)};
 
                 onlineDB.insert_task(lecData);
 
@@ -320,7 +320,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         TextView tvDate = findViewById(R.id.tvDisplayDate);
         String checkDate = tvDate.getText().toString();
 
-        if (checkDate.equals("")){
+        if (checkDate.equals("") || checkDate.equals("Date")){
             Log("checkDate is null");
             return true;
         }
@@ -344,7 +344,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         TextView tvTime = findViewById(R.id.tvDisplayTime);
         String checkTime = tvTime.getText().toString();
 
-        if (checkTime.equals("")){
+        if (checkTime.equals("") || checkTime.equals("Time")){
             Log("checkTime is null");
             return true;
         }
