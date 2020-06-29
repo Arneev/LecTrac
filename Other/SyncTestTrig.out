@@ -1,0 +1,64 @@
+mysql> DELIMITER //
+mysql> CREATE TRIGGER SYNC_TEST_TRI
+    -> AFTER INSERT ON WITS_TEST
+    -> FOR EACH ROW 
+    -> BEGIN
+    -> INSERT INTO TEST
+    -> SELECT * FROM(
+    -> SELECT * FROM WITS_TEST ORDER BY Test_No DESC LIMIT 1
+    -> )
+    -> as A;
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> SELECT * FROM WITS_TEST//
++---------+-----------------+-----------+------------+-------------+
+| Test_No | Test_Name       | Test_Mark | Test_Total | Course_Code |
++---------+-----------------+-----------+------------+-------------+
+|       1 | UHHH test1      |        71 |         80 | COMS2002    |
+|       2 | TEST 2 COMS2002 |        69 |        100 | COMS2002    |
+|       3 | TEST 1 COMS2012 |        84 |        100 | COMS2012    |
+|       4 | JOKER           |        99 |        100 | APPM2007    |
++---------+-----------------+-----------+------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST//
++---------+-----------------+-----------+------------+-------------+
+| Test_No | Test_Name       | Test_Mark | Test_Total | Course_Code |
++---------+-----------------+-----------+------------+-------------+
+|       1 | UHHH test1      |        71 |         80 | COMS2002    |
+|       2 | TEST 2 COMS2002 |        69 |        100 | COMS2002    |
+|       3 | TEST 1 COMS2012 |        84 |        100 | COMS2012    |
+|       4 | JOKER           |        99 |        100 | APPM2007    |
++---------+-----------------+-----------+------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO WITS_TEST VALUES(5,"Hello :D",99,100,"COMS2002")//
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM WITS_TEST//
++---------+-----------------+-----------+------------+-------------+
+| Test_No | Test_Name       | Test_Mark | Test_Total | Course_Code |
++---------+-----------------+-----------+------------+-------------+
+|       1 | UHHH test1      |        71 |         80 | COMS2002    |
+|       2 | TEST 2 COMS2002 |        69 |        100 | COMS2002    |
+|       3 | TEST 1 COMS2012 |        84 |        100 | COMS2012    |
+|       4 | JOKER           |        99 |        100 | APPM2007    |
+|       5 | Hello :D        |        99 |        100 | COMS2002    |
++---------+-----------------+-----------+------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST//
++---------+-----------------+-----------+------------+-------------+
+| Test_No | Test_Name       | Test_Mark | Test_Total | Course_Code |
++---------+-----------------+-----------+------------+-------------+
+|       1 | UHHH test1      |        71 |         80 | COMS2002    |
+|       2 | TEST 2 COMS2002 |        69 |        100 | COMS2002    |
+|       3 | TEST 1 COMS2012 |        84 |        100 | COMS2012    |
+|       4 | JOKER           |        99 |        100 | APPM2007    |
+|       5 | Hello :D        |        99 |        100 | COMS2002    |
++---------+-----------------+-----------+------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> notee
