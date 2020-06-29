@@ -4,4 +4,13 @@
     // the ActionBarDrawerToggle needs this code:
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="ExplanationString">
+        Your WITS password is the password that was issued to you when you became a Witsie.\n\nIn
+        the fields below, please enter you student/lecturer ID and your WITS password, and save
+        your changes. Your LecTrac password will then be reset to your WITS password.\n\nIf you have
+        forgotten your WITS password please contact the CNS Helpdesk on (011) 717-1717
+        or email ithelp@wits.ac.za.
+    </string>
 </resources>

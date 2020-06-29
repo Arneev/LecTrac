@@ -50,6 +50,8 @@ public class AddNewMessage extends AppCompatActivity {
         spinCourse = findViewById(R.id.spinAddMessageCourse);
         btnAddMessage = findViewById(R.id.btnAddMessageCreate);
 
+        setIconsToAppearMode();
+
         cancelAddTaskClick();
         addOnClick();
 
@@ -204,5 +206,22 @@ public class AddNewMessage extends AppCompatActivity {
         });
     }
 
+
+    public void setIconsToAppearMode(){
+
+        Spinner spinCourse = findViewById(R.id.spinAddMessageCourse);
+        Spinner spinClass = findViewById(R.id.spinAddMessageClass);
+
+        if (isDarkMode(this)){
+
+            spinCourse.getPopupContext().setTheme(R.style.darkSpinner);
+            spinCourse.getContext().setTheme(R.style.darkSpinnerTheme);
+        }
+        else{
+
+            spinCourse.getPopupContext().setTheme(R.style.lightSpinner);
+            spinCourse.getContext().setTheme(R.style.lightSpinnerTheme);
+        }
+    }
     //endregion
 }

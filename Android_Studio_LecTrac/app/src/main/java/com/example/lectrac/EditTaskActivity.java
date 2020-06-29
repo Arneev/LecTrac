@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,12 +56,18 @@ public class EditTaskActivity extends AppCompatActivity {
     boolean updateTimeInOnline;
     boolean updateCourseCode;
 
+    Boolean isLec, mustPost;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task);
-        
+
+        mustPost = false;
+        // is user a student or lecturer?
+        isLec = localDB.isLec();
+
         ec = new ErrorClass(this);
         // get values passed from Adapter class
 
@@ -250,24 +257,25 @@ public class EditTaskActivity extends AppCompatActivity {
                     Log("Update in online DB");
 
 
-                    //onlineDB.Update(tableName, setting, condition);
+                    if (mustPost) {
+                        //onlineDB.Update(tableName, setting, condition);
 
-                    if (updateCourseCode){
-                        onlineDB.update_task_coursecode_taskid(unquote(newCourseCode),taskID);
+                        if (updateCourseCode) {
+                            onlineDB.update_task_coursecode_taskid(unquote(newCourseCode), taskID);
+                        }
+
+                        if (!newTaskName.equals(oldTaskName)) {
+                            onlineDB.update_task_taskname_taskid(unquote(newTaskName), taskID);
+                        }
+
+                        if (updateTimeInOnline) {
+                            onlineDB.update_task_duetime_taskid(unquote(newDueTime), taskID);
+                        }
+
+                        if (updateDateInOnline) {
+                            onlineDB.update_task_duedate_taskid(unquote(newDueDate), taskID);
+                        }
                     }
-
-                    if (!newTaskName.equals(oldTaskName)){
-                        onlineDB.update_task_taskname_taskid(unquote(newTaskName),taskID);
-                    }
-
-                    if (updateTimeInOnline){
-                        onlineDB.update_task_duetime_taskid(unquote(newDueTime),taskID);
-                    }
-
-                    if (updateDateInOnline){
-                        onlineDB.update_task_duedate_taskid(unquote(newDueDate),taskID);
-                    }
-
                     //end of OnlineDB
                 }
                 else {
@@ -511,8 +519,20 @@ public class EditTaskActivity extends AppCompatActivity {
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+
                 try {
+                    if (isLec) {
+                        isPosted();
+                        return;
+                    }
                     saveTask();
+                    startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
                 } catch (InterruptedException | JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -564,6 +584,56 @@ public class EditTaskActivity extends AppCompatActivity {
     public void onBackPressed(){
         startActivity(new Intent(this, ToDoListActivity.class));
     }
+
+    public void isPosted(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Edit Task");
+
+        builder.setMessage("Would you like to post this task to students?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mustPost = true;
+
+                        try {
+                            saveTask();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        dialog.dismiss();
+                        startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mustPost = false;
+
+                        try {
+                            saveTask();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        dialog.dismiss();
+                        startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
 
     //endregion

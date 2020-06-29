@@ -21,5 +21,9 @@
     <style name="ToolbarIconLight" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorSecondary">@color/black</item>
     </style>
+
+    <style name="lightSpinner" parent="ThemeOverlay.AppCompat.Dark" />
+
+    <style name="lightSpinnerTheme" parent="ThemeOverlay.AppCompat.Light" />
     
 </resources>
