@@ -330,11 +330,11 @@ final public class OnlineDatabaseManager {
     JSONArray Query(String url, String param1, String val1, String param2, String val2) throws InterruptedException {
         arr = null;
         url = baseUrl + url;
-        HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-        httpBuilder.addQueryParameter(param2, val2);
-        httpBuilder.addQueryParameter(param1, val1);
-        url = httpBuilder.build().toString();
 
+        url += param2 + "=" +val2;
+        url += "&" + param1 + "=" + val1;
+
+        Log(url);
 
         //Request
         final Request request = new Request.Builder()

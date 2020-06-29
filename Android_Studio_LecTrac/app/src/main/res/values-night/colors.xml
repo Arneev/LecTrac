@@ -21,7 +21,7 @@
     <color name="headingTextColor">@color/OffWhite</color>
     <color name="subHeading">@color/MistyRose</color>
     <color name="subSubHeading">@color/LightSteelBlue</color>
-    <color name ="spinnerBackground">#57FFFFFF</color>
+    <color name ="spinnerBackground">#57DDDDDD</color>
     <color name = "spinnerStroke">#3A3A3A</color>
     <color name="iconColor">#FFFFFF</color>
     <color name="miniElipseButtonColor">#FFFFFF</color>

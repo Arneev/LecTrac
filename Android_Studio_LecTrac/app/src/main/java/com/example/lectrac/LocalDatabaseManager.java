@@ -252,10 +252,8 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
     public String getUserID(LocalDatabaseManager localDB){
         Cursor cursor = doQuery("SELECT * FROM " + tblUser);
-        int iCount = cursor.getCount();
-        cursor.moveToFirst();
 
-        if (iCount == 0){
+        if (!cursor.moveToFirst()){
             Log("getUserID but not logged in");
             return "ERROR";
         }

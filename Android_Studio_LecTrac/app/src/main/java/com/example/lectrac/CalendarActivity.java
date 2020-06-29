@@ -62,7 +62,7 @@ public class CalendarActivity extends AppCompatActivity {
                                                 "June", "July", "August", "September", "October",
                                                 "November", "December"};
 
-    RecyclerView recyclerView;
+    static RecyclerView recyclerView;
     CalendarAdapter calendarAdapter;
     static LocalDatabaseManager localDB;
 
@@ -74,23 +74,20 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-
-
+        recyclerView = (RecyclerView) findViewById(R.id.rvCalendarEvents);
+        cCalendarView = (CompactCalendarView) findViewById(R.id.cvCalendar);
 
         localDB = new LocalDatabaseManager(this);
 
         setDrawer();
 
-        cCalendarView = (CompactCalendarView) findViewById(R.id.cvCalendar);
-        recyclerView = (RecyclerView) findViewById(R.id.rvCalendarEvents);
-
         btnScrollLeft = findViewById(R.id.btnCalendarLeft);
         btnScrollRight = findViewById(R.id.btnCalendarRight);
         tvMonth = findViewById(R.id.tvCalendarMonth);
 
-        setUpDate();
-        scrollOnClick();
 
+        scrollOnClick();
+        setUpDate();
         try {
             highlightDates();
         } catch (ParseException e) {
@@ -222,6 +219,11 @@ public class CalendarActivity extends AppCompatActivity {
             Log("No local tasks");
             return;
         }
+        int size = cursor.getCount();
+        if (size == 0){
+            Log("No local tasks");
+            return;
+        }
 
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
@@ -241,6 +243,12 @@ public class CalendarActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM LECTURER_TASK");
 
         if (!cursor.moveToFirst()){
+            Log("No local tasks");
+            return;
+        }
+        int size = cursor.getCount();
+        if (size == 0){
+            Log("No local tasks");
             return;
         }
 
@@ -312,7 +320,11 @@ public class CalendarActivity extends AppCompatActivity {
                 calendarDate + "'");
 
         if (!cursor.moveToFirst()){
-
+            Log("No local tasks");
+            return;
+        }
+        int size = cursor.getCount();
+        if (size == 0){
             Log("No local tasks");
             return;
         }
@@ -346,7 +358,11 @@ public class CalendarActivity extends AppCompatActivity {
                 calendarDate + "'");
 
         if (!cursor1.moveToFirst()){
-
+            Log("No online tasks");
+            return;
+        }
+        int size = cursor1.getCount();
+        if (size == 0){
             Log("No online tasks");
             return;
         }
