@@ -203,7 +203,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         sCourseCode = spinCourse.getSelectedItem().toString();
     }
 
-    public void saveTask() throws InterruptedException, JSONException, IOException {
+    public boolean saveTask() throws InterruptedException, JSONException, IOException {
         Log("About to saveTask");
 
         getTaskTitle();
@@ -217,15 +217,24 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
         if (isTaskNameNull()) {
             ec.ShowUserError("Enter a task name", this);
-            return;
+            return false;
+        }
+        else{
+            sTaskName = quote(sTaskName);
         }
 
         if (isDateNull()){
             sDueDate = "NULL";
         }
+        else {
+            sDueDate = quote(sDueDate);
+        }
 
         if (isTimeNull()){
             sDueTime = "NULL";
+        }
+        else{
+            sDueTime = quote(sDueTime);
         }
 
 
@@ -234,16 +243,19 @@ public class AddNewTaskActivity extends AppCompatActivity {
             if (isLec){
                 if (courseSize > 0){
                     ec.ShowUserError("You have to enter a course code, cannot be empty",this);
+                    return false;
                 }
                 else if (courseSize == 0){
                     ec.ShowUserError("Contact support with " + errorLecNoCourse,this);
-                    return;
+                    return false;
                 }
 
             }
 
             sCourseCode = "NULL"; //Going to perso userTask (Only he/she can access it)
 
+        }else{
+            sCourseCode = quote(sCourseCode);
         }
 
 
@@ -255,7 +267,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         // data
         String tableName = tblUserTask;
         String[] columns = {"Task_Name", "Task_Due_Date", "Task_Due_Time","isDone","Course_Code"};
-        String[] data = {quote(sTaskName), quote(sDueDate), quote(sDueTime), "0", quote(sCourseCode)};
+        String[] data = {sTaskName, sDueDate, sDueTime, "0", sCourseCode};
 
         // save new task to local database
 
@@ -265,14 +277,14 @@ public class AddNewTaskActivity extends AppCompatActivity {
             if (!sCourseCode.equals("None") && mustPost){
                 if (!isOnline(this)){
                     ec.ShowUserMessage("You are not connected to the internet",this);
-                    return;
+                    return false;
                 }
 
                 //Local insert - inefficient, change later on but keep for now
-                String userID = (localDB.getUserID(localDB));
+                String userID = quote(localDB.getUserID(localDB));
 
                 String[] locLecCols = {"Task_Name","Task_Due_Date","Task_Due_Time","isDone","Course_Code","Lecturer_ID"};
-                String[] locLecData = {quote(sTaskName),quote(sDueDate),quote(sDueTime),"0",quote(sCourseCode),quote(userID)};
+                String[] locLecData = {sTaskName,sDueDate,sDueTime,"0",sCourseCode,userID};
                 tableName = tblLocalLecTask;
 
                 Log("isLec and sCourseCode is NOT NULL about to insert into localDB");
@@ -284,7 +296,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
                 Log("isLec and about to insert into onlineDB");
 
-                String[] lecData = {unquote(sTaskName),unquote(sDueDate),unquote(sCourseCode),userID,unquote(sDueTime)};
+                String[] lecData = {unquote(sTaskName),unquote(sDueDate),unquote(sCourseCode),unquote(userID),unquote(sDueTime)};
 
                 onlineDB.insert_task(lecData);
 
@@ -309,6 +321,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         toDoAdapter = new ToDoAdapter(sTaskName, sCourseCode, sTaskId);
 
         ec.ShowUserMessage("Finished add task");
+        return true;
     }
 
 
@@ -409,7 +422,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
                         return;
                     }
                     saveTask();
-                    startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
                 } catch (InterruptedException | JSONException | IOException e) {
                     e.printStackTrace();
                 }

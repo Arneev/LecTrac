@@ -62,8 +62,8 @@ public class CalendarActivity extends AppCompatActivity {
                                                 "June", "July", "August", "September", "October",
                                                 "November", "December"};
 
-    static RecyclerView recyclerView;
-    static CalendarAdapter calendarAdapter;
+    RecyclerView recyclerView;
+    CalendarAdapter calendarAdapter;
     static LocalDatabaseManager localDB;
 
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
