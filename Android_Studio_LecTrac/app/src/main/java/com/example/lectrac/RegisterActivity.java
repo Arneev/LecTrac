@@ -49,10 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
         TextView tvPassword = (TextView)findViewById(R.id.edtPassword);
         String password = tvPassword.getText().toString();
 
-        TextView tvConfirmPassword = (TextView)findViewById(R.id.edtConfirmPassword);
-        String confirmPassword = tvConfirmPassword.getText().toString();
 
-        boolean isSuccessful = registerManager.RegisterAttempt(userID,firstName,surname,email,nickname,password,confirmPassword,this);
+        boolean isSuccessful = registerManager.RegisterAttempt(userID,firstName,surname,email,nickname,password,this);
         if (isSuccessful){
             Log("REGISTER IN IS SUCCESSFUL <3 :P");
             boolean logInSuccess = registerManager.LogInAttempt(password,userID,this);

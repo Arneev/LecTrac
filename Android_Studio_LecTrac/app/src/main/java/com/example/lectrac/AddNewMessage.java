@@ -99,24 +99,15 @@ public class AddNewMessage extends AppCompatActivity {
 
 
         try {
-            String[] onlineCols = new String[6];
-            onlineCols[0] = "Message_Name";
-            onlineCols[1] = "Message_Classification";
-            onlineCols[2] = "Message_Contents";
-            onlineCols[3] = "Course_Code";
-            onlineCols[4] = "Message_Date_Posted";
-            onlineCols[5] = "Lecturer_ID";
-
             String[] onlineVals = new String[6];
-            onlineVals[0] = doubleQuote(heading);
-            onlineVals[1] = doubleQuote(classific);
-            onlineVals[2] = doubleQuote(content);
-            onlineVals[3] = doubleQuote(course);
-            onlineVals[4] = doubleQuote(date);
-            onlineVals[5] = doubleQuote(lecID);
+            onlineVals[0] = (heading);
+            onlineVals[1] = (classific);
+            onlineVals[2] = (content);
+            onlineVals[3] = (course);
+            onlineVals[4] = (date);
+            onlineVals[5] = (lecID);
 
-
-            onlineDB.Insert(tblMessage,onlineCols,onlineVals);
+            onlineDB.insert_message(onlineVals);
         }catch (Exception e){
             Log(e.toString());
             ec.ShowUserError("Failed to update message online, check you internet connection",this);

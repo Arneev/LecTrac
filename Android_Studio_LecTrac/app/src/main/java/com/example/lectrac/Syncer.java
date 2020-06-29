@@ -52,6 +52,7 @@ public class Syncer {
 
     public void Sync(Context ct, boolean isManual) throws JSONException, IOException, InterruptedException, ParseException {
         context = ct;
+        ec = new ErrorClass(ct);
         boolean isOnline = isOnline(context);
 
         this.isManual = isManual;
@@ -126,22 +127,7 @@ public class Syncer {
 
         String[] courses = localDB.getCourses(localDB);
 
-        String onlineQuery = "SELECT * FROM REGISTERED WHERE (";
         int courseSize = courses.length;
-
-        for (int i = 0; i < courseSize; i++){
-            onlineQuery += "Course_Code = " + quote(courses[i]);
-
-            if (i + 1 < courseSize){
-                onlineQuery += " OR ";
-            }
-        }
-
-        onlineQuery += ")";
-
-        Log("SyncReg query is, " + onlineQuery);
-        LocalLog("SyncReg query is, " + onlineQuery);
-
 
         String localQuery = "SELECT * FROM " + tblRegistered;
         Cursor cursor = localDB.doQuery(localQuery);
@@ -149,7 +135,7 @@ public class Syncer {
         JSONArray onlineArr = null;
 
         try {
-            onlineArr = onlineDB.getJSONArr(onlineQuery);
+            onlineArr = onlineDB.select_registered_coursearr(courses);
         }catch (Exception e){
             ShowUserError("Failed to sync messages from cloud, please contact support or try again");
             return;
@@ -174,7 +160,7 @@ public class Syncer {
         }
     }
 
-    public static void SyncMessages(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException, IOException, InterruptedException, ParseException {
+    public static void SyncMessages(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
         Log("About to sync messages");
         LocalLog("About to sync messages");
 
@@ -182,16 +168,6 @@ public class Syncer {
         Cursor cursor = localDB.doQuery(localQuery);
 
         String[] courses = localDB.getCourses(localDB);
-        String onlineQuery = "SELECT * FROM MESSAGE WHERE ";
-        int courseSize = courses.length;
-
-        for (int i = 0; i < courseSize; i++){
-            onlineQuery += "Course_Code = " + quote(courses[i]);
-
-            if (i + 1 < courseSize){
-                onlineQuery += " OR ";
-            }
-        }
 
         int localSize = cursor.getCount();
         boolean isLocalNotEmpty;
@@ -206,7 +182,7 @@ public class Syncer {
         JSONArray onlineArr = null;
 
         try {
-            onlineArr = onlineDB.getJSONArr(onlineQuery);
+            onlineArr = onlineDB.select_message_coursearr(courses);
         }catch (Exception e){
             ShowUserError("Failed to sync messages from cloud, please contact support or try again");
             return;
@@ -331,23 +307,11 @@ public class Syncer {
             isLocalNotEmpty = true;
         }
 
-
-        String onlineQuery = "SELECT * FROM TASK WHERE ";
         String[] courses = localDB.getCourses(localDB);
-        int courseSize = courses.length;
-
-        for (int i = 0; i < courseSize; i++){
-            onlineQuery += "Course_Code = " + quote(courses[i]);
-
-            if (i + 1 < courseSize){
-                onlineQuery += " OR ";
-            }
-        }
-
         JSONArray onlineArr = null;
 
         try {
-            onlineArr = onlineDB.getJSONArr(onlineQuery);
+            onlineArr = onlineDB.select_task_coursearr(courses);
         }catch (Exception e){
             ShowUserError("Failed to sync tasks from cloud, please contact support or try again");
             return;
@@ -461,26 +425,10 @@ public class Syncer {
         String userID = localDB.getUserID(localDB);
         String[] courses = localDB.getCourses(localDB);
 
-        String onlineQuery = "SELECT * FROM TEST,WROTE WHERE (";
-        int courseSize = courses.length;
-
-        for (int i = 0; i < courseSize; i++){
-            onlineQuery += "TEST.Course_Code = " + quote(courses[i]);
-
-            if (i + 1 < courseSize){
-                onlineQuery += " OR ";
-            }
-        }
-
-        onlineQuery += ") AND WROTE.Test_No = TEST.Test_No AND WROTE.Student_ID = " + quote(userID);
-
-        Log("SyncTest query is, " + onlineQuery);
-        LocalLog("SyncTest query is, " + onlineQuery);
-
         JSONArray onlineArr = null;
 
         try {
-            onlineArr = onlineDB.getJSONArr(onlineQuery);
+            onlineArr = onlineDB.select_test_wrote_coursearr_userid(courses,userID);
         }catch (Exception e){
             ShowUserError("Failed to sync messages from cloud, please contact support or try again");
             return;
@@ -507,35 +455,12 @@ public class Syncer {
     }
 
     public static void SyncLecturer(LocalDatabaseManager localDB, OnlineDatabaseManager onlineDB) throws JSONException {
-        Log("About to sync lecturer ");
-        LocalLog("About to sync lecturer");
-
-        String userID = localDB.getUserID(localDB);
         String[] courses = localDB.getCourses(localDB);
-        String onlineQuery = "SELECT * FROM LECTURER,REGISTERED WHERE (";
-        int courseSize = courses.length;
-
-        for (int i = 0; i < courseSize; i++){
-            onlineQuery += "REGISTERED.Course_Code = " + quote(courses[i]);
-
-            if (i + 1 < courseSize){
-                onlineQuery += " OR ";
-            }
-        }
-
-        onlineQuery += ") AND LECTURER.Lecturer_ID = REGISTERED.Lecturer_ID";
-
-        Log("SyncLec query is, " + onlineQuery);
-        LocalLog("SyncLec query is, " + onlineQuery);
-
-
-        String localQuery = "SELECT * FROM " + tblLecturer;
-        Cursor cursor = localDB.doQuery(localQuery);
 
         JSONArray onlineArr = null;
 
         try {
-            onlineArr = onlineDB.getJSONArr(onlineQuery);
+            onlineArr = onlineDB.select_lecturer_registered_coursearr(courses);
         }catch (Exception e){
             ShowUserError("Failed to sync messages from cloud, please contact support or try again");
             return;
@@ -566,20 +491,10 @@ public class Syncer {
 
         String userID = localDB.getUserID(localDB);
 
-        String onlineQuery = "SELECT * FROM COURSE,ENROLLED WHERE Student_ID = " + quote(userID) + " AND COURSE.Course_Code = ENROLLED.Course_Code UNION " +
-                "SELECT * FROM COURSE,REGISTERED WHERE Lecturer_ID = " + quote(userID) + " AND COURSE.Course_Code = REGISTERED.Course_Code";
-
-        Log("SyncLec query is, " + onlineQuery);
-        LocalLog("SyncLec query is, " + onlineQuery);
-
-
-        String localQuery = "SELECT * FROM " + tblCourse;
-        Cursor cursor = localDB.doQuery(localQuery);
-
         JSONArray onlineArr = null;
 
         try {
-            onlineArr = onlineDB.getJSONArr(onlineQuery);
+            onlineArr = onlineDB.select_course_enrolled_userid_union_select_registered_userid(userID);
         }catch (Exception e){
             ShowUserError("Failed to sync messages from cloud, please contact support or try again");
             return;
@@ -620,7 +535,6 @@ public class Syncer {
             localDB.doInsert(tblRegistered,values);
         }catch (Exception e){
             Log("Problem sync course");
-            ShowUserError("Problem syncing, please contact support");
         }
     }
 
@@ -650,7 +564,6 @@ public class Syncer {
             localDB.doInsert(tblMessage,values);
         }catch (Exception e){
             Log("Problem sync messages");
-            ShowUserError("Problem syncing, please contact support");
         }
 
     }
@@ -679,7 +592,6 @@ public class Syncer {
             localDB.doInsert(tblLocalLecTask,values);
         }catch (Exception e){
             Log("Problem sync task");
-            ShowUserError("Problem syncing, please contact support");
         }
 
     }
@@ -704,7 +616,6 @@ public class Syncer {
             localDB.doInsert(tblTest,values);
         }catch (Exception e){
             Log("Problem sync test");
-            ShowUserError("Problem syncing, please contact support");
         }
 
     }
@@ -729,7 +640,6 @@ public class Syncer {
             localDB.doInsert(tblLecturer,values);
         }catch (Exception e){
             Log("Problem sync lec");
-            ShowUserError("Problem syncing, please contact support");
         }
 
     }
@@ -748,7 +658,6 @@ public class Syncer {
             localDB.doInsert(tblCourse,values);
         }catch (Exception e){
             Log("Problem sync course");
-            ShowUserError("Problem syncing, please contact support");
         }
 
     }

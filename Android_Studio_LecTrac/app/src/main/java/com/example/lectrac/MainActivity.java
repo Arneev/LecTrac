@@ -259,18 +259,19 @@ public class MainActivity extends AppCompatActivity {
         OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
         try {
-            JSONObject obj = onlineDB.getJSONObj("SELECT * FROM WITS WHERE User_ID = " + userID);
+            JSONObject obj = onlineDB.getJSONObj(onlineDB.select_wits_userid(userID));
+
+
+
             String pass = obj.getString("Password");
 
             if (onlineDB.isLec(userID)){
-                onlineDB.Update(tblLecturer,"Password = " + quote(pass),
-                        "WHERE Lecturer_ID = " + quote(userID));
+                onlineDB.update_lecturer_password_userid(userID);
                 return true;
             }
 
             if (onlineDB.isInStudent(userID)){
-                onlineDB.Update(tblStudent,"Password = " + quote(pass),
-                        "WHERE Student_ID = " + quote(userID));
+                onlineDB.update_student_password_userid(userID);
                 return true;
             }
 

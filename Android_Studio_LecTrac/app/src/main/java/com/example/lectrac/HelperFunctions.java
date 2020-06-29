@@ -88,6 +88,26 @@ public class HelperFunctions {
         return false;
     }
 
+    public static String unquote(String string){
+        String temp = "";
+        int size = string.length();
+
+        String stringSingleQuote = "'";
+        char singleQuote = stringSingleQuote.charAt(0);
+
+        for (int i = 0; i < size; i++){
+
+            if ((string.charAt(i) == '"') || (string.charAt(i) == singleQuote) && (i == 0 || i == size -1)){
+
+            }else {
+                temp += string.charAt(i);
+            }
+
+        }
+
+        return temp;
+    }
+
     public static String StringToMD5(String string) throws NoSuchAlgorithmException {
         String md5 = "MD5";
 

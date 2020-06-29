@@ -140,7 +140,7 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
             }
 
             try{
-                onlineDB.Delete(tblMessage, condition);
+                onlineDB.delete_message_messageid(Integer.toString(Message_ID));
             }
             catch(Exception e){
                 Log(e.toString());

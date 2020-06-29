@@ -221,27 +221,21 @@ public class AddNewTaskActivity extends AppCompatActivity {
             ec.ShowUserError("Enter a task name",this);
             return;
         }
-        else{
-            sTaskName = quote(sTaskName);
-        }
+
 
 
 
         if (isDateNull()){
             sDueDate = "NULL";
         }
-        else{
-            sDueDate = quote(sDueDate);
-        }
+
 
 
 
         if (isTimeNull()){
             sDueTime = "NULL";
         }
-        else{
-            sDueTime = quote(sDueTime);
-        }
+
 
         if (isCourseNull() && mustPost){
 
@@ -258,9 +252,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
             sCourseCode = "NULL"; //Going to perso userTask (Only he/she can access it)
 
         }
-        else{
-            sCourseCode = quote(sCourseCode);
-        }
+
 
 
         Log(sTaskName);
@@ -280,10 +272,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
             if (!sCourseCode.equals("None") && mustPost){
 
                 //Local insert - inefficient, change later on but keep for now
-                String userID = quote(localDB.getUserID(localDB));
+                String userID = (localDB.getUserID(localDB));
 
                 String[] locLecCols = {"Task_Name","Task_Due_Date","Task_Due_Time","isDone","Course_Code","Lecturer_ID"};
-                String[] locLecData = {sTaskName,sDueDate,sDueTime,"0",sCourseCode,userID};
+                String[] locLecData = {quote(sTaskName),quote(sDueDate),quote(sDueTime),"0",quote(sCourseCode),quote(userID)};
                 tableName = tblLocalLecTask;
 
                 Log("isLec and sCourseCode is NOT NULL about to insert into localDB");
@@ -295,11 +287,9 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
                 Log("isLec and about to insert into onlineDB");
 
-                String[] lecCols = {"Task_Name","Task_Due_Date","Course_Code","Lecturer_ID","Task_Due_Time"};
                 String[] lecData = {sTaskName,sDueDate,sCourseCode,userID,sDueTime};
 
-                onlineDB.Insert(tblTask,lecCols,lecData);
-
+                onlineDB.insert_task(lecData);
 
             }
             else{

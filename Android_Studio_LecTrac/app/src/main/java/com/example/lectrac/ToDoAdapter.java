@@ -122,7 +122,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
                             // check for item and act accordingly
                             if (menuItem.getItemId() == R.id.mtDeleteTask) {
-                                deleteTask(position);
+                                try {
+                                    deleteTask(position);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                             return false;
                         }
@@ -150,7 +154,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
                                     break;
 
                                 case R.id.mtDeleteTask:
-                                    deleteTask(position);
+                                    try {
+                                        deleteTask(position);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                             }
                             return false;
@@ -226,7 +234,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         }
     }
 
-    public void deleteTask(int position){
+    public void deleteTask(int position) throws InterruptedException {
 
         Log("About to delete task");
 
@@ -258,7 +266,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
                 localDB.doDelete(tableName, condition);
 
                 Log("isLec and about to delete from onlineDB");
-                onlineDB.Delete(tblTask, condition);
+                onlineDB.delete_task_taskid(Task_ID.substring(1));
             }
             else{
                 Log("isLec and if sCourseCode IS NULL about to delete from localDB");

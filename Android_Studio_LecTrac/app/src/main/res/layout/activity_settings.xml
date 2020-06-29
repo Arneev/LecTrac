@@ -22,6 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@drawable/transparent"
+            android:indeterminate="true"
             android:visibility="gone" />
 
         <RelativeLayout
@@ -134,7 +136,6 @@
             android:layout_marginLeft="99dp"
             android:layout_marginTop="59dp"
             android:background="@drawable/general_button"
-            android:onClick="Save"
             android:text="Save"
             android:textColor="@color/buttonTextColor" />
 

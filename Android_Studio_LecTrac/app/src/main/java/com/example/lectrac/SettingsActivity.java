@@ -7,6 +7,8 @@ import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,15 +34,19 @@ public class SettingsActivity extends AppCompatActivity {
     DrawerLayout drawer;
     static ErrorClass ec;
     static ProgressBar progressBar;
+    static Button saveButton;
+    static Context context;
 
     public static LocalDatabaseManager localDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        progressBar = findViewById(R.id.progBar_Settings);
+        context = this;
+        ec = new ErrorClass(context);
+        saveButton = findViewById(R.id.btnSettingsSave);
+        setSaveButtonListener();
 
-        ec = new ErrorClass(this);
         setNightMode(this);
         setIconsToAppearMode();
 
@@ -55,6 +61,8 @@ public class SettingsActivity extends AppCompatActivity {
             Log(e.toString());
             Log("There was a problem setting the start values");
         }
+
+        progressBar = findViewById(R.id.progBar_Settings);
 
     }
 
@@ -124,15 +132,15 @@ public class SettingsActivity extends AppCompatActivity {
         cbxDarkMode.setChecked(isDarkMode);
     }
 
-    public void Save(View v){
-
-        Boolean isOnline = isOnline(SettingsActivity.this);
+    public void Save() throws InterruptedException {
+        progressBar.setVisibility(View.VISIBLE);
+        Boolean isOnline = isOnline(context);
 
         if (!isOnline){
-            ec.ShowUserError("Connect to the internet in order to save changes");
+            ec.ShowUserError("Connect to the internet in order to save changes",context);
             return;
         }
-        ec.startProgressBar(progressBar);
+
 
 
         TextView edtNick = findViewById(R.id.edtSettingsNickname);
@@ -168,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity {
             Log("localInsert has failed");
         }
 
-        setNightMode(this);
+        setNightMode(context);
         setIconsToAppearMode();
 
         //Local Update done
@@ -181,26 +189,39 @@ public class SettingsActivity extends AppCompatActivity {
         Log("IsLec is " + isLec.toString());
 
         if (isLec){
+            onlineDB.update_lecturer_lecturernickname_userid(nickname,userID);
 
-            onlineDB.Update(tblLecturer,"Lecturer_Reference = " + quote(nickname),
-                    "Lecturer_ID = " + quote(userID));
         }
         else {
-
-            onlineDB.Update(tblStudent,"Student_Nickname = " + quote(nickname),
-                    "Student_ID = " + quote(userID));
+            onlineDB.update_student_studentnickname_userid(nickname,userID);
         }
 
 
-        ec.endProgressBar(progressBar);
+        progressBar.setVisibility(View.GONE);
+        ec.ShowUserMessage("Finished Save");
     }
 
     public void SettingSync(View v) throws InterruptedException, JSONException, ParseException, IOException {
-        ec.startProgressBar(progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         Syncer syncer = new Syncer(SettingsActivity.this);
 
         syncer.ManualSync(SettingsActivity.this);
-        ec.endProgressBar(progressBar);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void setSaveButtonListener(){
+        saveButton = findViewById(R.id.btnSettingsSave);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Save();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void setIconsToAppearMode(){

@@ -41,7 +41,7 @@ public class RegisterLoginManager{
     
 
     //region Register
-    boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password,String confirmPass, Context ct) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
+    boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password, Context ct) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
         //userID sorted out
         context = ct;
         ec = new ErrorClass(context);
@@ -61,7 +61,7 @@ public class RegisterLoginManager{
         //region Getting JSON Object
         userInWITS = null;
 
-        boolean found = foundObj(tblWITS, "User_ID = " + quote(userID));
+        boolean found = foundObj(onlineDB.select_wits_userid(userID));
 
         if (!found){
             ec.ShowUserError("There is no WITS User ID with that user ID, please contact support",context);
@@ -70,9 +70,7 @@ public class RegisterLoginManager{
 
         boolean isLec = isLecturerWITS(userID);
 
-        userInWITS = onlineDB.getJSONObj("SELECT * FROM" +
-                " " + tblWITS + " WHERE User_ID = " + quote(userID));
-
+        userInWITS = onlineDB.getJSONObj(onlineDB.select_wits_userid(userID));
 
         //endregion
 
@@ -132,16 +130,6 @@ public class RegisterLoginManager{
                 return false;
             }
 
-            if (confirmPass.length() == 0){
-                ec.ShowUserError("Please confirm your password",context);
-                return false;
-            }
-
-            if (!confirmPass.equals(password)){
-                ec.ShowUserError("Make sure your password and confirm password are matching",context);
-                return false;
-            }
-
             Log("Might give error about returning BINARY(16) AS A STRING - " +
                     "WHEN PASSWORD.LENGTH = 0 IN REGISTER ATTEMPT");
 
@@ -174,13 +162,11 @@ public class RegisterLoginManager{
 
         try {
             Log("alreadyReg");
-            JSONArray studentLength = onlineDB.getJSONArr("SELECT * FROM" +
-                    " STUDENT WHERE Student_ID = " + quote(userID));
+            JSONArray studentLength = onlineDB.select_student_studentid(userID);
 
             Log(studentLength.length() + " is student length");
 
-            JSONArray lecturerLength = onlineDB.getJSONArr("SELECT * FROM" +
-                    " LECTURER WHERE Lecturer_ID = " + quote(userID));
+            JSONArray lecturerLength = onlineDB.select_lecturer_userid(userID);
 
             Log(lecturerLength.length() + " is lecturer length");
 
@@ -226,12 +212,12 @@ public class RegisterLoginManager{
 
         //Into Online (LecTrac) Database
         String[] onlineValues = new String[6];
-        onlineValues[0] = '"' + userID + '"';
-        onlineValues[1] = '"' + firstName + '"';
-        onlineValues[2] = '"' + lastName + '"';
-        onlineValues[3] = '"' + email + '"';
-        onlineValues[4] = '"' + nick + '"';
-        onlineValues[5] = '"' + password + '"';
+        onlineValues[0] = userID;
+        onlineValues[1] = firstName;
+        onlineValues[2] = lastName;
+        onlineValues[3] = email;
+        onlineValues[4] = nick;
+        onlineValues[5] = password;
 
         //Into Local (On Device) Database
         String[] localValues = new String[5];
@@ -244,12 +230,12 @@ public class RegisterLoginManager{
         try{
             if (isLec){
                 Log("Inserting into Lecturer Table");
-                onlineDB.Insert(tblLecturer,onlineValues);
+                onlineDB.insert_lecturer_lecturerarr(onlineValues);
             }
             else{
 
                 Log("Inserting into Student Table");
-                onlineDB.Insert(tblStudent,onlineValues);
+                onlineDB.insert_student_studentarr(onlineValues);
             }
 
             try{
@@ -371,18 +357,15 @@ public class RegisterLoginManager{
 
     }
 
-    boolean foundObj(String tableName, String condition) throws InterruptedException, IOException, JSONException {
-        Log("foundObj");
-        String query = "SELECT * FROM " + tableName + " WHERE " + condition;
-        JSONArray arr = onlineDB.getJSONArr(query);
 
+
+    boolean foundObj(JSONArray arr) throws InterruptedException, IOException, JSONException {
         int size = arr.length();
 
         if (size == 1){
             return true;
         }
         else if (size == 0){
-            Log("Condition not found from query, query : " + query);
             return false;
         }
         else if (size > 1){
@@ -463,8 +446,7 @@ public class RegisterLoginManager{
 
     boolean isLecturerWITS(String userID) throws InterruptedException, IOException, JSONException {
         Log("isLecturerWITS");
-        JSONArray tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblWITS +
-                " WHERE User_ID = " + quote(userID));
+        JSONArray tempArr = onlineDB.select_wits_userid(userID);
 
         int size = tempArr.length();
 
@@ -540,10 +522,6 @@ public class RegisterLoginManager{
         }
 
 
-
-
-
-
         String[] values = new String[tblUserLength];
 
         //Values = {User_ID (String), isLoggedIn (Boolean),
@@ -571,7 +549,7 @@ public class RegisterLoginManager{
         Log("isLecturer");
         boolean isLecturer;
 
-        JSONArray tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblStudent + " WHERE STUDENT_ID = " + quote(userID));
+        JSONArray tempArr = onlineDB.select_student_studentid(userID);
 
         int size = tempArr.length();
         if (size == 1){
@@ -580,8 +558,7 @@ public class RegisterLoginManager{
         else if (size == 0){
             Log("No matching studentID, might be lecturer");
 
-            tempArr = onlineDB.getJSONArr("SELECT * FROM " + tblLecturer +
-                    " WHERE Lecturer_ID = " + quote(userID));
+            tempArr = onlineDB.select_lecturer_userid(userID);
 
             int tempSize = tempArr.length();
 
@@ -642,8 +619,7 @@ public class RegisterLoginManager{
 
         String hashPass = CopyOnly(saltAndHash(password),16);
 
-        JSONArray arr = onlineDB.getJSONArr("SELECT * FROM STUDENT" +
-                " WHERE Student_ID = " + quote(userID));
+        JSONArray arr = onlineDB.select_student_studentid(userID);
 
 
 
@@ -673,8 +649,7 @@ public class RegisterLoginManager{
             Log("No matching student ID, trying lecturer ID");
 
             //region Might be Lecturer
-            JSONArray lecArr = onlineDB.getJSONArr("SELECT * FROM LECTURER" +
-                    " WHERE Lecturer_ID = " + quote(userID));
+            JSONArray lecArr = onlineDB.select_lecturer_userid(userID);
 
             int lecArrSize = lecArr.length();
             if (lecArrSize == 0){

@@ -28,12 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.errorLecNoCourse;
-import static com.example.lectrac.HelperFunctions.quote;
-import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
-import static com.example.lectrac.HelperFunctions.tblTask;
-import static com.example.lectrac.HelperFunctions.tblUserTask;
+import static com.example.lectrac.HelperFunctions.*;
 
 public class EditTaskActivity extends AppCompatActivity {
 
@@ -56,6 +51,10 @@ public class EditTaskActivity extends AppCompatActivity {
     
     static ErrorClass ec;
 
+    boolean updateDateInOnline;
+    boolean updateTimeInOnline;
+    boolean updateCourseCode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +66,10 @@ public class EditTaskActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+
+        updateDateInOnline = false;
+        updateTimeInOnline = false;
+        updateCourseCode = false;
 
         if(bundle != null) {
 
@@ -105,20 +108,12 @@ public class EditTaskActivity extends AppCompatActivity {
         // is user a student or lecturer?
         boolean isLec = localDB.isLec();
 
-
-        // if isLec and task is posted then edit task in onlineDB
-        if (isLec){
-            if (!newCourseCode.equals("None")){
-
-
-            }
-        }
-
-
         // quotations
         // *check if user updated any values
 
         boolean blnDoUpdate = false;
+
+        // if isLec and task is posted then edit task in onlineDB
 
         if (isTaskNameNull()){
             ec.ShowUserError("Enter a task name",this);
@@ -131,7 +126,7 @@ public class EditTaskActivity extends AppCompatActivity {
                 blnDoUpdate = true;
 
                 newTaskName = quote(newTaskName);
-                setting = "Task_Name = " + newTaskName + ",";
+                setting += "Task_Name = " + newTaskName + ",";
                 arrOnlyTaskNames.set(position, newTaskName);
                 Log("About to update:" + setting);
             }
@@ -152,6 +147,7 @@ public class EditTaskActivity extends AppCompatActivity {
                newDueDate = quote(newDueDate);
                setting = setting + "Task_Due_Date = " + newDueDate + ",";
                Log("About to update:" + setting);
+               updateDateInOnline = true;
            }
        }
        else {
@@ -168,6 +164,8 @@ public class EditTaskActivity extends AppCompatActivity {
                    newDueDate = quote(newDueDate);
                    setting = setting + "Task_Due_Date = " + newDueDate + ",";
                    Log("About to update:" + setting);
+
+                   updateDateInOnline = true;
                }
            }
 
@@ -188,6 +186,7 @@ public class EditTaskActivity extends AppCompatActivity {
                 newDueTime = quote(newDueTime);
                 setting = setting + "Task_Due_Time = " + newDueTime + ",";
                 Log("About to update:" + setting);
+                updateTimeInOnline = true;
             }
         }
         else {
@@ -204,6 +203,7 @@ public class EditTaskActivity extends AppCompatActivity {
                     newDueTime = quote(newDueTime);
                     setting = setting + "Task_Due_Time = " + newDueTime + ",";
                     Log("About to update:" + setting);
+                    updateTimeInOnline = true;
                 }
             }
 
@@ -219,6 +219,8 @@ public class EditTaskActivity extends AppCompatActivity {
             setting = setting + "Course_Code = " + newCourseCode;
             arrOnlyTaskCourses.set(position, newCourseCode);
             Log("About to update:" + setting);
+
+            updateCourseCode = true;
         }
 
         // *end of checking
@@ -240,9 +242,28 @@ public class EditTaskActivity extends AppCompatActivity {
                     localDB.doUpdate(tableName, setting, condition);
 
                     // Online DB
-                    tableName = "TASK";
                     Log("Update in online DB");
-                    onlineDB.Update(tableName, setting, condition);
+
+
+                    //onlineDB.Update(tableName, setting, condition);
+
+                    if (updateCourseCode){
+                        onlineDB.update_task_coursecode_taskid(unquote(newCourseCode),taskID);
+                    }
+
+                    if (!newTaskName.equals(oldTaskName)){
+                        onlineDB.update_task_taskname_taskid(unquote(newTaskName),taskID);
+                    }
+
+                    if (updateTimeInOnline){
+                        onlineDB.update_task_duetime_taskid(unquote(newDueTime),taskID);
+                    }
+
+                    if (updateDateInOnline){
+                        onlineDB.update_task_duedate_taskid(unquote(newDueDate),taskID);
+                    }
+
+                    //end of OnlineDB
                 }
                 else {
 
@@ -538,6 +559,7 @@ public class EditTaskActivity extends AppCompatActivity {
     public void onBackPressed(){
         startActivity(new Intent(this, ToDoListActivity.class));
     }
+
 
     //endregion
 }
