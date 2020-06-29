@@ -134,7 +134,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/nonItemBackground"
-        android:visibility="visible"
         app:itemIconTint="@color/miniElipseButtonColor"
         app:itemTextColor="@color/miniElipseButtonColor" />
 

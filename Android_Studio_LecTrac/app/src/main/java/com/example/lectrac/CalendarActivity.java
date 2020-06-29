@@ -193,14 +193,19 @@ public class CalendarActivity extends AppCompatActivity {
         long epoch;
         Date tempDate;
 
+        if (arrCalendarDates.isEmpty()){
+            Log("No dates to highlight");
+            return;
+        }
+
         for (int i = 0; i < arrCalendarDates.size(); i++) {
 
-            tempDate = format.parse(arrCalendarDates.get(i));
-            assert tempDate != null;
-            epoch = tempDate.getTime() + 'L';
+           // tempDate = format.parse(arrCalendarDates.get(i));
+            //assert tempDate != null;
+           // epoch = tempDate.getTime() + 'L';
 
-            Event event = new Event(Color.BLUE, epoch, null);
-            cCalendarView.addEvent(event);
+            //Event event = new Event(Color.BLUE, epoch, null);
+            //cCalendarView.addEvent(event);
         }
 
         Log("set events");
@@ -228,9 +233,11 @@ public class CalendarActivity extends AppCompatActivity {
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
 
-        for (int index = 0; index < cursor.getCount(); index++){
+        for (int index = 0; index < cursor.getCount(); index++) {
 
-            arrCalendarDates.add(cursor.getString(indexDate));
+            if (!cursor.getString(indexDate).equals("NULL")){
+                arrCalendarDates.add(cursor.getString(indexDate));
+            }
             cursor.moveToNext();
         }
     }

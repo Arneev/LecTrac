@@ -26,11 +26,13 @@ import java.text.ParseException;
 import static com.example.lectrac.HelperFunctions.Log;
 import static com.example.lectrac.HelperFunctions.isDarkMode;
 import static com.example.lectrac.HelperFunctions.isOnline;
+import static com.example.lectrac.HelperFunctions.*;
 import static com.example.lectrac.HelperFunctions.myPrefName;
 import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
+
 
     public static void Log(String error){
         Log.i("Perso",error);
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView lblForgotPass;
     static boolean onForgotPass;
     static TextView tvPass;
+    HelperFunctions hp = new HelperFunctions();
 
     //OnCreate
     @Override
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setLblForgotPassListener();
         setButtonListener();
 
+        resetPasswordClick();
         SetToDefault();
 
         context = this;
@@ -192,6 +196,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void resetPasswordClick(){
+
+        lblForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
+            }
+        });
+    }
+
+
     public void SetToDefault(){
 
         TextView userID = findViewById(R.id.edtUserID);
@@ -214,70 +229,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //region moveToForgot Password stuff
-    /*
-
-    requires import static com.example.lectrac.HelperFunctions.*;
-    public boolean resetPassword(String userID){
-        OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
-
-        try {
-            JSONObject obj = onlineDB.getJSONObj(onlineDB.select_wits_userid(userID));
-
-
-
-            String pass = obj.getString("Password");
-
-            if (onlineDB.isLec(userID)){
-                onlineDB.update_lecturer_password_userid(userID);
-                return true;
-            }
-
-            if (onlineDB.isInStudent(userID)){
-                onlineDB.update_student_password_userid(userID);
-                return true;
-            }
-
-
-        }catch (Exception e){
-            Log(e.toString());
-        }
-        ec.ShowUserError("Please enter a valid WITS ID");
-        return  false;
-    }
-
-
-    boolean checkStudentID(String studentID){
-        Log("checkStudentID");
-        if (hasWhitespace(studentID)){
-            return false;
-        }
-
-        try{
-            int intStudentID = Integer.parseInt(studentID);
-
-            if (intStudentID < 0){
-                ec.ShowUserError("Enter valid student number",context);
-                return false;
-            }
-        }catch (Exception e){
-            ec.ShowUserError("Enter valid student number",context);
-            return false;
-        }
-
-        if (studentID.length() != STUDENT_NUMBER_LENGTH){
-            ec.ShowUserError("Enter valid student number",context);
-            return false;
-        }
-
-        // TEST CASE WHEN USER IS NOT IN DATABASE IS TAKEN CARE OF IN checkPassword();
-
-        return true;
-
-    }
-    */
-
-    //endregion
 
 
     //region Helper Function

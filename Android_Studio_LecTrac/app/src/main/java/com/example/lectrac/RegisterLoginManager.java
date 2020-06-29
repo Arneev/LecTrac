@@ -56,6 +56,9 @@ public class RegisterLoginManager{
                 ec.ShowUserError("You already registered before",context);
                 return false;
             }
+        }else {
+            ec.ShowUserError("Please enter a student/lecturer ID", ct);
+            return false;
         }
 
         //region Getting JSON Object
