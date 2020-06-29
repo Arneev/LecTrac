@@ -40,7 +40,6 @@ public class ToDoListActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
 
-    OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     LocalDatabaseManager localDB = new LocalDatabaseManager(this);
 
     static ErrorClass ec;
@@ -179,6 +178,10 @@ public class ToDoListActivity extends AppCompatActivity {
         toDoAdapter = new ToDoAdapter(this, isLec, arrOnlyTaskNames, arrOnlyTaskCourses, arrOnlyTaskIDs);
         recyclerView.setAdapter(toDoAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ToDoListActivity.this));
+
+        if (arrOnlyTaskIDs.size() == 0){
+            ec.ShowUserMessage("There are no tasks");
+        }
     }
 
     private void addFromLocalDB (){

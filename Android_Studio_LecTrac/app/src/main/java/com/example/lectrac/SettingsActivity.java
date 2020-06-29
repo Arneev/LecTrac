@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
     static ProgressBar progressBar;
     static Button saveButton;
     static Context context;
+    static CheckBox cbxDarkMode;
 
 
     public static LocalDatabaseManager localDB;
@@ -46,7 +48,9 @@ public class SettingsActivity extends AppCompatActivity {
         context = this;
         ec = new ErrorClass(context);
         saveButton = findViewById(R.id.btnSettingsSave);
+        cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
         setSaveButtonListener();
+        onCheckBoxTick();
 
         setNightMode(this);
         setIconsToAppearMode();
@@ -201,6 +205,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void SettingSync(View v) throws InterruptedException, JSONException, ParseException, IOException {
+        if (!isOnline(this)){
+            ec.ShowUserMessage("You are not connected to the internet",this);
+            return;
+        }
         progressBar.setVisibility(View.VISIBLE);
         Syncer syncer = new Syncer(SettingsActivity.this);
 
@@ -235,6 +243,35 @@ public class SettingsActivity extends AppCompatActivity {
         else{
             toolbar.getContext().setTheme(R.style.ToolbarIconLight);
         }
+    }
+
+    public void onCheckBoxTick(){
+        cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
+
+        cbxDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = getSharedPreferences(myPrefName, MODE_WORLD_WRITEABLE).edit();
+                editor.clear();
+                editor.apply(); // commit changes
+                editor.putBoolean("isDarkMode",isChecked);
+                editor.apply();
+
+                String sDarkMode = "";
+
+                if (isChecked){
+                    sDarkMode = "1";
+                }
+                else{
+                    sDarkMode = "0";
+                }
+
+                localDB.doUpdate(tblUser, "isDarkMode = " + sDarkMode);
+
+                setNightMode(context);
+                setIconsToAppearMode();
+            }
+        });
     }
 
 

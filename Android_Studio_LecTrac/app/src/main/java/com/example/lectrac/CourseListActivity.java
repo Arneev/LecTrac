@@ -33,11 +33,13 @@ public class CourseListActivity extends AppCompatActivity {
     DrawerLayout drawer;
 
     static RecyclerView rvCourseItems;
+    static ErrorClass ec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
+        ec = new ErrorClass(this);
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -133,6 +135,10 @@ public class CourseListActivity extends AppCompatActivity {
         int firstNameIndex = 1;
         int lastNameIndex = 2;
         int lecIndex = 3;
+
+        if (size == 0){
+            ec.ShowUserMessage("There are no courses");
+        }
 
         //Getting all into courseDetails ArrayList
         for (int i = 0; i < size; i++){

@@ -6,8 +6,9 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
     android:screenOrientation="portrait"
+    android:visibility="visible"
+    tools:context=".SettingsActivity"
     tools:openDrawer="start">
 
     <RelativeLayout
@@ -58,7 +59,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/headingTextColor"
                 android:textSize="50sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -87,12 +88,12 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvNickname"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:background="@drawable/general_textview"
             android:ems="10"
             android:fontFamily="@font/msyi"
             android:gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="@color/mainText"
@@ -157,11 +158,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
         android:background="@color/nonItemBackground"
+        android:visibility="visible"
         app:itemIconTint="@color/miniElipseButtonColor"
         app:itemTextColor="@color/miniElipseButtonColor" />
-
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -18,17 +18,22 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
+    static ErrorClass ec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        ec = new ErrorClass(this);
 
         exitRegistration();
     }
 
     public void RegisterButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
+        if (!isOnline(this)){
+            ec.ShowUserMessage("You are not connected to the internet",this);
+            return;
+        }
+
         RegisterLoginManager registerManager = new RegisterLoginManager();
 
         TextView tvUserID = (TextView)findViewById(R.id.edtUserID);

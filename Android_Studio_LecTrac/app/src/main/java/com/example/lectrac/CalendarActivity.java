@@ -62,8 +62,8 @@ public class CalendarActivity extends AppCompatActivity {
                                                 "June", "July", "August", "September", "October",
                                                 "November", "December"};
 
-    RecyclerView recyclerView;
-    CalendarAdapter calendarAdapter;
+    static RecyclerView recyclerView;
+    static CalendarAdapter calendarAdapter;
     static LocalDatabaseManager localDB;
 
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -99,6 +99,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         setNightMode(this);
         setIconsToAppearMode();
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
 
@@ -217,13 +218,13 @@ public class CalendarActivity extends AppCompatActivity {
 
         Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK");
 
-        if (cursor.getCount() == 0){
+        if (!cursor.moveToFirst()){
             Log("No local tasks");
             return;
         }
 
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
-        cursor.moveToFirst();
+
 
         for (int index = 0; index < cursor.getCount(); index++){
 
@@ -239,12 +240,12 @@ public class CalendarActivity extends AppCompatActivity {
 
         Cursor cursor = localDB.doQuery("SELECT * FROM LECTURER_TASK");
 
-        if (cursor.getCount() == 0){
+        if (!cursor.moveToFirst()){
             return;
         }
 
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
-        cursor.moveToFirst();
+
 
         for (int index = 0; index < cursor.getCount(); index++){
 
@@ -310,13 +311,13 @@ public class CalendarActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK WHERE Task_Due_Date = '" +
                 calendarDate + "'");
 
-        if (cursor.getCount() == 0){
+        if (!cursor.moveToFirst()){
 
             Log("No local tasks");
             return;
         }
 
-        cursor.moveToFirst();
+
 
         int indexName = cursor.getColumnIndex("Task_Name");
         int indexCourse = cursor.getColumnIndex("Course_Code");
@@ -344,13 +345,12 @@ public class CalendarActivity extends AppCompatActivity {
         Log("SELECT * FROM LECTURER_TASK WHERE Task_Due_Date = '" +
                 calendarDate + "'");
 
-        if (cursor1.getCount() == 0){
+        if (!cursor1.moveToFirst()){
 
             Log("No online tasks");
             return;
         }
 
-        cursor1.moveToFirst();
 
         int iName = cursor1.getColumnIndex("Task_Name");
         int iCourse = cursor1.getColumnIndex("Course_Code");

@@ -135,12 +135,13 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
         if (isLec){
 
             if (!isOnline(context)){
-                ec.ShowUserError("Cannot delete task as you are offline",context);
+                ec.ShowUserMessage("You are not connected to the internet",context);
                 return;
             }
 
             try{
                 onlineDB.delete_message_messageid(Integer.toString(Message_ID));
+
             }
             catch(Exception e){
                 Log(e.toString());
@@ -149,6 +150,7 @@ public class MessageAdapater extends RecyclerView.Adapter<MessageAdapater.MyView
             }
 
             localDB.doDelete(tblMessage,condition);
+            ec.ShowUserMessage("Deleted Message");
 
         }
         else{

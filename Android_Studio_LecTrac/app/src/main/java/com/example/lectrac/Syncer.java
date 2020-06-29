@@ -59,7 +59,7 @@ public class Syncer {
         if (isManual){
             if (!isOnline){
                 Log("The user is offline");
-                ShowUserError("You are not connected to the internet, if problem persists then contact support with " + errorProblemSync);
+                ec.ShowUserMessage("You are not connected to the internet");
                 return;
             }
         }

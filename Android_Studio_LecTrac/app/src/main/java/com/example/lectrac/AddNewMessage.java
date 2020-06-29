@@ -64,7 +64,7 @@ public class AddNewMessage extends AppCompatActivity {
     public void AddMessageButtonSave(){
 
         if (!isOnline(this)){
-            ec.ShowUserError("Please connect to the internet",this);
+            ec.ShowUserMessage("You are not connected to the internet",this);
             return;
         }
 
@@ -120,6 +120,7 @@ public class AddNewMessage extends AppCompatActivity {
         localDB.doInsert(tblMessage,cols,values);
 
         Log("Finished add message to dbs");
+        ec.ShowUserMessage("Added Message");
 
         startActivity(new Intent(this, MessageBoardActivity.class));
     }

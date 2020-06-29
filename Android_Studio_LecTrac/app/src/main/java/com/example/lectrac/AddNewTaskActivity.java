@@ -213,24 +213,16 @@ public class AddNewTaskActivity extends AppCompatActivity {
         courses = localDB.getCourses(localDB);
         int courseSize = courses.length;
 
-
         // quotations
 
-
-        if (isTaskNameNull()){
-            ec.ShowUserError("Enter a task name",this);
+        if (isTaskNameNull()) {
+            ec.ShowUserError("Enter a task name", this);
             return;
         }
-
-
-
 
         if (isDateNull()){
             sDueDate = "NULL";
         }
-
-
-
 
         if (isTimeNull()){
             sDueTime = "NULL";
@@ -245,8 +237,9 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 }
                 else if (courseSize == 0){
                     ec.ShowUserError("Contact support with " + errorLecNoCourse,this);
+                    return;
                 }
-                return;
+
             }
 
             sCourseCode = "NULL"; //Going to perso userTask (Only he/she can access it)
@@ -270,6 +263,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
         // if user is a lecturer then the task must also be saved to the online database
         if (isLec){
             if (!sCourseCode.equals("None") && mustPost){
+                if (!isOnline(this)){
+                    ec.ShowUserMessage("You are not connected to the internet",this);
+                    return;
+                }
 
                 //Local insert - inefficient, change later on but keep for now
                 String userID = (localDB.getUserID(localDB));
@@ -311,7 +308,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         Log("Update toDoAdapter after adding new task");
         toDoAdapter = new ToDoAdapter(sTaskName, sCourseCode, sTaskId);
 
-
+        ec.ShowUserMessage("Finished add task");
     }
 
 

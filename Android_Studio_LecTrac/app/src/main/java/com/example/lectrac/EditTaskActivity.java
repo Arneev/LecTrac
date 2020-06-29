@@ -236,6 +236,11 @@ public class EditTaskActivity extends AppCompatActivity {
             if (isLec){
                 if (!newCourseCode.equals("None")){
 
+                    if (!isOnline(this)){
+                        ec.ShowUserMessage("You are not connected to the internet",this);
+                        return;
+                    }
+
                     // Local DB
                     tableName = tblLocalLecTask;
                     Log("Update in " + tableName);

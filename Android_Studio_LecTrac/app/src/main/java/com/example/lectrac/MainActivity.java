@@ -25,6 +25,7 @@ import java.text.ParseException;
 
 import static com.example.lectrac.HelperFunctions.Log;
 import static com.example.lectrac.HelperFunctions.isDarkMode;
+import static com.example.lectrac.HelperFunctions.isOnline;
 import static com.example.lectrac.HelperFunctions.myPrefName;
 import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.Syncer.*;
@@ -130,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void LoginButtonClick() throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
+        if (!isOnline(this)){
+            ec.ShowUserMessage("You are not connected to the internet",this);
+            return;
+        }
         RegisterLoginManager loginManager = new RegisterLoginManager();
 
         TextView tvUserID = (TextView)findViewById(R.id.edtUserID);

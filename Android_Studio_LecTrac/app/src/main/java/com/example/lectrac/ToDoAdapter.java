@@ -256,7 +256,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
             if (Task_ID.charAt(0) == 'L'){
 
                 if (!isOnline(context)){
-                    ec.ShowUserError("Cannot delete task as you are offline",context);
+                    ec.ShowUserError("Connect to the internet in order to save changes",context);
                     return;
                 }
 
@@ -302,7 +302,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         this.notifyItemRemoved(position);
         this.notifyDataSetChanged();
 
-        Log("Task deleted");
+        ec.ShowUserMessage("Deleted Task");
     }
 
 
