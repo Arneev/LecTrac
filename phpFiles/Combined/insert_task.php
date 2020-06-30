@@ -30,9 +30,29 @@ if (strlen($taskCourse) != 8){
 	exit;
 }
 
+// length must be 7
+if (strlen($userID) != 7){
+
+	$output[] = "Error";
+	echo json_encode($output);
+	exit;
+}
+
+// Each character must be a Number
+for ($i = 0; $i < 7; $i++){
+
+	if (!is_numeric($userID[$i])){
+
+		$output[] = "Error";
+		echo json_encode($output);
+		exit;
+	}
+}
+
+
 
 $sql = "INSERT INTO TASK (Task_Name, Task_Due_Date, Task_Due_Time, Course_Code, Lecturer_ID)
-				VALUES(?,?,?,?)";
+				VALUES(?,?,?,?,?)";
 
 
 $stmt = $link->prepare($sql);

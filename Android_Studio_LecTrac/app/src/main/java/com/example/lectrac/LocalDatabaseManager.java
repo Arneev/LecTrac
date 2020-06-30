@@ -126,31 +126,10 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
     //End of Helper and Starting Functions
 
-
-    public Cursor doQuery(String query, String[] params) {
-        try {
-            LocalLog("Querying, " + query + " with params");
-            Cursor mCur = getReadableDatabase().rawQuery(query, params);
-            return mCur;
-        } catch (SQLException mSQLException) {
-            LocalLog("doQuery problem : " + query);
-            mSQLException.printStackTrace(System.err);
-            return null;
-        }
-    }
-
     public void doQueryNonSelect(String query){
         getReadableDatabase().execSQL(query);
     }
 
-    public void doUpdate(String query, String[] params) {
-        try {
-            getWritableDatabase().execSQL(query, params);
-        } catch (SQLException mSQLException) {
-            LocalLog("doUpdate problem : " + query);
-            mSQLException.printStackTrace(System.err);
-        }
-    }
 
     public Cursor doQuery(String query) {
         try {
@@ -159,19 +138,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
             return mCur;
         } catch (SQLException mSQLException) {
             LocalLog("doQuery no params : " + query);
-            mSQLException.printStackTrace();
             return null;
-        }
-    }
-
-
-
-    public void doUpdate(String query) {
-        try {
-            this.getWritableDatabase().execSQL(query);
-        } catch (SQLException mSQLException) {
-            LocalLog("doUpdate no params : " + query);
-            mSQLException.printStackTrace(System.err);
         }
     }
 

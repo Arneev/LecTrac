@@ -18,14 +18,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
 import static com.example.lectrac.HelperFunctions.*;
@@ -38,6 +43,8 @@ public class SettingsActivity extends AppCompatActivity {
     static Button saveButton;
     static Context context;
     static CheckBox cbxDarkMode;
+    static EditText edtNickname;
+    static EditText edtPassword;
 
 
     public static LocalDatabaseManager localDB;
@@ -47,15 +54,18 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         context = this;
         ec = new ErrorClass(context);
+
         saveButton = findViewById(R.id.btnSettingsSave);
         cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
+        edtNickname = findViewById(R.id.edtSettingsNickname);
+        //edtPassword = findViewById(R.id.edtChangePass);
+
         setSaveButtonListener();
         onCheckBoxTick();
 
+        setDrawer();
         setNightMode(this);
         setIconsToAppearMode();
-
-        setDrawer();
 
         localDB = new LocalDatabaseManager(SettingsActivity.this);
 
@@ -138,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void Save() throws InterruptedException {
-        progressBar.setVisibility(View.VISIBLE);
+
         Boolean isOnline = isOnline(context);
 
         if (!isOnline){
@@ -146,32 +156,20 @@ public class SettingsActivity extends AppCompatActivity {
             return;
         }
 
-        TextView edtNick = findViewById(R.id.edtSettingsNickname);
-        CheckBox cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
+        edtNickname = findViewById(R.id.edtSettingsNickname);
+//        edtPassword = findViewById(R.id.edtChangePass);
 
-        Boolean isDarkMode = cbxDarkMode.isChecked();
-        String nickname = edtNick.getText().toString();
+        String nickname = edtNickname.getText().toString();
+//        String password = edtPassword.getText().toString();
+//
+//        if (!correctPassParams(password)){
+//            return;
+//        }
 
-        Log("isDarkMode.toString() is " + isDarkMode.toString());
         Log("nickname with quote(nickname) is " + quote(nickname));
 
-        String sDarkMode;
-
-        SharedPreferences.Editor editor = getSharedPreferences(myPrefName, MODE_WORLD_WRITEABLE).edit();
-        editor.clear();
-        editor.apply(); // commit changes
-        editor.putBoolean("isDarkMode",isDarkMode);
-        editor.apply();
-
-        if (isDarkMode){
-            sDarkMode = "1";
-        }
-        else{
-            sDarkMode = "0";
-        }
 
         try {
-            localDB.doUpdate(tblUser, "isDarkMode = " + sDarkMode);
             localDB.doUpdate(tblUser, "Nickname = " + quote(nickname));
         }
         catch(Exception e){
@@ -179,13 +177,17 @@ public class SettingsActivity extends AppCompatActivity {
             Log("localInsert has failed");
         }
 
-        setNightMode(context);
-        setIconsToAppearMode();
-
         //Local Update done
 
         Boolean isLec = localDB.isLec();
         String userID = localDB.getUserID(localDB);
+
+//        try{
+//            password = CopyOnly(saltAndHash(password),passwordLength);
+//        }catch (Exception e){
+//            ec.ShowUserError("Please try again");
+//            return;
+//        }
 
         OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
@@ -193,14 +195,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (isLec){
             onlineDB.update_lecturer_lecturernickname_userid(nickname,userID);
-
         }
         else {
             onlineDB.update_student_studentnickname_userid(nickname,userID);
         }
 
 
-        progressBar.setVisibility(View.GONE);
+
         ec.ShowUserMessage("Finished Save");
     }
 
@@ -223,10 +224,12 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    progressBar.setVisibility(View.VISIBLE);
                     Save();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Log(e.toString());
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -282,6 +285,70 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             drawer.openDrawer(GravityCompat.START);
         }
+    }
+
+
+    boolean correctPassParams(@NotNull String password){
+        Log("Correct Pass Params");
+        boolean containSpecial = false;
+        boolean isDigit = false;
+        boolean isUpper = false;
+        boolean isLower = false;
+        boolean hasWhiteSpace = false;
+
+        for (char c : password.toCharArray()){
+            if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '^'
+                    || c == '&' || c == '*'){
+                containSpecial = true;
+            }
+            if (Character.isDigit(c)){
+                isDigit = true;
+            }
+
+            if (Character.isUpperCase(c)){
+                isUpper = true;
+            }
+
+            if (Character.isLowerCase(c)){
+                isLower = true;
+            }
+
+            if (c == ' '){
+                hasWhiteSpace = true;
+            }
+        }
+
+        if (!containSpecial){
+            ec.ShowUserError("Make sure there is at least one special character",context);
+            return false;
+        }
+
+        if (!isDigit){
+            ec.ShowUserError("Make sure there is at least one number",context);
+            return false;
+        }
+
+        if (!isLower){
+            ec.ShowUserError("Make sure there is at least one lower case character",context);
+            return false;
+        }
+
+        if (!isUpper) {
+            ec.ShowUserError("Make sure there is at least one upper case character",context);
+            return false;
+        }
+
+        if (hasWhiteSpace){
+            ec.ShowUserError("Cannot have whitespace in password",context);
+            return false;
+        }
+
+        if (password.length() < 8){
+            ec.ShowUserError("Make sure your password is at least 8 characters long",context);
+            return false;
+        }
+
+        return true;
     }
 
 }

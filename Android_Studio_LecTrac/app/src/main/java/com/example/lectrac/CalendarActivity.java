@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,16 +54,16 @@ public class CalendarActivity extends AppCompatActivity {
     private CompactCalendarView cCalendarView;
 
     String calendarDate;
-    ArrayList<String> arrTaskNames = new ArrayList<>();
-    ArrayList<String> arrTaskCourses = new ArrayList<>();
-    ArrayList<String> arrTaskTimes = new ArrayList<>();
-    ArrayList<String> arrCalendarDates = new ArrayList<>();
+    static ArrayList<String> arrTaskNames = new ArrayList<>();
+    static ArrayList<String> arrTaskCourses = new ArrayList<>();
+    static ArrayList<String> arrTaskTimes = new ArrayList<>();
+    static ArrayList<String> arrCalendarDates = new ArrayList<>();
 
     String[] arrMonths = new String[] {"January", "February", "March", "April", "May",
                                                 "June", "July", "August", "September", "October",
                                                 "November", "December"};
 
-    static RecyclerView recyclerView;
+    RecyclerView recyclerView;
     CalendarAdapter calendarAdapter;
     static LocalDatabaseManager localDB;
 
@@ -74,9 +75,26 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        drawer = findViewById(R.id.drawer_layout);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //region Sync
+                try {
+                    Syncer syncer = new Syncer(CalendarActivity.this);
+                } catch(Exception e){
+                    Log(e.toString());
+                }
+                //endregion
+            }
+        });
+
+        t.start();
+
         recyclerView = (RecyclerView) findViewById(R.id.rvCalendarEvents);
         cCalendarView = (CompactCalendarView) findViewById(R.id.cvCalendar);
-
+        setUpDate();
         localDB = new LocalDatabaseManager(this);
 
         setDrawer();
@@ -87,15 +105,16 @@ public class CalendarActivity extends AppCompatActivity {
 
 
         scrollOnClick();
-        setUpDate();
         try {
             highlightDates();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log(e.toString());
         }
 
         setNightMode(this);
         setIconsToAppearMode();
+        calendarDate = getCurrDate();
+        setUpStartDate();
         recyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -143,41 +162,27 @@ public class CalendarActivity extends AppCompatActivity {
     void StartAdapter() throws InterruptedException {
         Log("Starting to do the RecyclerView code");
 
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //region Sync
-                try {
-                    Syncer syncer = new Syncer(CalendarActivity.this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //endregion
-            }
-        });
-
-        t.start();
-
         addFromLocalDB();
-        t.join();
+
         addFromOnlineDB();
-
-
 
         // using adapter class for Recycler View
         Log("send data to calendar adapter");
-        calendarAdapter = new CalendarAdapter(this, arrTaskNames, arrTaskCourses, arrTaskTimes);
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log("RUNNING START ADAPTER IN UI THREAD");
+//
+//
+//        });
+
+        calendarAdapter = new CalendarAdapter(CalendarActivity.this, arrTaskNames, arrTaskCourses, arrTaskTimes);
         recyclerView.setAdapter(calendarAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(CalendarActivity.this));
         Log("done");
     }
+
+
 
 
     // dates that have due dates have a small red circle under the date, indicating a task is due
@@ -200,12 +205,14 @@ public class CalendarActivity extends AppCompatActivity {
 
         for (int i = 0; i < arrCalendarDates.size(); i++) {
 
-           // tempDate = format.parse(arrCalendarDates.get(i));
-            //assert tempDate != null;
-           // epoch = tempDate.getTime() + 'L';
+            //region had this commented out
+            tempDate = format.parse(arrCalendarDates.get(i));
+            assert tempDate != null;
+            epoch = tempDate.getTime() + 'L';
 
-            //Event event = new Event(Color.BLUE, epoch, null);
-            //cCalendarView.addEvent(event);
+            Event event = new Event(Color.BLUE, epoch, null);
+            cCalendarView.addEvent(event);
+            //endregion
         }
 
         Log("set events");
@@ -220,10 +227,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK");
 
-        if (!cursor.moveToFirst()){
-            Log("No local tasks");
-            return;
-        }
+        if (cursor == null) {return;}
+        cursor.moveToFirst();
         int size = cursor.getCount();
         if (size == 0){
             Log("No local tasks");
@@ -232,13 +237,15 @@ public class CalendarActivity extends AppCompatActivity {
 
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
+        for (int index = 0; index < size; index++) {
+            //region had this commented out
 
-        for (int index = 0; index < cursor.getCount(); index++) {
+            if (cursor.getString(indexDate) != null && !cursor.getString(indexDate).equals("NULL") && !cursor.getString(indexDate).equals("null")){
+                arrCalendarDates.add(cursor.getString(indexDate));
+            }
 
-//            if (!cursor.getString(indexDate).equals("NULL")){
-  //              arrCalendarDates.add(cursor.getString(indexDate));
-    //        }
-      //      cursor.moveToNext();
+            cursor.moveToNext();
+            //endregion
         }
     }
 
@@ -249,10 +256,11 @@ public class CalendarActivity extends AppCompatActivity {
 
         Cursor cursor = localDB.doQuery("SELECT * FROM LECTURER_TASK");
 
-        if (!cursor.moveToFirst()){
-            Log("No local tasks");
+        if (cursor == null){
             return;
         }
+        cursor.moveToFirst();
+
         int size = cursor.getCount();
         if (size == 0){
             Log("No local tasks");
@@ -262,13 +270,29 @@ public class CalendarActivity extends AppCompatActivity {
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
 
-        for (int index = 0; index < cursor.getCount(); index++){
+        for (int index = 0; index < size; index++){
+            if (cursor.getString(indexDate) != null && !cursor.getString(indexDate).equals("NULL") && !cursor.getString(indexDate).equals("null")){
+                arrCalendarDates.add(cursor.getString(indexDate));
+            }
 
-            arrCalendarDates.add(cursor.getString(indexDate));
             cursor.moveToNext();
         }
     }
 
+    public void setUpStartDate(){
+        calendarDate = getCurrDate();
+
+        arrTaskNames.clear();
+        arrTaskCourses.clear();
+        arrTaskTimes.clear();
+
+        try{
+            StartAdapter();
+        }catch (Exception e){
+            Log(e.toString());
+            Log("Failed to do Adapter ");
+        }
+    }
 
     public void setUpDate(){
 
@@ -283,7 +307,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onDayClick(Date dateClicked) {
 
-                calendarDate = displayFormat.format(dateClicked);
+                calendarDate = format.format(dateClicked);
                 tvDate.setText(calendarDate);
                 Log(calendarDate);
 
@@ -295,7 +319,7 @@ public class CalendarActivity extends AppCompatActivity {
                     StartAdapter();
                 }catch (Exception e){
                     Log(e.toString());
-                    Log("Failed to do Adapter shit");
+                    Log("Failed to do Adapter ");
                 }
 
             }
@@ -323,13 +347,10 @@ public class CalendarActivity extends AppCompatActivity {
         Log("addFromLocalDB");
         // local tasks
 
-        Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK WHERE Task_Due_Date = '" +
-                calendarDate + "'");
+        Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK WHERE Task_Due_Date = " + quote(calendarDate));
 
-        if (!cursor.moveToFirst()){
-            Log("No local tasks");
-            return;
-        }
+        if (cursor == null) {return;}
+        cursor.moveToFirst();
         int size = cursor.getCount();
         if (size == 0){
             Log("No local tasks");
@@ -342,11 +363,25 @@ public class CalendarActivity extends AppCompatActivity {
         int indexCourse = cursor.getColumnIndex("Course_Code");
         int indexTime = cursor.getColumnIndex("Task_Due_Time");
 
-        for (int index = 0; index < cursor.getCount(); index++){
+        for (int index = 0; index < size; index++){
+
+            String course = cursor.getString(indexCourse);
+
+            if (isCourseNull(course)){
+                cursor.moveToNext();
+                continue;
+            }
+
+            String taskTime = cursor.getString(indexTime);
+
+            if (isTimeNull(taskTime)){
+                cursor.moveToNext();
+                continue;
+            }
 
             arrTaskNames.add(cursor.getString(indexName));
-            arrTaskCourses.add(cursor.getString(indexCourse));
-            arrTaskTimes.add(cursor.getString(indexTime));
+            arrTaskCourses.add(course);
+            arrTaskTimes.add(taskTime);
 
             cursor.moveToNext();
         }
@@ -359,15 +394,11 @@ public class CalendarActivity extends AppCompatActivity {
         Log("addFromOnlineDB");
         // online tasks
 
-        Cursor cursor1 = localDB.doQuery("SELECT * FROM LECTURER_TASK WHERE Task_Due_Date = '" +
-                calendarDate + "'");
-        Log("SELECT * FROM LECTURER_TASK WHERE Task_Due_Date = '" +
-                calendarDate + "'");
+        Cursor cursor1 = localDB.doQuery("SELECT * FROM LECTURER_TASK WHERE Task_Due_Date = " + quote(calendarDate));
+        Log("SELECT * FROM LECTURER_TASK WHERE Task_Due_Date = " + quote(calendarDate));
 
-        if (!cursor1.moveToFirst()){
-            Log("No online tasks");
-            return;
-        }
+        if (cursor1 == null) {return;}
+        cursor1.moveToFirst();
         int size = cursor1.getCount();
         if (size == 0){
             Log("No online tasks");
@@ -379,17 +410,30 @@ public class CalendarActivity extends AppCompatActivity {
         int iCourse = cursor1.getColumnIndex("Course_Code");
         int iTime = cursor1.getColumnIndex("Task_Due_Time");
 
-        for (int i = 0; i < cursor1.getCount(); i++){
+        for (int i = 0; i < size; i++){
+
+            String course = cursor1.getString(iCourse);
+
+            if (isCourseNull(course)){
+                cursor1.moveToNext();
+                continue;
+            }
+
+            String taskTime = cursor1.getString(iTime);
+
+            if (isTimeNull(taskTime)){
+                cursor1.moveToNext();
+                continue;
+            }
 
             arrTaskNames.add(cursor1.getString(iName));
-            arrTaskCourses.add(cursor1.getString(iCourse));
-            arrTaskTimes.add(cursor1.getString(iTime));
+            arrTaskCourses.add(course);
+            arrTaskTimes.add(taskTime);
 
             cursor1.moveToNext();
         }
         Log("successful addFromOnlineDB");
     }
-
 
     void scrollOnClick(){
 
@@ -445,6 +489,27 @@ public class CalendarActivity extends AppCompatActivity {
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
             toolbar.getContext().setTheme(R.style.ToolbarIconLight);
         }
+    }
+
+    public boolean isCourseNull(String checkCourse){
+
+        if (checkCourse == null || checkCourse.equals("None") || checkCourse.equals("null") || checkCourse.equals("NULL")){
+            Log("checkCourse is null");
+            return true;
+        }
+        return false;
+
+        //sCourse from textView will always have a string,
+        // if "None" is selected, consider this null
+    }
+
+    public boolean isTimeNull(String checkTime){
+
+        if (checkTime == null || checkTime.equals("") || checkTime.equals("Time") || checkTime.equals("null") || checkTime.equals("NULL")){
+            Log("checkTime is null");
+            return true;
+        }
+        return false;
     }
 
 }

@@ -125,7 +125,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
                                 try {
                                     deleteTask(position);
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    Log(e.toString());
                                 }
                             }
                             return false;
@@ -157,7 +157,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
                                     try {
                                         deleteTask(position);
                                     } catch (InterruptedException e) {
-                                        e.printStackTrace();
+                                        Log(e.toString());
                                     }
                                     break;
                             }

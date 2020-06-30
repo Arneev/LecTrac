@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -40,6 +41,7 @@ public class EditTaskActivity extends AppCompatActivity {
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     public static String[] courses;
     public LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+    static boolean shouldChangeActs;
 
     ToDoAdapter toDoAdapter;
     RecyclerView recyclerView;
@@ -56,6 +58,8 @@ public class EditTaskActivity extends AppCompatActivity {
     boolean updateTimeInOnline;
     boolean updateCourseCode;
 
+    static ProgressBar progressBar;
+
     Boolean isLec, mustPost;
     private long mLastClickTime = 0;
 
@@ -63,7 +67,8 @@ public class EditTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task);
-
+        progressBar = findViewById(R.id.progressBarEditTask);
+        shouldChangeActs = false;
         mustPost = false;
         // is user a student or lecturer?
         isLec = localDB.isLec();
@@ -100,7 +105,7 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
 
-    public void saveTask() throws InterruptedException, JSONException, IOException {
+    public boolean saveTask() throws InterruptedException, JSONException, IOException {
 
         Log("About to edit task");
 
@@ -124,6 +129,8 @@ public class EditTaskActivity extends AppCompatActivity {
 
         if (isTaskNameNull()){
             ec.ShowUserError("Enter a task name",this);
+            shouldChangeActs = false;
+            return false;
         }
         else{
 
@@ -241,11 +248,12 @@ public class EditTaskActivity extends AppCompatActivity {
         if (blnDoUpdate){
 
             if (isLec){
-                if (!newCourseCode.equals("None")){
+                if (isCourseNull()){
 
                     if (!isOnline(this)){
                         ec.ShowUserMessage("You are not connected to the internet",this);
-                        return;
+                        shouldChangeActs = false;
+                        return false;
                     }
 
                     // Local DB
@@ -279,21 +287,23 @@ public class EditTaskActivity extends AppCompatActivity {
                     //end of OnlineDB
                 }
                 else {
-
+                    if (mustPost){
+                        ec.ShowUserError("You cannot post a message without a course code");
+                        shouldChangeActs = false;
+                        return false;
+                    }
                     Log("Update in " + tableName);
                     localDB.doUpdate(tableName, setting, condition);
                 }
 
             }
             else {
-
                 Log("Update in " + tableName);
                 localDB.doUpdate(tableName, setting, condition);
             }
         }
 
-
-        startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
+        return true;
     }
 
 
@@ -383,7 +393,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public boolean isDateNull(String checkDate){
 
-        if (checkDate == null){
+        if (checkDate == null || checkDate.equals("NULL") || checkDate.equals("null")){
             Log("checkDate is null");
             return true;
         }
@@ -392,7 +402,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public boolean isTimeNull(String checkTime){
 
-        if (checkTime == null){
+        if (checkTime == null || checkTime.equals("NULL") || checkTime.equals("null")){
             Log("checkTime is null");
             return true;
         }
@@ -401,10 +411,9 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public boolean isCourseNull(){
 
-        Spinner spinner = (Spinner)findViewById(R.id.spinCourses);
-        String checkCourse = spinner.getSelectedItem().toString();
+        String checkCourse = newCourseCode;
 
-        if (checkCourse.equals("None")){
+        if (checkCourse == null || checkCourse.equals("None") | checkCourse.equals("NULL")){
             Log("checkCourse is null");
             return true;
         }
@@ -443,7 +452,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
         Log("Course name set");
     }
-
 
     public void setComponents(){
 
@@ -499,7 +507,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
     }
 
-
     public String removeComa(String str) {
 
         if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == ',') {
@@ -507,7 +514,6 @@ public class EditTaskActivity extends AppCompatActivity {
         }
         return str;
     }
-
 
     //endregion
 
@@ -519,6 +525,7 @@ public class EditTaskActivity extends AppCompatActivity {
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 // mis-clicking prevention, using threshold of 1000 ms
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                     return;
@@ -529,13 +536,21 @@ public class EditTaskActivity extends AppCompatActivity {
                 try {
                     if (isLec) {
                         isPosted();
+                        progressBar.setVisibility(View.GONE);
+                        return;
+                    }else if (!saveTask()){
+                        progressBar.setVisibility(View.GONE);
                         return;
                     }
-                    saveTask();
-                    startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
+                    else{
+                        ec.ShowUserMessageWait("Edited Task",ToDoListActivity.class);
+                    }
+
+
                 } catch (InterruptedException | JSONException | IOException e) {
-                    e.printStackTrace();
+                    ec.ShowUserError(showCheckInternetConnection,EditTaskActivity.this);
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -598,17 +613,15 @@ public class EditTaskActivity extends AppCompatActivity {
                         mustPost = true;
 
                         try {
-                            saveTask();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            if (saveTask()){
+                                ec.ShowUserMessageWait("Edited Task",ToDoListActivity.class);
+                            }
+                        }  catch (InterruptedException | JSONException | IOException e) {
+                            ec.ShowUserError(showCheckInternetConnection,EditTaskActivity.this);
+                            return;
                         }
 
                         dialog.dismiss();
-                        startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -616,22 +629,221 @@ public class EditTaskActivity extends AppCompatActivity {
                         mustPost = false;
 
                         try {
-                            saveTask();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            if (saveTask()){
+                               ec.ShowUserMessageWait("Edited Task",ToDoListActivity.class);
+                            }
+                        }  catch (InterruptedException | JSONException | IOException e) {
+                            ec.ShowUserError(showCheckInternetConnection,EditTaskActivity.this);
+                            return;
                         }
 
                         dialog.dismiss();
-                        startActivity(new Intent(EditTaskActivity.this, ToDoListActivity.class));
                     }
                 });
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public boolean saveTaskForPost() throws InterruptedException, JSONException, IOException {
+
+        Log("About to edit task");
+
+        getTaskTitle();
+        getCourse();
+
+        // set parameters for doUpdate
+        String setting = "";
+        String condition = "Task_ID=" + taskID.substring(1);
+
+
+        // is user a student or lecturer?
+        boolean isLec = localDB.isLec();
+
+        // quotations
+        // *check if user updated any values
+
+        boolean blnDoUpdate = false;
+
+        // if isLec and task is posted then edit task in onlineDB
+
+        if (isTaskNameNull()){
+            ec.ShowUserError("Enter a task name",this);
+            shouldChangeActs = false;
+            return false;
+        }
+        else{
+
+            // if the task name was changed, update array
+            if (!newTaskName.equals(oldTaskName)){
+
+                blnDoUpdate = true;
+
+                newTaskName = quote(newTaskName);
+                setting += "Task_Name = " + newTaskName + ",";
+                arrOnlyTaskNames.set(position, newTaskName);
+                Log("About to update:" + setting);
+            }
+        }
+
+        // date cannot be empty because the user cannot un-select a date, date was set at onCreate
+        // due date cannot be removed, user has to delete the task and create a new one with no date
+        // If the task due date was changed, update the database
+        if (isDateNull(oldDate)){
+
+            if (isDateNull(newDueDate)){
+                Log("No update for date");
+            }
+            else {
+
+                blnDoUpdate = true;
+
+                newDueDate = quote(newDueDate);
+                setting = setting + "Task_Due_Date = " + newDueDate + ",";
+                Log("About to update:" + setting);
+                updateDateInOnline = true;
+            }
+        }
+        else {
+
+            if (isDateNull(newDueDate)){
+                Log("No update for date");
+            }
+            else {
+
+                if (!newDueDate.equals(oldDate)){
+
+                    blnDoUpdate = true;
+
+                    newDueDate = quote(newDueDate);
+                    setting = setting + "Task_Due_Date = " + newDueDate + ",";
+                    Log("About to update:" + setting);
+
+                    updateDateInOnline = true;
+                }
+            }
+
+        }
+
+
+        // time cannot be empty because the user cannot un-select the time, time was set at onCreate
+        // due time cannot be removed, user has to delete the task and create a new one with no time
+        // if the task due date was changed, update the database
+        if (isTimeNull(oldTime)){
+
+            if (isTimeNull(newDueTime)){
+                Log("No update for time");
+            }
+            else {
+
+                blnDoUpdate = true;
+                newDueTime = quote(newDueTime);
+                setting = setting + "Task_Due_Time = " + newDueTime + ",";
+                Log("About to update:" + setting);
+                updateTimeInOnline = true;
+            }
+        }
+        else {
+
+            if (isTimeNull(newDueTime)){
+                Log("No update for time");
+            }
+            else {
+
+                if (!newDueTime.equals(oldTime)) {
+
+                    blnDoUpdate = true;
+
+                    newDueTime = quote(newDueTime);
+                    setting = setting + "Task_Due_Time = " + newDueTime + ",";
+                    Log("About to update:" + setting);
+                    updateTimeInOnline = true;
+                }
+            }
+
+        }
+
+        // Course code is set at onCreate so it will never be none
+        // if the task course was changed, update the database and array
+        if (!newCourseCode.equals(oldCourseCode)){
+
+            blnDoUpdate = true;
+
+            newCourseCode = quote(newCourseCode);
+            setting = setting + "Course_Code = " + newCourseCode;
+            arrOnlyTaskCourses.set(position, newCourseCode);
+            Log("About to update:" + setting);
+
+            updateCourseCode = true;
+        }
+
+        // *end of checking
+
+        setting = removeComa(setting);
+
+
+        // update in local DB and if isLec update in online DB
+        tableName = tblUserTask;
+
+        if (blnDoUpdate){
+
+            if (isLec){
+                if (!newCourseCode.equals("None")){
+
+                    if (!isOnline(this)){
+                        ec.ShowUserMessage("You are not connected to the internet",this);
+                        shouldChangeActs = false;
+                        return false;
+                    }
+
+                    // Local DB
+                    tableName = tblLocalLecTask;
+                    Log("Update in " + tableName);
+                    localDB.doUpdate(tableName, setting, condition);
+
+                    // Online DB
+                    Log("Update in online DB");
+
+
+                    if (mustPost) {
+                        //onlineDB.Update(tableName, setting, condition);
+
+                        if (updateCourseCode) {
+                            onlineDB.update_task_coursecode_taskid(unquote(newCourseCode), taskID);
+                        }
+
+                        if (!newTaskName.equals(oldTaskName)) {
+                            onlineDB.update_task_taskname_taskid(unquote(newTaskName), taskID);
+                        }
+
+                        if (updateTimeInOnline) {
+                            onlineDB.update_task_duetime_taskid(unquote(newDueTime), taskID);
+                        }
+
+                        if (updateDateInOnline) {
+                            onlineDB.update_task_duedate_taskid(unquote(newDueDate), taskID);
+                        }
+                    }
+                    //end of OnlineDB
+                }
+                else {
+                    if (mustPost){
+                        ec.ShowUserError("You cannot post a message without a course code");
+                        shouldChangeActs = false;
+                        return false;
+                    }
+                    Log("Update in " + tableName);
+                    localDB.doUpdate(tableName, setting, condition);
+                }
+
+            }
+            else {
+                Log("Update in " + tableName);
+                localDB.doUpdate(tableName, setting, condition);
+            }
+        }
+
+        return true;
     }
 
 

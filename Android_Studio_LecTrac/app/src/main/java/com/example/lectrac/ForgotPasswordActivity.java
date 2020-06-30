@@ -2,11 +2,14 @@ package com.example.lectrac;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,9 +17,11 @@ import org.json.JSONObject;
 import static com.example.lectrac.HelperFunctions.CopyOnly;
 import static com.example.lectrac.HelperFunctions.STUDENT_NUMBER_LENGTH;
 import static com.example.lectrac.HelperFunctions.hasWhitespace;
+import static com.example.lectrac.HelperFunctions.isOnline;
 import static com.example.lectrac.HelperFunctions.passwordLength;
 import static com.example.lectrac.HelperFunctions.saltAndHash;
 import static com.example.lectrac.HelperFunctions.setNightMode;
+import static com.example.lectrac.HelperFunctions.showNotConnected;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -27,16 +32,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
     static ErrorClass ec;
+    static ImageView imgBack;
 
     String sUserID, sPassword;
 
     OnlineDatabaseManager onlineDB;
+    static ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-
+        progressBar = findViewById(R.id.progressBarForgotPass);
+        imgBack = findViewById(R.id.back);
+        setForgotPassBack();
         setNightMode(this);
 
         ec = new ErrorClass(this);
@@ -56,13 +65,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    progressBar.setVisibility(View.VISIBLE);
                     sUserID = etUserID.getText().toString();
                     sPassword = etPassword.getText().toString();
 
                     beginProcess();
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    ec.ShowUserError("Fill in the fields again please");
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -70,6 +81,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
     public void beginProcess() throws JSONException {
+        if (!isOnline(ForgotPasswordActivity.this)){
+            ec.ShowUserMessage(showNotConnected);
+            return;
+        }
 
         if (checkUserID(sUserID)){
 
@@ -78,6 +93,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if (resetPassword(sUserID)){
 
                     ec.ShowUserMessage("Password has been reset");
+                }
+                else{
+                    ec.ShowUserError("Failed to reset password, try again or contact support");
                 }
             }
         }
@@ -117,35 +135,42 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         Log("checkUserID");
 
-        if (UserID.isEmpty()){
-            ec.ShowUserError("Please enter valid WITS ID",this);
-            return false;
-        }
-
-        if (hasWhitespace(UserID)){
-            ec.ShowUserError("Please enter valid WITS ID",this);
-            return false;
-        }
-
-        for (int i = 0; i < UserID.length(); i++){
-
-            if (!Character.isDigit(UserID.charAt(i))){
+        try{
+            if (UserID.isEmpty()){
                 ec.ShowUserError("Please enter valid WITS ID",this);
                 return false;
             }
-        }
 
-        int intStudentID = Integer.parseInt(UserID);
+            if (hasWhitespace(UserID)){
+                ec.ShowUserError("Please enter valid WITS ID",this);
+                return false;
+            }
 
-        if (intStudentID < 0){
+            for (int i = 0; i < UserID.length(); i++){
+
+                if (!Character.isDigit(UserID.charAt(i))){
+                    ec.ShowUserError("Please enter valid WITS ID",this);
+                    return false;
+                }
+            }
+
+
+            int intStudentID = Integer.parseInt(UserID);
+
+            if (intStudentID < 0){
+                ec.ShowUserError("Please enter valid WITS ID",this);
+                return false;
+            }
+
+            if (UserID.length() != 7){
+                ec.ShowUserError("Please enter valid WITS ID",this);
+                return false;
+            }
+        }catch (Exception e){
             ec.ShowUserError("Please enter valid WITS ID",this);
             return false;
         }
 
-        if (UserID.length() != 7){
-            ec.ShowUserError("Please enter valid WITS ID",this);
-            return false;
-        }
 
         // TEST CASE WHEN USER IS NOT IN DATABASE IS TAKEN CARE OF IN checkPassword();
 
@@ -184,6 +209,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     }
 
+    void setForgotPassBack(){
+        imgBack = findViewById(R.id.back);
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class));
+            }
+        });
+    }
 
     //endregion
 }

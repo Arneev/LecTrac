@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -47,7 +48,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private long mLastClickTime = 0;
-
+    static ProgressBar progressBar;
 
     ToDoAdapter toDoAdapter;
     RecyclerView recyclerView;
@@ -59,7 +60,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
-
+        progressBar = findViewById(R.id.progressBarAddTask);
         ec = new ErrorClass(this);
         setNightMode(this);
         localDB = new LocalDatabaseManager(this);
@@ -99,16 +100,12 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
                         try {
                             saveTask();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (Exception e){
+                            ec.ShowUserMessage("Problem saving task");
                         }
 
                         dialog.dismiss();
-                        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
+                        ec.ShowUserMessageWait("Finished Add Task",ToDoListActivity.class);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -117,16 +114,12 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
                         try {
                             saveTask();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (Exception e){
+                            ec.ShowUserMessage("Problem saving task");
                         }
 
                         dialog.dismiss();
-                        startActivity(new Intent(AddNewTaskActivity.this, ToDoListActivity.class));
+                        ec.ShowUserMessageWait("Finished Add Task",ToDoListActivity.class);
                     }
                 });
 
@@ -224,14 +217,34 @@ public class AddNewTaskActivity extends AppCompatActivity {
         }
 
         if (isDateNull()){
+            //Before change here
+            //sDueDate = "NULL";
+
+            //After change here
             sDueDate = "NULL";
+
+            if (isLec && mustPost){
+                ec.ShowUserError("You have to choose a date");
+                return false;
+            }
+            //end after change
         }
         else {
             sDueDate = quote(sDueDate);
         }
 
         if (isTimeNull()){
+            //Before change
+            //sDueTime = "NULL";
+
+            //After change here
             sDueTime = "NULL";
+
+            if (isLec && mustPost){
+                ec.ShowUserError("You have to choose a time");
+                return false;
+            }
+            //end after change
         }
         else{
             sDueTime = quote(sDueTime);
@@ -284,7 +297,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 String userID = quote(localDB.getUserID(localDB));
 
                 String[] locLecCols = {"Task_Name","Task_Due_Date","Task_Due_Time","isDone","Course_Code","Lecturer_ID"};
-                String[] locLecData = {sTaskName,sDueDate,sDueTime,"0",sCourseCode,userID};
+                String[] locLecData = {sTaskName,quote(completeUnquote(sDueDate,10)),quote(completeUnquote(sDueTime,10)),"0",sCourseCode,userID};
                 tableName = tblLocalLecTask;
 
                 Log("isLec and sCourseCode is NOT NULL about to insert into localDB");
@@ -320,7 +333,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
         Log("Update toDoAdapter after adding new task");
         toDoAdapter = new ToDoAdapter(sTaskName, sCourseCode, sTaskId);
 
-        ec.ShowUserMessage("Finished add task");
         return true;
     }
 
@@ -345,7 +357,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         EditText etTaskName = findViewById(R.id.etTitleTask);
         String checkTaskName = etTaskName.getText().toString();
 
-        if (checkTaskName.equals("")){
+        if (checkTaskName == null || checkTaskName.equals("")){
             Log("checkTaskName is null");
             return true;
         }
@@ -357,7 +369,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         TextView tvTime = findViewById(R.id.tvDisplayTime);
         String checkTime = tvTime.getText().toString();
 
-        if (checkTime.equals("") || checkTime.equals("Time")){
+        if (checkTime == null || checkTime.equals("") || checkTime.equals("Time") || checkTime.equals("null") || checkTime.equals("NULL")){
             Log("checkTime is null");
             return true;
         }
@@ -369,7 +381,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         Spinner spinner = (Spinner)findViewById(R.id.spinCourseCode);
         String checkCourse = spinner.getSelectedItem().toString();
 
-        if (checkCourse.equals("None")){
+        if (checkCourse == null || checkCourse.equals("None") || checkCourse.equals("null") || checkCourse.equals("NULL")){
             Log("checkCourse is null");
             return true;
         }
@@ -408,7 +420,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressBar.setVisibility(View.VISIBLE);
                 // mis-clicking prevention, using threshold of 1000 ms
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                     return;
@@ -419,12 +431,19 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 try {
                     if (isLec) {
                         isPosted();
+                        progressBar.setVisibility(View.GONE);
                         return;
                     }
-                    saveTask();
+
+                    if (saveTask()){
+                        progressBar.setVisibility(View.GONE);
+                        ec.ShowUserMessageWait("Finished Add Task",ToDoListActivity.class);
+                    }
+
                 } catch (InterruptedException | JSONException | IOException e) {
-                    e.printStackTrace();
+                    Log(e.toString());
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

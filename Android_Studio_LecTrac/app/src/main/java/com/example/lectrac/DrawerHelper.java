@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -115,7 +116,8 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_logout:
                 LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-                localDB.doDelete(tblUser);
+                context.deleteDatabase("LecTrac.db");
+
                 Intent i7 = new Intent(context, MainActivity.class);
                 context.startActivity(i7);
         }
@@ -131,7 +133,7 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
         TextView userName = header.findViewById(R.id.tvNavUsername);
 
         String userID = localDB.getUserID(localDB);
-        Cursor cursor = localDB.doQuery("SELECT * FROM USER WHERE User_ID = " + userID);
+        Cursor cursor = localDB.doQuery("SELECT * FROM USER WHERE User_ID = " + quote(userID));
 
         if (cursor.getCount() == 0){
             Log(userID);

@@ -60,8 +60,20 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
-
         ec = new ErrorClass(this);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Syncer syncer = new Syncer(ToDoListActivity.this);
+                }catch (Exception e){
+                    ec.ShowUserMessage(showCheckInternetConnection,ToDoListActivity.this);
+                }
+            }
+        });
+
+        t.start();
+
         setNightMode(this);
         setIconsToAppearMode();
         setDrawer();
@@ -78,11 +90,15 @@ public class ToDoListActivity extends AppCompatActivity {
         SetCourseChangeListener();
         SetLecSpinnerChangeListener();
 
+        try {
+            t.join();
+        } catch (Exception e){ Log(e.toString()); }
+
         try{
             StartAdapter();
         }catch (Exception e){
             Log(e.toString());
-            Log("Failed to do Adapter shit");
+            Log("Failed to do Adapter ");
         }
 
         moveToAddTask();
@@ -138,32 +154,11 @@ public class ToDoListActivity extends AppCompatActivity {
         arrOnlyTaskIDs.clear();
         Log("Starting to do the RecyclerView code");
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //region Sync
-                try {
-                    Syncer syncer = new Syncer(ToDoListActivity.this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //endregion
-            }
-        });
 
-        t.start();
 
         if (lecFilOption == 0 || lecFilOption == 2){
             addFromLocalDB();
         }
-
-        t.join();
 
         if (lecFilOption == 0 || lecFilOption == 1){
             addFromOnlineDB();
@@ -181,6 +176,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
         if (arrOnlyTaskIDs.size() == 0){
             ec.ShowUserMessage("There are no tasks");
+            return;
         }
     }
 
@@ -269,32 +265,10 @@ public class ToDoListActivity extends AppCompatActivity {
         arrOnlyTaskIDs.clear();
         Log("Starting to do the RecyclerView code WITH CONDITION");
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //region Sync
-                try {
-                    Syncer syncer = new Syncer(ToDoListActivity.this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //endregion
-            }
-        });
-
-        t.start();
-
         if (lecFilOption == 0 || lecFilOption == 2){
             addFromLocalDB(condition);
         }
 
-        t.join();
 
         if (lecFilOption == 0 || lecFilOption == 1){
             addFromOnlineDB(condition);
@@ -465,7 +439,6 @@ public class ToDoListActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     Log(e.toString());
                     ec.ShowUserError("Failed to filter tasks, please contact support",ct);
-                    e.printStackTrace();
                 }
             }
 
@@ -504,7 +477,6 @@ public class ToDoListActivity extends AppCompatActivity {
                     Log(e.toString());
                     Log("LecFilt error");
                     ec.ShowUserError("Failed to filter tasks, please contact support",ct);
-                    e.printStackTrace();
                 }
             }
 

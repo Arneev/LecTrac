@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -19,16 +21,20 @@ import static com.example.lectrac.HelperFunctions.*;
 public class RegisterActivity extends AppCompatActivity {
 
     static ErrorClass ec;
+    static Button createAccButton;
+    static ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        progressBar = findViewById(R.id.progressBarRegister);
         ec = new ErrorClass(this);
-
+        createAccButton = findViewById(R.id.btnCreateAcc);
+        setRegisterButtonClick();
         exitRegistration();
     }
 
-    public void RegisterButtonClick(View v) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
+    public void RegisterButtonClick() throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         if (!isOnline(this)){
             ec.ShowUserMessage("You are not connected to the internet",this);
             return;
@@ -69,14 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
                         //region Try Syncing
                         try {
                             Syncer syncClass = new Syncer(RegisterActivity.this);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (Exception e){
+                            ec.ShowUserMessage(showCheckInternetConnection,RegisterActivity.this);
                         }
                         //endregion
                     }
@@ -96,7 +96,22 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    public void setRegisterButtonClick(){
+        createAccButton = findViewById(R.id.btnCreateAcc);
 
+        createAccButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                try{
+                    RegisterButtonClick();
+                }catch (Exception e){
+                    ec.ShowUserError(showCheckInternetConnection, RegisterActivity.this);
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
     private void exitRegistration(){
 
         ImageView exitRegister = (ImageView) findViewById(R.id.back);

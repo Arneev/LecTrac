@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,6 +37,9 @@ public class HelperFunctions {
     final static SimpleDateFormat ddMMMyyyy = new SimpleDateFormat("dd-MMM-yyyy");
     final static SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     final static String myPrefName = "myPrefs";
+    final static String persoTag = "Perso";
+    final static String calTag = "Calendar";
+
     //endregion
 
     //region Tables
@@ -57,6 +61,8 @@ public class HelperFunctions {
     final static String errorCodeMoreThanOne = "Error Code 01";
     final static String errorProblemSync = "Error Code 02";
     final static String errorLecNoCourse = "Error Code 03";
+    final static String showCheckInternetConnection = "Please check your internet connection";
+    final static String showNotConnected = "You are not connected to the internet";
 
 
     //endregion
@@ -72,6 +78,10 @@ public class HelperFunctions {
 
     public static void Log(String error){
         Log.i("Perso",error);
+    }
+
+    public static void LogCal(String error){
+        Log.i("Calendar",error);
     }
 
     public static void LocalLog(String error){
@@ -192,6 +202,62 @@ public class HelperFunctions {
         else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    public static void printArrString(ArrayList<String> arr, String tag){
+        if (arr == null){
+            LogOption(tag,"array is null");
+            Log("WHOOOPSIE DOOOOO");
+            return;
+        }
+        int size = arr.size();
+
+        for (int i = 0; i < size; i++){
+            if (arr.get(i) != null){
+                LogOption(tag,arr.get(i));
+            }
+            else{
+                LogOption(tag,"one bit is null, at index " + Integer.toString(i));
+            }
+        }
+
+    }
+
+    public static void printArrInt(ArrayList<Integer> arr, String tag){
+        if (arr == null){
+            LogOption(tag,"array is null");
+            return;
+        }
+        int size = arr.size();
+
+        for (int i = 0; i < size; i++){
+            if (Integer.toString(arr.get(i)) != null){
+                LogOption(tag,Integer.toString(arr.get(i)));
+            }
+            else{
+                LogOption(tag,"one bit is null, at index " + Integer.toString(i));
+            }
+        }
+
+    }
+
+
+    public static void LogOption(String tag, String message){
+        if (tag.equals(persoTag)){
+            Log(message);
+        }
+        else if (tag.equals(calTag)){
+            LogCal(message);
+        }
+    }
+
+    public static String completeUnquote(String string, int iterations){
+
+        for (int i = 0; i < iterations; i++){
+            string = unquote(string);
+        }
+
+        return string;
     }
 
 

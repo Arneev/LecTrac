@@ -46,14 +46,8 @@ public class CourseListActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Syncer syncer = new Syncer(CourseListActivity.this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                }catch (Exception e){
+                    ec.ShowUserMessage(showCheckInternetConnection,CourseListActivity.this);
                 }
             }
         });
@@ -70,7 +64,7 @@ public class CourseListActivity extends AppCompatActivity {
         try {
             t.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+           Log(e.toString());
         }
         startAdapter();
     }

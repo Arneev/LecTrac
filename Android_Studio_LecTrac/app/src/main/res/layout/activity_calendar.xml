@@ -5,31 +5,38 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:screenOrientation="portrait"
+    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    android:scrollbarThumbHorizontal="@color/transparent"
+    android:scrollbarThumbVertical="@drawable/transparent"
     android:theme="@style/AppTheme"
-    tools:context=".CalendarActivity"
-    tools:openDrawer="start">
+    tools:context=".CalendarActivity">
 
 
     <ScrollView
         android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background">
-
+        android:fillViewport="true">
 
         <RelativeLayout
             android:id="@+id/rlCal1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:visibility="visible">
 
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarTop"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
                 android:background="@color/actionBar"
-                android:paddingBottom="5dp"
+                android:paddingBottom="0dp"
                 app:popupTheme="@style/Theme.AppCompat.NoActionBar"
                 app:titleTextColor="@color/transparent" />
 
@@ -37,134 +44,117 @@
                 android:id="@+id/tvCalendarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
+                android:layout_below="@+id/toolbarTop"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
                 android:background="@drawable/heading_panel"
                 android:fontFamily="@font/raleway_light"
                 android:gravity="center_horizontal"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="Calendar"
                 android:textAlignment="center"
                 android:textColor="@color/headingTextColor"
                 android:textSize="50sp"
                 android:textStyle="bold" />
 
-            <RelativeLayout
-                android:id="@+id/rlCal2"
-                android:layout_width="match_parent"
-                android:layout_height="370dp"
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView
+                android:id="@+id/cvCalendar"
+                android:layout_width="365dp"
+                android:layout_height="330dp"
+                android:layout_below="@+id/toolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-2dp"
+                android:background="@color/calendarBackground"
+                app:compactCalendarBackgroundColor="@color/calendarBackground"
+                app:compactCalendarCurrentDayBackgroundColor="@color/calendarTopColor"
+                app:compactCalendarCurrentDayIndicatorStyle="fill_large_indicator"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="@color/calendarTopColor"
+                app:compactCalendarEventIndicatorStyle="small_indicator"
+                app:compactCalendarOtherMonthDaysTextColor="@color/calendarText"
+                app:compactCalendarShouldSelectFirstDayOfMonthOnScroll="true"
+                app:compactCalendarTargetHeight="340dp"
+                app:compactCalendarTextColor="@color/calendarText"
+                app:compactCalendarTextSize="12sp" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="365dp"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_below="@+id/tvCalendarTitle"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="-3dp"
-                android:layout_marginRight="-3dp">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="23dp"
+                android:background="@color/calendarTopColor"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="365dp"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/calendarTopColor"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-                <TextView
-                    android:id="@+id/tvCalendarMonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/msyi"
-                    android:text="Month"
-                    android:textColor="@color/mainText"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btnCalendarLeft"
-                    android:layout_width="61dp"
-                    android:layout_height="43dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:background="@drawable/ic_arrow_left"
-                    android:tint="@color/miniElipseButtonColor" />
-
-                <Button
-                    android:id="@+id/btnCalendarRight"
-                    android:layout_width="61dp"
-                    android:layout_height="43dp"
-                    android:layout_marginStart="320dp"
-                    android:layout_marginLeft="130dp"
-                    android:background="@drawable/ic_arrow_right"
-                    android:tint="@color/miniElipseButtonColor" />
-
-                <com.github.sundeepk.compactcalendarview.CompactCalendarView
-                    android:id="@+id/cvCalendar"
-                    android:layout_width="365dp"
-                    android:layout_height="330dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="45dp"
-                    android:background="@color/calendarBackground"
-                    app:compactCalendarBackgroundColor="@color/calendarBackground"
-                    app:compactCalendarCurrentDayBackgroundColor="@color/calendarTopColor"
-                    app:compactCalendarCurrentDayIndicatorStyle="fill_large_indicator"
-                    app:compactCalendarCurrentSelectedDayBackgroundColor="@color/calendarTopColor"
-                    app:compactCalendarEventIndicatorStyle="small_indicator"
-                    app:compactCalendarOtherMonthDaysTextColor="@color/calendarText"
-                    app:compactCalendarShouldSelectFirstDayOfMonthOnScroll="true"
-                    app:compactCalendarTargetHeight="340dp"
-                    app:compactCalendarTextColor="@color/calendarText"
-                    app:compactCalendarTextSize="12sp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlCal3"
+            <TextView
+                android:id="@+id/tvCalendarMonth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rlCal2"
+                android:layout_alignTop="@+id/toolbar"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/msyi"
+                android:paddingBottom="10dp"
+                android:text="Month"
+                android:textAlignment="center"
+                android:textColor="@color/mainText"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnCalendarLeft"
+                android:layout_width="61dp"
+                android:layout_height="43dp"
+                android:layout_alignStart="@+id/toolbar"
+                android:layout_alignTop="@+id/toolbar"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/ic_arrow_left"
+                android:tint="@color/miniElipseButtonColor" />
+
+            <Button
+                android:id="@+id/btnCalendarRight"
+                android:layout_width="61dp"
+                android:layout_height="43dp"
+                android:layout_alignTop="@+id/toolbar"
+                android:layout_alignEnd="@+id/toolbar"
+                android:layout_marginStart="320dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/ic_arrow_right"
+                android:tint="@color/miniElipseButtonColor" />
+
+            <TextView
+                android:id="@+id/tvCalendarDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cvCalendar"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginRight="3dp">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="1dp"
+                android:fontFamily="@font/msyi"
+                android:paddingBottom="5dp"
+                android:text="Date"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvCalendarDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="14dp"
-                    android:fontFamily="@font/msyi"
-                    android:paddingBottom="5dp"
-                    android:text="Date"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCalendarEvents"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
-                    android:visibility="visible">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="-2dp"
-                    android:layout_marginRight="-2dp"
-                    android:layout_marginBottom="-14dp"
-                    android:background="@color/white" />
-
-            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCalendarEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvCalendarDate"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:visibility="visible" />
 
 
         </RelativeLayout>
@@ -174,10 +164,13 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="left"
         android:background="@color/nonItemBackground"
+        android:visibility="visible"
         app:itemIconTint="@color/miniElipseButtonColor"
-        app:itemTextColor="@color/miniElipseButtonColor"/>
+        app:itemTextColor="@color/miniElipseButtonColor">
+
+    </com.google.android.material.navigation.NavigationView>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

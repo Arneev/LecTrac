@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.example.lectrac.HelperFunctions.Log;
+import static com.example.lectrac.HelperFunctions.*;
 
 import java.util.ArrayList;
 
@@ -34,6 +34,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
         arrTaskNames = names;
         arrTaskCourses = courses;
         arrTaskTimes = times;
+
+        LogCal("About to print task names");
+        printArrString(arrTaskNames,calTag);
+        LogCal("About to print courses");
+        printArrString(arrTaskCourses,calTag);
+        LogCal("About to print task times");
+        printArrString(arrTaskTimes,calTag);
 
     }
 
@@ -118,4 +125,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
             ivOptions = itemView.findViewById(R.id.ivCalendarOptions);
         }
     }
+
+
+
 }

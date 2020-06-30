@@ -61,8 +61,6 @@ public class MessageBoardActivity extends AppCompatActivity {
 
         setDrawer();
 
-
-        setDrawer();
         localDB = new LocalDatabaseManager(this);
 
         rvMessages = findViewById(R.id.rvMessageItems);
@@ -90,7 +88,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         try {
             startAdapter();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log(e.toString());
         }
     }
 
@@ -308,7 +306,7 @@ public class MessageBoardActivity extends AppCompatActivity {
                 try {
                     adapterConditionMaker();
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    Log(e.toString());
                 }
             }
 
@@ -348,7 +346,7 @@ public class MessageBoardActivity extends AppCompatActivity {
                 try {
                     adapterConditionMaker();
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    Log(e.toString());
                 }
             }
 

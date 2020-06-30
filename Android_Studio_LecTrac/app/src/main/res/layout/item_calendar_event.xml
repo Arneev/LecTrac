@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlitemcal"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
     android:background="@color/blueBackground"
     android:orientation="horizontal"
-    android:screenOrientation="portrait"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:screenOrientation="portrait">
 
 
     <TextView
@@ -52,12 +53,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_gravity="end"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="38dp"
         android:layout_marginRight="38dp"
-        android:layout_marginBottom="25dp"
         android:src="@drawable/ic_options"
         android:tint="@color/miniElipseButtonColor" />
 

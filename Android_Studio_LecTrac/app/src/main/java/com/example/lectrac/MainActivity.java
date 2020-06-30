@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -46,13 +47,14 @@ public class MainActivity extends AppCompatActivity {
     static boolean onForgotPass;
     static TextView tvPass;
     HelperFunctions hp = new HelperFunctions();
+    static ProgressBar progressBar;
 
     //OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        progressBar = findViewById(R.id.progressBarLogin);
         ec = new ErrorClass(this);
         loginBtn = findViewById(R.id.btnLogin);
         lblForgotPass = findViewById(R.id.lblForgotPassword);
@@ -76,14 +78,8 @@ public class MainActivity extends AppCompatActivity {
                     //region Try Syncing
                     try {
                         Syncer syncClass = new Syncer(context);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (Exception e){
+                        ec.ShowUserMessage(showCheckInternetConnection,MainActivity.this);
                     }
                     //endregion
 
@@ -91,9 +87,16 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 else{
-                    SharedPreferences.Editor editor = getSharedPreferences(myPrefName, Context.MODE_PRIVATE).edit();
-                    editor.putBoolean("isDarkMode", false);
-                    editor.apply();
+                    SharedPreferences sharedPreferences = getSharedPreferences(myPrefName, Context.MODE_PRIVATE);
+
+                    if (!sharedPreferences.contains("isDarkMode")){
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("isDarkMode", false);
+                        editor.apply();
+                    }
+
+
+
                 }
 
             }
@@ -102,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         t.start();
+        progressBar.setVisibility(View.VISIBLE);
         try {
             t.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
             Log(e.toString());
         }
-
+        progressBar.setVisibility(View.GONE);
         openRegistration();
 
     }
@@ -119,24 +122,20 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 try {
                     LoginButtonClick();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    ec.ShowUserError(showCheckInternetConnection,MainActivity.this);
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
 
     public void LoginButtonClick() throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         if (!isOnline(this)){
-            ec.ShowUserMessage("You are not connected to the internet",this);
+            ec.ShowUserMessage(showNotConnected,this);
             return;
         }
         RegisterLoginManager loginManager = new RegisterLoginManager();
@@ -152,6 +151,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (isSuccessful){
             Log("LOG IN IS SUCCESSFUL <3 :P");
+            SharedPreferences sharedPreferences = getSharedPreferences(myPrefName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isDarkMode", false);
+            editor.apply();
 
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -161,14 +164,8 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         Syncer syncClass = new Syncer(MainActivity.this, false,true);
                     }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    catch (Exception e){
+                        ec.ShowUserMessage(showCheckInternetConnection,MainActivity.this);
                     }
                     //endregion
 

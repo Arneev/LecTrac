@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
@@ -33,6 +35,7 @@ public class AddNewMessage extends AppCompatActivity {
     public static Button btnAddMessage;
     static Button btnBack;
     static ErrorClass ec;
+    static ProgressBar progressBar;
 
     static String[] courses;
 
@@ -49,6 +52,7 @@ public class AddNewMessage extends AppCompatActivity {
         edtContent = findViewById(R.id.edtAddMessageContent);
         spinCourse = findViewById(R.id.spinAddMessageCourse);
         btnAddMessage = findViewById(R.id.btnAddMessageCreate);
+        progressBar = findViewById(R.id.progressBarAddMessage);
 
         setIconsToAppearMode();
 
@@ -122,10 +126,13 @@ public class AddNewMessage extends AppCompatActivity {
         localDB.doInsert(tblMessage,cols,values);
 
         Log("Finished add message to dbs");
-        ec.ShowUserMessage("Added Message");
+        ec.ShowUserMessageWait("Added Message",this,MessageBoardActivity.class);
 
-        startActivity(new Intent(this, MessageBoardActivity.class));
     }
+
+//    void GoToMessageBoard(){
+//        startActivity(new Intent(this, MessageBoardActivity.class));
+//    }
 
     public boolean CheckHeading(String heading){
         if (heading.equals(null) || heading.length() == 0){
@@ -178,7 +185,7 @@ public class AddNewMessage extends AppCompatActivity {
         btnAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressBar.setVisibility(View.VISIBLE);
                 // mis-clicking prevention, using threshold of 1000 ms
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                     return;
@@ -186,6 +193,7 @@ public class AddNewMessage extends AppCompatActivity {
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 AddMessageButtonSave();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

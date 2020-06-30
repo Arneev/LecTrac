@@ -525,8 +525,6 @@ final public class OnlineDatabaseManager {
     }
 
 
-
-
     public boolean isInStudent(String userID) throws InterruptedException, JSONException, IOException {
         boolean studentEmpty = isEmpty(select_student_studentid(userID));
         return studentEmpty;
