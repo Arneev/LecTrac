@@ -44,7 +44,9 @@ public class SettingsActivity extends AppCompatActivity {
     static Context context;
     static CheckBox cbxDarkMode;
     static EditText edtNickname;
-    static EditText edtPassword;
+    static EditText edtNewPass;
+    static EditText edtConfirmPass;
+    static EditText edtOldPass;
 
 
     public static LocalDatabaseManager localDB;
@@ -54,11 +56,13 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         context = this;
         ec = new ErrorClass(context);
-
+        progressBar = findViewById(R.id.progBar_Settings);
         saveButton = findViewById(R.id.btnSettingsSave);
         cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
         edtNickname = findViewById(R.id.edtSettingsNickname);
-        //edtPassword = findViewById(R.id.edtChangePass);
+        edtNewPass = findViewById(R.id.edtChangePass);
+        edtConfirmPass = findViewById(R.id.edtConfirmPassChange);
+        edtOldPass = findViewById(R.id.edtOldPassSettings);
 
         setSaveButtonListener();
         onCheckBoxTick();
@@ -77,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
             Log("There was a problem setting the start values");
         }
 
-        progressBar = findViewById(R.id.progBar_Settings);
+
 
     }
 
@@ -157,17 +161,36 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         edtNickname = findViewById(R.id.edtSettingsNickname);
-//        edtPassword = findViewById(R.id.edtChangePass);
+        edtNewPass = findViewById(R.id.edtChangePass);
+        edtConfirmPass = findViewById(R.id.edtConfirmPassChange);
+        edtOldPass = findViewById(R.id.edtOldPassSettings);
 
         String nickname = edtNickname.getText().toString();
-//        String password = edtPassword.getText().toString();
-//
-//        if (!correctPassParams(password)){
-//            return;
-//        }
+        String password = edtNewPass.getText().toString();
+        String confirmPass = edtConfirmPass.getText().toString();
+        String oldPass = edtOldPass.getText().toString();
+
+        String userID = localDB.getUserID(localDB);
+
+        try {
+            if (!checkPassword(oldPass,userID)){
+                ec.ShowUserError("Please make sure your old password is correct");
+                return;
+            }
+        } catch (Exception e){
+            ec.ShowUserError(showCheckInternetConnection);
+            return;
+        }
+
+        if (!correctPassParams(password)){
+            return;
+        }
+
+        if (!confirmPass.equals(password)){
+            ec.ShowUserError("Please make sure your confirm new password is the same as your new password");
+        }
 
         Log("nickname with quote(nickname) is " + quote(nickname));
-
 
         try {
             localDB.doUpdate(tblUser, "Nickname = " + quote(nickname));
@@ -180,25 +203,43 @@ public class SettingsActivity extends AppCompatActivity {
         //Local Update done
 
         Boolean isLec = localDB.isLec();
-        String userID = localDB.getUserID(localDB);
 
-//        try{
-//            password = CopyOnly(saltAndHash(password),passwordLength);
-//        }catch (Exception e){
-//            ec.ShowUserError("Please try again");
-//            return;
-//        }
+        try{
+            password = CopyOnly(saltAndHash(password),passwordLength);
+        }catch (Exception e){
+            ec.ShowUserError("Please try again");
+            return;
+        }
 
         OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
-        Log("IsLec is " + isLec.toString());
+        try {
+            int iLec;
+            if (isLec){
+                onlineDB.update_lecturer_lecturernickname_userid(nickname,userID);
+                iLec = 1;
 
-        if (isLec){
-            onlineDB.update_lecturer_lecturernickname_userid(nickname,userID);
+            }
+            else {
+                onlineDB.update_student_studentnickname_userid(nickname,userID);
+                iLec = 0;
+            }
+
+            String[] vals = new String[4];
+            vals[0] = userID;
+            vals[1] = password;
+            vals[2] = CopyOnly(saltAndHash(oldPass),passwordLength);
+            vals[3] = Integer.toString(iLec);
+
+            if (!onlineDB.update_password_userid_newpass_oldpass(vals)){
+                ec.ShowUserError("Failed to update password");
+                return;
+            }
+
+        }catch (Exception e){
+            ec.ShowUserError(showCheckInternetConnection);
         }
-        else {
-            onlineDB.update_student_studentnickname_userid(nickname,userID);
-        }
+
 
 
 
@@ -223,8 +264,9 @@ public class SettingsActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar = findViewById(R.id.progBar_Settings);
+                progressBar.setVisibility(View.VISIBLE);
                 try {
-                    progressBar.setVisibility(View.VISIBLE);
                     Save();
                 } catch (InterruptedException e) {
                     Log(e.toString());
@@ -319,22 +361,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         if (!containSpecial){
-            ec.ShowUserError("Make sure there is at least one special character",context);
+            ec.ShowUserError("Make sure there is at least one special character in your password",context);
             return false;
         }
 
         if (!isDigit){
-            ec.ShowUserError("Make sure there is at least one number",context);
+            ec.ShowUserError("Make sure there is at least one number in your password",context);
             return false;
         }
 
         if (!isLower){
-            ec.ShowUserError("Make sure there is at least one lower case character",context);
+            ec.ShowUserError("Make sure there is at least one lower case character in your password",context);
             return false;
         }
 
         if (!isUpper) {
-            ec.ShowUserError("Make sure there is at least one upper case character",context);
+            ec.ShowUserError("Make sure there is at least one upper case character in your password",context);
             return false;
         }
 
@@ -349,6 +391,92 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+
+    boolean checkPassword(String password, String userID) throws NoSuchAlgorithmException, InterruptedException, IOException, JSONException {
+        Log("checkPassword");
+        if (hasWhitespace(password)){
+            ec.ShowUserError("No whitespaces are allowed in password",context);
+            return false;
+        }
+
+        OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+
+        String hashPass = CopyOnly(saltAndHash(password),16);
+
+        JSONArray arr = onlineDB.select_student_studentid(userID);
+
+        int size = arr.length();
+
+        if (size == 1){
+            try {
+                JSONObject obj = arr.getJSONObject(0);
+
+                String hashPassFromDB = obj.getString("Student_Password");
+
+                if (hashPass.equals(hashPassFromDB)){
+                    return true;
+                }
+                else {
+                    ec.ShowUserError("Incorrect old password");
+                    return false;
+                }
+
+
+            }catch (Exception e ){
+                Log("For some weird reason, cannot get JSONObject");
+                ec.ShowUserError("Please ensure student number is correct and try again," +
+                        " if the problem persists contact the support team",context);
+            }
+        }
+        else if (size == 0){
+            Log("No matching student ID, trying lecturer ID");
+
+            //region Might be Lecturer
+            JSONArray lecArr = onlineDB.select_lecturer_userid(userID);
+
+            int lecArrSize = lecArr.length();
+            if (lecArrSize == 0){
+                Log("No Student or Lecturer with ID, please register");
+                ec.ShowUserError("There is no matching user with this userID",context);
+            }
+
+            if (lecArrSize == 1){
+                try {
+                    JSONObject obj = lecArr.getJSONObject(0);
+
+                    String hashPassFromDB = obj.getString("Lecturer_Password");
+                    Log(hashPassFromDB);
+
+                    if (hashPass.equals(hashPassFromDB)){
+                        return true;
+                    }
+                    else {
+                        ec.ShowUserError("Incorrect password");
+                        return false;
+                    }
+
+                }catch (Exception e ){
+                    Log("For some weird reason, cannot get JSONObject");
+                    ec.ShowUserError("Please ensure lecturer id is correct and try again," +
+                            " if the problem persists contact the support team",context);
+                }
+            }
+
+            if (lecArrSize > 1){
+                ec.ShowUserError("There seems to be 2 accounts with the same user IDs," +
+                        " please contact the support team",context);
+            }
+            //endregion
+        }
+        else if (size > 1){
+            ec.ShowUserError("There seems to be 2 accounts with the same student number," +
+                    " please contact the support team",context);
+        }
+
+        return false;
+
     }
 
 }

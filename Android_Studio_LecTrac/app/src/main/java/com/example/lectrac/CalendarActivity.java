@@ -365,18 +365,20 @@ public class CalendarActivity extends AppCompatActivity {
 
         for (int index = 0; index < size; index++){
 
-            String course = cursor.getString(indexCourse);
-
-            if (isCourseNull(course)){
-                cursor.moveToNext();
-                continue;
+            String course;
+            try {
+                course = cursor.getString(indexCourse);
+            }catch (NullPointerException e){
+                course = "NULL";
             }
 
-            String taskTime = cursor.getString(indexTime);
 
-            if (isTimeNull(taskTime)){
-                cursor.moveToNext();
-                continue;
+            String taskTime;
+
+            try {
+                taskTime = cursor.getString(indexTime);
+            }catch (NullPointerException e){
+                taskTime = "NULL";
             }
 
             arrTaskNames.add(cursor.getString(indexName));
@@ -420,11 +422,6 @@ public class CalendarActivity extends AppCompatActivity {
             }
 
             String taskTime = cursor1.getString(iTime);
-
-            if (isTimeNull(taskTime)){
-                cursor1.moveToNext();
-                continue;
-            }
 
             arrTaskNames.add(cursor1.getString(iName));
             arrTaskCourses.add(course);

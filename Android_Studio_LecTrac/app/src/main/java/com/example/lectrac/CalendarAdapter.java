@@ -35,13 +35,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
         arrTaskCourses = courses;
         arrTaskTimes = times;
 
-        LogCal("About to print task names");
-        printArrString(arrTaskNames,calTag);
-        LogCal("About to print courses");
-        printArrString(arrTaskCourses,calTag);
-        LogCal("About to print task times");
-        printArrString(arrTaskTimes,calTag);
-
     }
 
     @NonNull
@@ -64,13 +57,19 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
         }
 
         holder.myName.setText(arrTaskNames.get(position));
-        holder.myCourse.setText(arrTaskCourses.get(position));
 
-        if (arrTaskTimes.get(position).equals("NULL")){
+        if (arrTaskCourses.get(position) == null || arrTaskCourses.get(position) == "NULL"){
+            holder.myCourse.setText("None");
+        }
+        else{
+            holder.myCourse.setText(arrTaskCourses.get(position));
+        }
+
+
+        if (arrTaskTimes.get(position) == null || arrTaskTimes.get(position).equals("NULL")){
             holder.myTime.setVisibility(View.INVISIBLE);
         }
         else{
-
             String display = "Due at: " + arrTaskTimes.get(position).substring(0,5);
             holder.myTime.setText(display);
         }

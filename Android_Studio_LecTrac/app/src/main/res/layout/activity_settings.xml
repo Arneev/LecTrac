@@ -6,184 +6,262 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:screenOrientation="portrait"
     android:visibility="visible"
     tools:context=".SettingsActivity"
     tools:openDrawer="start">
 
-    <RelativeLayout
-        android:id="@+id/rlSettTemp1"
+    <ScrollView
+        android:id="@+id/svSettings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background">
-
-        <ProgressBar
-            android:id="@+id/progBar_Settings"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@drawable/transparent"
-            android:indeterminate="true"
-            android:visibility="gone" />
+        android:fillViewport="true">
 
         <RelativeLayout
-            android:id="@+id/rlSettTemp2"
+            android:id="@+id/rlSettTemp1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingBottom="40dp">
+            android:background="@drawable/background">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarTop"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/actionBar"
-                android:paddingBottom="5dp"
-                app:title=""
-                app:titleTextColor="@color/transparent" />
+            <ProgressBar
+                android:id="@+id/progBar_Settings"
+                style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/transparent"
+                android:indeterminate="true"
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvSettings"
+            <RelativeLayout
+                android:id="@+id/rlSettTemp2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:background="@drawable/heading_panel"
-                android:fontFamily="@font/raleway_light"
-                android:gravity="center_horizontal"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="Settings"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="20dp">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/actionBar"
+                    android:paddingBottom="5dp"
+                    app:title=""
+                    app:titleTextColor="@color/transparent" />
+
+                <TextView
+                    android:id="@+id/tvSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:background="@drawable/heading_panel"
+                    android:fontFamily="@font/raleway_light"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="Settings"
+                    android:textAlignment="center"
+                    android:textColor="@color/headingTextColor"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/tvNickname"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/rlSettTemp2"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/msyi"
+                android:gravity="center"
+                android:text="Nickname"
                 android:textAlignment="center"
-                android:textColor="@color/headingTextColor"
-                android:textSize="50sp"
+                android:textColor="@color/subSubHeading"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/edtSettingsNickname"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvNickname"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-2dp"
+                android:layout_marginEnd="33dp"
+                android:background="@drawable/general_textview"
+                android:ems="10"
+                android:fontFamily="@font/msyi"
+                android:gravity="center_horizontal"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/mainText"
+                android:textSize="24sp" />
+
+
+            <Button
+                android:id="@+id/btnSettingsSync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cbxSettingsDarkMode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/fancy_button"
+                android:onClick="SettingSync"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=" Sync With Cloud "
+                android:textColor="@color/buttonTextColor"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnSettingsSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnSettingsSync"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="99dp"
+                android:layout_marginLeft="99dp"
+                android:layout_marginTop="38dp"
+                android:background="@drawable/fancy_button"
+                android:text="Save"
+                android:textColor="@color/buttonTextColor"
+                android:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/cbxSettingsDarkMode"
+                android:layout_width="183dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtOldPassSettings"
+                android:layout_alignLeft="@+id/edtOldPassSettings"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="83dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="114dp"
+                android:fontFamily="@font/msyi"
+                android:text="Dark Mode"
+                android:textAlignment="viewStart"
+                android:textColor="@color/mainText"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvChangePass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtSettingsNickname"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="0dp"
+                android:fontFamily="@font/msyi"
+                android:text="New Password"
+                android:textAlignment="center"
+                android:textColor="@color/subSubHeading"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/edtChangePass"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvChangePass"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/general_textview"
+                android:ems="10"
+                android:fontFamily="@font/msyi"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/mainText"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvConfirmChangePass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtChangePass"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="23dp"
+                android:layout_marginEnd="0dp"
+                android:fontFamily="@font/msyi"
+                android:text="Confirm New Password"
+                android:textAlignment="center"
+                android:textColor="@color/subSubHeading"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtConfirmPassChange"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvConfirmChangePass"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/general_textview"
+                android:ems="10"
+                android:fontFamily="@font/msyi"
+                android:gravity="center_horizontal"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/mainText"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tvOldPassSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtConfirmPassChange"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/msyi"
+                android:gravity="center"
+                android:text="Old Password"
+                android:textAlignment="center"
+                android:textColor="@color/subSubHeading"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtOldPassSettings"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvOldPassSettings"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="31dp"
+                android:background="@drawable/general_textview"
+                android:ems="10"
+                android:fontFamily="@font/msyi"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/mainText"
+                android:textSize="24sp" />
+
         </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/tvNickname"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@+id/rlSettTemp2"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginTop="84dp"
-            android:fontFamily="@font/msyi"
-            android:gravity="center"
-            android:text="Nickname"
-            android:textAlignment="center"
-            android:textColor="@color/subSubHeading"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/edtSettingsNickname"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvNickname"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/general_textview"
-            android:ems="10"
-            android:fontFamily="@font/msyi"
-            android:gravity="center_horizontal"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/mainText"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/btnSettingsSync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cbxSettingsDarkMode"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/fancy_button"
-            android:onClick="SettingSync"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text=" Sync With Cloud "
-            android:textColor="@color/buttonTextColor" />
-
-        <Button
-            android:id="@+id/btnSettingsSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnSettingsSync"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="99dp"
-            android:layout_marginLeft="99dp"
-            android:layout_marginTop="54dp"
-            android:background="@drawable/fancy_button"
-            android:text="Save"
-            android:textColor="@color/buttonTextColor" />
-
-        <CheckBox
-            android:id="@+id/cbxSettingsDarkMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edtSettingsNickname"
-            android:layout_alignStart="@+id/tvNickname"
-            android:layout_alignLeft="@+id/tvNickname"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="106dp"
-            android:layout_marginLeft="106dp"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="94dp"
-            android:layout_marginRight="94dp"
-            android:fontFamily="@font/msyi"
-            android:text="Dark Mode"
-            android:textColor="@color/mainText"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvChangePass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edtSettingsNickname"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp"
-            android:fontFamily="@font/msyi"
-            android:text="Change Password"
-            android:textAlignment="center"
-            android:textColor="@color/subSubHeading"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <EditText
-            android:id="@+id/edtChangePass"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvChangePass"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
-            android:background="@drawable/general_textview"
-            android:ems="10"
-            android:fontFamily="@font/msyi"
-            android:gravity="center"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/mainText"
-            android:textSize="24sp"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+    </ScrollView>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

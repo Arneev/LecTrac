@@ -47,7 +47,6 @@ final public class OnlineDatabaseManager {
     final String select_wits_userid = "select_wits_userid.php?";
     final String select_task_coursearr = "select_task_coursearr.php?";
     final String select_test_wrote_coursearr_userid = "select_test_wrote_coursearr_userid.php?";
-
     final String delete_message_messageid = "delete_message_messageid.php?";
     final String delete_task_taskid = "delete_task_taskid.php?";
     final String insert_message = "insert_message.php";
@@ -61,6 +60,7 @@ final public class OnlineDatabaseManager {
     final String update_task_taskname_taskid = "update_task_taskname_taskid.php?";
     final String update_lecturer_password_userid = "update_lecturer_password_userid.php?";
     final String update_student_password_userid = "update_student_password_userid.php?";
+    final String update_password_userid_newpass_oldpass = "update_password_userid_newpass_oldpass.php?";
 
     //endregion
 
@@ -442,9 +442,6 @@ final public class OnlineDatabaseManager {
     }
 
 
-    //endregion
-
-    //region Keys
     JSONArray delete_message_messageid(String messageID) throws InterruptedException {
         return Query(delete_message_messageid,"messageID",messageID);
     }
@@ -504,6 +501,25 @@ final public class OnlineDatabaseManager {
         return Query(update_task_taskname_taskid,"taskName",taskName,"taskID",taskID);
     }
 
+    Boolean update_password_userid_newpass_oldpass(String[] vals) throws InterruptedException{
+        String[] params = new String[4];
+        params[0] = "userID";
+        params[1] = "newPass";
+        params[2] = "oldPass";
+        params[3] = "isLec";
+
+        try{
+            if (Query(update_password_userid_newpass_oldpass, params,vals) == null){
+                return false;
+            }
+        }catch (Exception e){
+            Log(e.toString());
+        }
+
+        return true;
+
+    }
+
     JSONObject getJSONObj(JSONArray arr) throws JSONException {
         if (arr != null){
             return arr.getJSONObject(0);
@@ -514,7 +530,7 @@ final public class OnlineDatabaseManager {
 
     public boolean isLec(String userID) throws InterruptedException, JSONException, IOException {
         boolean isLec = isEmpty(select_lecturer_userid(userID));
-        return  isLec;
+        return  !isLec;
     }
 
     boolean isEmpty(JSONArray arr) throws InterruptedException, IOException, JSONException {
@@ -527,11 +543,11 @@ final public class OnlineDatabaseManager {
 
     public boolean isInStudent(String userID) throws InterruptedException, JSONException, IOException {
         boolean studentEmpty = isEmpty(select_student_studentid(userID));
-        return studentEmpty;
+        return !studentEmpty;
     }
 
 
-    //endregion
+
 
     //endregion
 

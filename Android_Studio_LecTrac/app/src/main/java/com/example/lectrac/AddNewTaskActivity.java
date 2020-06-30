@@ -217,34 +217,16 @@ public class AddNewTaskActivity extends AppCompatActivity {
         }
 
         if (isDateNull()){
-            //Before change here
-            //sDueDate = "NULL";
-
-            //After change here
             sDueDate = "NULL";
 
-            if (isLec && mustPost){
-                ec.ShowUserError("You have to choose a date");
-                return false;
-            }
-            //end after change
+
         }
         else {
             sDueDate = quote(sDueDate);
         }
 
         if (isTimeNull()){
-            //Before change
-            //sDueTime = "NULL";
-
-            //After change here
             sDueTime = "NULL";
-
-            if (isLec && mustPost){
-                ec.ShowUserError("You have to choose a time");
-                return false;
-            }
-            //end after change
         }
         else{
             sDueTime = quote(sDueTime);

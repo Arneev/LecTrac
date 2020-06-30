@@ -290,22 +290,22 @@ public class RegisterLoginManager{
         }
 
         if (!containSpecial){
-            ec.ShowUserError("Make sure there is at least one special character",context);
+            ec.ShowUserError("Make sure there is at least one special character  in your password",context);
             return false;
         }
 
         if (!isDigit){
-            ec.ShowUserError("Make sure there is at least one number",context);
+            ec.ShowUserError("Make sure there is at least one number  in your password",context);
             return false;
         }
 
         if (!isLower){
-            ec.ShowUserError("Make sure there is at least one lower case character",context);
+            ec.ShowUserError("Make sure there is at least one lower case character  in your password",context);
             return false;
         }
 
         if (!isUpper) {
-            ec.ShowUserError("Make sure there is at least one upper case character",context);
+            ec.ShowUserError("Make sure there is at least one upper case character  in your password",context);
             return false;
         }
 
@@ -322,13 +322,6 @@ public class RegisterLoginManager{
         return true;
     }
 
-    boolean RuntimeCorrectUserID(@NotNull String userID){
-        if (userID.length() != 7){
-            ec.ShowUserError("Enter a valid user ID",context);
-            return false;
-        }
-        return true;
-    }
 
     boolean correctUserID(String userID) throws InterruptedException {
         Log("Correct UserID");

@@ -107,7 +107,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
     public boolean resetPassword(String userID){
-
+        Log("about to reset pass");
         try {
 
             if (onlineDB.isLec(userID)){
@@ -123,6 +123,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         }catch (Exception e){
             Log(e.toString());
+            ec.ShowUserError(showNotConnected);
+            return false;
         }
 
         ec.ShowUserError("Please enter a valid WITS ID");
@@ -138,11 +140,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         try{
             if (UserID.isEmpty()){
                 ec.ShowUserError("Please enter valid WITS ID",this);
+                Log("userID is empty");
                 return false;
             }
 
             if (hasWhitespace(UserID)){
                 ec.ShowUserError("Please enter valid WITS ID",this);
+                Log("userID has whitespace");
                 return false;
             }
 
@@ -150,6 +154,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                 if (!Character.isDigit(UserID.charAt(i))){
                     ec.ShowUserError("Please enter valid WITS ID",this);
+                    Log("userID is not all digit");
                     return false;
                 }
             }
@@ -159,15 +164,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
             if (intStudentID < 0){
                 ec.ShowUserError("Please enter valid WITS ID",this);
+                Log("userID is less than 0");
                 return false;
             }
 
             if (UserID.length() != 7){
                 ec.ShowUserError("Please enter valid WITS ID",this);
+                Log("userID it not length 7");
                 return false;
             }
         }catch (Exception e){
             ec.ShowUserError("Please enter valid WITS ID",this);
+            Log(e.toString());
             return false;
         }
 

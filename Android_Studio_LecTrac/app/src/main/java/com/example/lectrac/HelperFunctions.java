@@ -19,6 +19,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -185,6 +186,26 @@ public class HelperFunctions {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c);
         return formattedDate;
+    }
+
+    public static String getCurrDate(SimpleDateFormat sdf){
+        Date c = Calendar.getInstance().getTime();
+        String formattedDate = sdf.format(c);
+        return formattedDate;
+    }
+
+    public static String addDay(String oldDate, int numberOfDays, SimpleDateFormat dateFormat) {
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(dateFormat.parse(oldDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.add(Calendar.DAY_OF_YEAR,numberOfDays);
+        dateFormat=new SimpleDateFormat("MM-dd-YYYY");
+        Date newDate=new Date(c.getTimeInMillis());
+        String resultDate=dateFormat.format(newDate);
+        return resultDate;
     }
 
     public static boolean isDarkMode(Context context){

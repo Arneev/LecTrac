@@ -9,21 +9,6 @@ $output=array();
 
 $userID = $_REQUEST["userID"];
 
-$sql = "SELECT (Password) FROM WITS WHERE User_ID = ?";
-$stmt = $link->prepare($sql);
-
-$stmt->bind_param("s",$userID);
-$stmt->execute();
-
-if ($result = $stmt->get_result()) {
-		while ($row=$result->fetch_assoc()){
-				$output[]=$row;
-		}
-}
-
-$password = $output[2];
-
-
 // length must be 7
 if (strlen($userID) != 7){
 
@@ -42,6 +27,23 @@ for ($i = 0; $i < 7; $i++){
 		exit;
 	}
 }
+
+$sql = "SELECT (Password) FROM WITS WHERE User_ID = ?";
+$stmt = $link->prepare($sql);
+
+$stmt->bind_param("s",$userID);
+$stmt->execute();
+
+if ($result = $stmt->get_result()) {
+		while ($row=$result->fetch_assoc()){
+				$output[]=$row;
+		}
+}
+
+$password = $output[0]['Password'];
+
+
+
 
 $sql = "UPDATE STUDENT SET Student_Password = ? WHERE Student_ID = ?";
 

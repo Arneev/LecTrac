@@ -3,13 +3,20 @@ package com.example.lectrac;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +30,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 import static com.example.lectrac.HelperFunctions.Log;
 import static com.example.lectrac.HelperFunctions.isDarkMode;
@@ -64,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         resetPasswordClick();
         SetToDefault();
-
+        myAlarm();
         context = this;
 
 
@@ -113,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         }
         progressBar.setVisibility(View.GONE);
         openRegistration();
+        setNightMode(this);
 
     }
 
@@ -237,4 +247,33 @@ public class MainActivity extends AppCompatActivity {
 
     //endregion
 
+
+    //region notifications
+    public void myAlarm() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.set(Calendar.MINUTE, 30);
+
+        if (calendar.getTime().compareTo(new Date()) < 0)
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+        else{
+            Log("Alarm manager is null");
+        }
+
+        Log("Finish set up alarm");
+
+    }
+
+
+    //endregion
 }
