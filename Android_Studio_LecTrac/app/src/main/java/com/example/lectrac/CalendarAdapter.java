@@ -26,14 +26,22 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
     ArrayList<String> arrTaskNames = new ArrayList<>();
     ArrayList<String> arrTaskCourses = new ArrayList<>();
     ArrayList<String> arrTaskTimes = new ArrayList<>();
+    ArrayList<String> arrTaskIDs = new ArrayList<>();
 
+    ErrorClass ec;
 
-    public CalendarAdapter (Context cont, ArrayList<String> names, ArrayList<String> courses, ArrayList<String> times){
+    public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
+
+    public CalendarAdapter (Context cont, ArrayList<String> names, ArrayList<String> courses,
+                            ArrayList<String> times, ArrayList<String> ids){
 
         context = cont;
         arrTaskNames = names;
         arrTaskCourses = courses;
         arrTaskTimes = times;
+        arrTaskIDs = ids;
+
+        ec = new ErrorClass(context);
 
     }
 
@@ -47,7 +55,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
 
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
         if (arrTaskNames.isEmpty()){
 
@@ -74,24 +82,38 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
             holder.myTime.setText(display);
         }
 
-        holder.ivOptions.setOnClickListener(new View.OnClickListener() {
+        holder.ivCalendarOptions.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                PopupMenu popup = new PopupMenu(context, holder.ivOptions);
+                PopupMenu popup = new PopupMenu(context, holder.ivCalendarOptions);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         switch (menuItem.getItemId()) { // check for item and act accordingly
-                            case R.id.mtEditTask:
+                            case R.id.mtEdit:
 
+                                Intent intent = new Intent(context, EditTaskActivity.class);
+                                intent.putExtra("position", position);
+                                intent.putExtra("arrTaskNames", arrTaskNames);
+                                intent.putExtra("arrTaskCourses", arrTaskCourses);
+                                intent.putExtra("arrTaskIDs", arrTaskIDs);
+                                intent.putExtra("Activity", "Calendar");
+                                context.startActivity(intent);
 
-                            case R.id.mtDeleteTask:
+                                break;
 
+                            case R.id.mtDelete:
 
-                            case R.id.mtReminder:
+                                try {
+                                    deleteTask(position);
+                                } catch (InterruptedException e) {
+                                    Log(e.toString());
+                                }
+
+                                break;
                         }
                         return false;
                     }
@@ -113,7 +135,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView myName, myCourse, myTime;
-        ImageView ivOptions;
+        ImageView ivCalendarOptions;
 
         public MyViewHolder(@NonNull View itemView) {
 
@@ -121,10 +143,81 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
             myName = itemView.findViewById(R.id.tvCalendarName);
             myCourse = itemView.findViewById(R.id.tvCalendarCourse);
             myTime = itemView.findViewById(R.id.tvCalendarTime);
-            ivOptions = itemView.findViewById(R.id.ivCalendarOptions);
+            ivCalendarOptions = itemView.findViewById(R.id.ivCalendarOptions);
         }
     }
 
 
+    public void deleteTask(int position) throws InterruptedException {
+
+        Log("About to delete task");
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+
+        String tableName = tblUserTask;
+        String Task_ID = arrTaskIDs.get(position);
+        String condition = "Task_ID = " + Task_ID.substring(1);
+
+
+        // is user a student or lecturer?
+        boolean isLec = localDB.isLec();
+
+
+        // delete task from local database
+        // if user is a lecturer then the task must also be deleted from the online database
+
+        if (isLec){
+            if (Task_ID.charAt(0) == 'L'){
+
+                if (!isOnline(context)){
+                    ec.ShowUserError("Connect to the internet in order to save changes",context);
+                    return;
+                }
+
+                tableName = tblLocalLecTask;
+
+                Log("isLec and if sCourseCode is NOT NULL about to delete from localDB");
+                localDB.doDelete(tableName, condition);
+
+                Log("isLec and about to delete from onlineDB");
+                onlineDB.delete_task_taskid(Task_ID.substring(1));
+            }
+            else{
+                Log("isLec and if sCourseCode IS NULL about to delete from localDB");
+                localDB.doDelete(tableName, condition);
+            }
+
+        }
+        else{
+
+            if (Task_ID.charAt(0) == 'L'){
+
+                tableName = tblLocalLecTask;
+                String setting = "isDone = 1";
+
+                Log("isStudent, set isDone from Lecturer localDB");
+                localDB.doUpdate(tableName, setting, condition);
+            }
+            else {
+
+                Log("isStudent, delete from localDB");
+                localDB.doDelete(tableName, condition);
+            }
+
+        }
+
+        // delete from arrays
+        arrTaskIDs.remove(position);
+        arrTaskNames.remove(position);
+        arrTaskCourses.remove(position);
+        arrTaskTimes.remove(position);
+
+        // adapter
+        Log("Update Adapter");
+        this.notifyItemRemoved(position);
+        this.notifyDataSetChanged();
+
+        ec.ShowUserMessage("Deleted Task");
+    }
 
 }

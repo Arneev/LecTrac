@@ -57,6 +57,7 @@ public class CalendarActivity extends AppCompatActivity {
     static ArrayList<String> arrTaskNames = new ArrayList<>();
     static ArrayList<String> arrTaskCourses = new ArrayList<>();
     static ArrayList<String> arrTaskTimes = new ArrayList<>();
+    static ArrayList<String> arrTaskIDs = new ArrayList<>();
     static ArrayList<String> arrCalendarDates = new ArrayList<>();
 
     String[] arrMonths = new String[] {"January", "February", "March", "April", "May",
@@ -176,7 +177,8 @@ public class CalendarActivity extends AppCompatActivity {
 //
 //        });
 
-        calendarAdapter = new CalendarAdapter(CalendarActivity.this, arrTaskNames, arrTaskCourses, arrTaskTimes);
+        calendarAdapter = new CalendarAdapter(CalendarActivity.this, arrTaskNames,
+                                                arrTaskCourses, arrTaskTimes, arrTaskIDs);
         recyclerView.setAdapter(calendarAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(CalendarActivity.this));
         Log("done");
@@ -235,6 +237,7 @@ public class CalendarActivity extends AppCompatActivity {
             return;
         }
 
+        int indexIDs = cursor.getColumnIndex("Task_ID");
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
         for (int index = 0; index < size; index++) {
@@ -242,6 +245,7 @@ public class CalendarActivity extends AppCompatActivity {
 
             if (cursor.getString(indexDate) != null && !cursor.getString(indexDate).equals("NULL") && !cursor.getString(indexDate).equals("null")){
                 arrCalendarDates.add(cursor.getString(indexDate));
+                arrTaskIDs.add("U" + cursor.getString(indexIDs));
             }
 
             cursor.moveToNext();
@@ -267,12 +271,15 @@ public class CalendarActivity extends AppCompatActivity {
             return;
         }
 
+        int indexIDs = cursor.getColumnIndex("Task_ID");
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
 
         for (int index = 0; index < size; index++){
+
             if (cursor.getString(indexDate) != null && !cursor.getString(indexDate).equals("NULL") && !cursor.getString(indexDate).equals("null")){
                 arrCalendarDates.add(cursor.getString(indexDate));
+                arrTaskIDs.add("L" + cursor.getString(indexIDs));
             }
 
             cursor.moveToNext();
@@ -477,11 +484,13 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
         if (isDarkMode(this)){
+            Log("hbhb");
             btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left_white);
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right_white);
             toolbar.getContext().setTheme(R.style.ToolbarIconDark);
         }
         else{
+            Log("light");
             btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left);
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
             toolbar.getContext().setTheme(R.style.ToolbarIconLight);

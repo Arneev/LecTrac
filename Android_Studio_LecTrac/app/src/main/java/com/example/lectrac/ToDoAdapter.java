@@ -46,6 +46,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     RecyclerView recyclerView;
 
+    public ToDoAdapter(){ }
+
 
     public ToDoAdapter(Context cont, Boolean blnLec, ArrayList<String> names, ArrayList<String> courses, ArrayList<String> ids){
         context = cont;
@@ -150,6 +152,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
                                     intent.putExtra("arrTaskNames", arrTaskNames);
                                     intent.putExtra("arrTaskCourses", arrTaskCourses);
                                     intent.putExtra("arrTaskIDs", arrTaskIDs);
+                                    intent.putExtra("Activity", "To-Do List");
                                     context.startActivity(intent);
                                     break;
 
@@ -177,6 +180,19 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
     @Override
     public int getItemCount() {
         return arrTaskNames.size();
+    }
+
+    public int getPosition(String taskID){
+
+        for (int index = 0; index < arrTaskIDs.size(); index++){
+
+            if (taskID.equals(arrTaskIDs.get(index))){
+
+                return index;
+            }
+        }
+
+        return -1;
     }
 
  /*   @Override

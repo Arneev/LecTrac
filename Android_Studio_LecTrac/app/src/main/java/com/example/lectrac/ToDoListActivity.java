@@ -60,7 +60,9 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
+
         ec = new ErrorClass(this);
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

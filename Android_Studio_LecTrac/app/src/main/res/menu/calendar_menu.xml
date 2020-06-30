@@ -14,10 +14,5 @@
         android:title="Delete"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/mtReminder"
-        android:icon="@color/elipseOptionColor"
-        android:title="Reminder Options"
-        app:showAsAction="never" />
 
 </menu>
