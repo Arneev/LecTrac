@@ -61,7 +61,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     static ProgressBar progressBar;
 
-    Boolean isLec, mustPost;
+    Boolean isLec, isLecTask;
     private long mLastClickTime = 0;
 
     String whichActivity;
@@ -73,7 +73,6 @@ public class EditTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_task);
         progressBar = findViewById(R.id.progressBarEditTask);
         shouldChangeActs = false;
-        mustPost = false;
         // is user a student or lecturer?
         isLec = localDB.isLec();
 
@@ -144,7 +143,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
                 blnDoUpdate = true;
 
-                newTaskName = quote(newTaskName);
+                newTaskName = quote(completeUnquote(newTaskName,10));
                 setting += "Task_Name = " + newTaskName + ",";
                 arrOnlyTaskNames.set(position, newTaskName);
                 Log("About to update:" + setting);
@@ -163,7 +162,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
                blnDoUpdate = true;
 
-               newDueDate = quote(newDueDate);
+               newDueDate = quote(completeUnquote(newDueDate,10));
                setting = setting + "Task_Due_Date = " + newDueDate + ",";
                Log("About to update:" + setting);
                updateDateInOnline = true;
@@ -180,7 +179,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
                    blnDoUpdate = true;
 
-                   newDueDate = quote(newDueDate);
+                   newDueDate = quote(completeUnquote(newDueDate,10));
                    setting = setting + "Task_Due_Date = " + newDueDate + ",";
                    Log("About to update:" + setting);
 
@@ -202,7 +201,7 @@ public class EditTaskActivity extends AppCompatActivity {
             else {
 
                 blnDoUpdate = true;
-                newDueTime = quote(newDueTime);
+                newDueTime = quote(completeUnquote(newDueTime,10));
                 setting = setting + "Task_Due_Time = " + newDueTime + ",";
                 Log("About to update:" + setting);
                 updateTimeInOnline = true;
@@ -219,7 +218,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
                     blnDoUpdate = true;
 
-                    newDueTime = quote(newDueTime);
+                    newDueTime = quote(completeUnquote(newDueTime,10));
                     setting = setting + "Task_Due_Time = " + newDueTime + ",";
                     Log("About to update:" + setting);
                     updateTimeInOnline = true;
@@ -234,7 +233,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
             blnDoUpdate = true;
 
-            newCourseCode = quote(newCourseCode);
+            newCourseCode = quote(completeUnquote(newCourseCode,10));
             setting = setting + "Course_Code = " + newCourseCode;
             arrOnlyTaskCourses.set(position, newCourseCode);
             Log("About to update:" + setting);
@@ -251,17 +250,21 @@ public class EditTaskActivity extends AppCompatActivity {
         tableName = tblUserTask;
 
         if (blnDoUpdate){
+            if (isLecTask){
+                tableName = tblLocalLecTask;
 
+                //Insert into local db and online db
+            }
             if (isLec){
                 if (isCourseNull()){
-
+                    tableName = tblLocalLecTask;
                     if (!isOnline(this)){
                         ec.ShowUserMessage("You are not connected to the internet",this);
                         shouldChangeActs = false;
                         return false;
                     }
 
-                    if (mustPost){
+                    if (isLecTask){
                         ec.ShowUserError("You cannot post a message without a course code");
                         shouldChangeActs = false;
                         return false;
@@ -271,14 +274,17 @@ public class EditTaskActivity extends AppCompatActivity {
                     // Local DB
                     tableName = tblLocalLecTask;
                     Log("Update in " + tableName);
+                    LogCal(setting);
+                    LogCal(condition);
                     localDB.doUpdate(tableName, setting, condition);
 
                     // Online DB
                     Log("Update in online DB");
 
 
-                    if (mustPost) {
+                    if (isLecTask) {
                         //onlineDB.Update(tableName, setting, condition);
+                        Log("GONNA UPDATE ONLINEEEEEEE");
 
                         if (updateCourseCode) {
                             onlineDB.update_task_coursecode_taskid(unquote(newCourseCode), taskID);
@@ -300,12 +306,16 @@ public class EditTaskActivity extends AppCompatActivity {
                 }
                 else {
                     Log("Update in " + tableName);
+                    LogCal(setting);
+                    LogCal(condition);
                     localDB.doUpdate(tableName, setting, condition);
                 }
 
             }
             else {
                 Log("Update in " + tableName);
+                LogCal(setting);
+                LogCal(condition);
                 localDB.doUpdate(tableName, setting, condition);
             }
         }
@@ -492,10 +502,12 @@ public class EditTaskActivity extends AppCompatActivity {
         if (taskID.charAt(0) == 'U'){
 
             tableName = tblUserTask;
+            isLecTask = false;
         }
         else if (taskID.charAt(0) == 'L'){
 
             tableName = tblLocalLecTask;
+            isLecTask = true;
         }
         else{
             Log("No TaskID found");
@@ -541,11 +553,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
 
                 try {
-                    if (isLec) {
-                        isPosted();
-                        progressBar.setVisibility(View.GONE);
-                        return;
-                    }else if (!saveTask()){
+                    if (!saveTask()){
                         progressBar.setVisibility(View.GONE);
                         return;
                     }
@@ -620,64 +628,6 @@ public class EditTaskActivity extends AppCompatActivity {
             startActivity(new Intent(this, CalendarActivity.class));
         }
     }
-
-    public void isPosted(){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Edit Task");
-
-        builder.setMessage("Would you like to post this task to students?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mustPost = true;
-
-                        try {
-                            if (saveTask()){
-
-                                if (whichActivity.equals("To-Do List")) {
-                                    ec.ShowUserMessageWait("Edited Task", ToDoListActivity.class);
-                                }else {
-                                    ec.ShowUserMessageWait("Edited Task", CalendarActivity.class);
-                                }
-                            }
-                        }  catch (InterruptedException | JSONException | IOException e) {
-                            ec.ShowUserError(showCheckInternetConnection,EditTaskActivity.this);
-                            return;
-                        }
-
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mustPost = false;
-
-                        try {
-                            if (saveTask()){
-
-                                if (whichActivity.equals("To-Do List")) {
-                                    ec.ShowUserMessageWait("Edited Task", ToDoListActivity.class);
-                                }else {
-                                    ec.ShowUserMessageWait("Edited Task", CalendarActivity.class);
-                                }
-                            }
-                        }  catch (InterruptedException | JSONException | IOException e) {
-                            ec.ShowUserError(showCheckInternetConnection,EditTaskActivity.this);
-                            return;
-                        }
-
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-
-
 
     //endregion
 }

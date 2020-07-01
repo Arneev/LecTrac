@@ -218,7 +218,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
             return false;
         }
         else{
-            sTaskName = quote(sTaskName);
+            sTaskName = quote(completeUnquote(sTaskName,10));
         }
 
         if (isDateNull()){
@@ -227,14 +227,14 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
         }
         else {
-            sDueDate = quote(sDueDate);
+            sDueDate = quote(completeUnquote(sDueDate,10));
         }
 
         if (isTimeNull()){
             sDueTime = "NULL";
         }
         else{
-            sDueTime = quote(sDueTime);
+            sDueTime = quote(completeUnquote(sDueTime,10));
         }
 
 
@@ -255,7 +255,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
             sCourseCode = "NULL"; //Going to perso userTask (Only he/she can access it)
 
         }else{
-            sCourseCode = quote(sCourseCode);
+            sCourseCode = quote(completeUnquote(sCourseCode,10));
         }
 
 
@@ -284,7 +284,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 String userID = quote(localDB.getUserID(localDB));
 
                 String[] locLecCols = {"Task_Name","Task_Due_Date","Task_Due_Time","isDone","Course_Code","Lecturer_ID"};
-                String[] locLecData = {sTaskName,quote(completeUnquote(sDueDate,10)),quote(completeUnquote(sDueTime,10)),"0",sCourseCode,userID};
+                String[] locLecData = {sTaskName,sDueDate,sDueTime,"0",sCourseCode,userID};
                 tableName = tblLocalLecTask;
 
                 Log("isLec and sCourseCode is NOT NULL about to insert into localDB");
@@ -302,11 +302,16 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
             }
             else{
+                if (sCourseCode.equals("None") && mustPost){
+                    ec.ShowUserError("Please choose a course code");
+                    return false;
+                }
+
                 Log("isLec and sCourseCode IS NULL about to insert into localDB");
                 localDB.doInsert(tableName, columns, data);
                 sTaskId = "U" + localDB.getLastID(tableName);
-            }
 
+            }
 
         }
         else{

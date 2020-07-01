@@ -137,6 +137,7 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
     public void doUpdate(String tableName, String setting, String condition){
         String query = "UPDATE " + tableName + " SET " + setting + " WHERE " + condition;
+        Log(query);
         doQueryNonSelect(query);
     }
 

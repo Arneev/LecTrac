@@ -204,7 +204,6 @@ public class CalendarActivity extends AppCompatActivity {
             return;
         }
 
-        int indexIDs = cursor.getColumnIndex("Task_ID");
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
         for (int index = 0; index < size; index++) {
@@ -212,7 +211,6 @@ public class CalendarActivity extends AppCompatActivity {
 
             if (cursor.getString(indexDate) != null && !cursor.getString(indexDate).equals("NULL") && !cursor.getString(indexDate).equals("null")){
                 arrCalendarDates.add(cursor.getString(indexDate));
-                arrTaskIDs.add("U" + cursor.getString(indexIDs));
             }
 
             cursor.moveToNext();
@@ -241,7 +239,6 @@ public class CalendarActivity extends AppCompatActivity {
             return;
         }
 
-        int indexIDs = cursor.getColumnIndex("Task_ID");
         int indexDate = cursor.getColumnIndex("Task_Due_Date");
 
 
@@ -249,7 +246,6 @@ public class CalendarActivity extends AppCompatActivity {
 
             if (cursor.getString(indexDate) != null && !cursor.getString(indexDate).equals("NULL") && !cursor.getString(indexDate).equals("null")){
                 arrCalendarDates.add(cursor.getString(indexDate));
-                arrTaskIDs.add("L" + cursor.getString(indexIDs));
             }
 
             cursor.moveToNext();
@@ -423,6 +419,7 @@ public class CalendarActivity extends AppCompatActivity {
 
 
         int indexName = cursor.getColumnIndex("Task_Name");
+        int indexIDs = cursor.getColumnIndex("Task_ID");
         int indexCourse = cursor.getColumnIndex("Course_Code");
         int indexTime = cursor.getColumnIndex("Task_Due_Time");
 
@@ -445,6 +442,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
 
             arrTaskNames.add(cursor.getString(indexName));
+            arrTaskIDs.add("U" + cursor.getString(indexIDs));
             arrTaskCourses.add(course);
             arrTaskTimes.add(taskTime);
 
@@ -476,6 +474,7 @@ public class CalendarActivity extends AppCompatActivity {
 
 
         int iName = cursor1.getColumnIndex("Task_Name");
+        int indexIDs = cursor1.getColumnIndex("Task_ID");
         int iCourse = cursor1.getColumnIndex("Course_Code");
         int iTime = cursor1.getColumnIndex("Task_Due_Time");
 
@@ -491,6 +490,8 @@ public class CalendarActivity extends AppCompatActivity {
             String taskTime = cursor1.getString(iTime);
 
             arrTaskNames.add(cursor1.getString(iName));
+
+            arrTaskIDs.add("L" + cursor1.getString(indexIDs));
             arrTaskCourses.add(course);
             arrTaskTimes.add(taskTime);
 
