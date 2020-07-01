@@ -65,6 +65,8 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="57dp"
                     android:layout_marginRight="57dp"
+                    android:textColor="@color/mainText"
+                    android:textColorHint="@color/hintColor"
                     android:background="@drawable/general_spinner" />
 
             </RelativeLayout>
