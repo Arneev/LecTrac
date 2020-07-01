@@ -99,13 +99,14 @@ public class EditTaskActivity extends AppCompatActivity {
         }
 
         // methods
-        setCourseSpinnerItems();
         setComponents();
+
 
         DateOnClicker();
         TimeOnClicker();
         SaveTaskClick();
         cancelEditTaskClick();
+        setCourseSpinnerItems();
 
     }
 
@@ -492,7 +493,10 @@ public class EditTaskActivity extends AppCompatActivity {
 
         List<String> list = new ArrayList<String>();
 
-        list.add("None");
+        if (!isLecTask){
+            list.add("None");
+        }
+
 
         // get course to display
         oldCourseCode = arrOnlyTaskCourses.get(position);
