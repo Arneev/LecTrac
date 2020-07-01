@@ -154,7 +154,6 @@ public class AddNewMessage extends AppCompatActivity {
     public void SetClassificSpinnerItems(){
         List<String> list = new ArrayList<String>();
 
-        list.add("All");
         list.add("Homework");
         list.add("Announcement");
         list.add("Test");
