@@ -270,6 +270,8 @@ public class EditTaskActivity extends AppCompatActivity {
                     try{//onlineDB
                         Log("About to update online");
 
+                        taskID = filterTaskID(taskID);
+
                         if (updateCourseCode) {
                             onlineDB.update_task_coursecode_taskid(unquote(newCourseCode), taskID);
                         }
@@ -439,7 +441,8 @@ public class EditTaskActivity extends AppCompatActivity {
 
         String checkCourse = newCourseCode;
 
-        if (checkCourse == null || checkCourse.equals("None") | checkCourse.equals("NULL")){
+        if (checkCourse == null || checkCourse.equals("None") || checkCourse.equals("NULL")) {
+
             Log("checkCourse is null");
             return true;
         }
@@ -455,6 +458,20 @@ public class EditTaskActivity extends AppCompatActivity {
             str = str.substring(0, str.length() - 1);
         }
         return str;
+    }
+
+    public String filterTaskID(String taskID){
+        if (taskID == null){
+            Log("returning null");
+            return "0";
+        }
+
+        Character c = taskID.charAt(0);
+        if (c.equals("L") || c.equals("l") ||  c.equals("U") || c.equals("u")){
+            return taskID.substring(1);
+        }
+
+        return taskID;
     }
 
     //endregion
@@ -511,15 +528,18 @@ public class EditTaskActivity extends AppCompatActivity {
 
             tableName = tblUserTask;
             isLecTask = false;
+            Log("isLecTask IS FALSEEEEE");
         }
         else if (taskID.charAt(0) == 'L'){
 
             tableName = tblLocalLecTask;
             isLecTask = true;
+            Log("isLecTask IS TRUEEEEEE");
         }
         else{
             Log("No TaskID found");
             ec.ShowUserError("Please contact support - Task ID not found",this);
+            return;
         }
 
 

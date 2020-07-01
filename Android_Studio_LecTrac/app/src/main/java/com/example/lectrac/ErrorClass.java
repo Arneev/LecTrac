@@ -188,7 +188,7 @@ public class ErrorClass {
             builder = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 
             builder.setCancelable(true);
-            builder.setTitle("Info");
+            builder.setTitle("Information");
             builder.setMessage(temp);
 
             builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {

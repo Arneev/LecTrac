@@ -540,7 +540,7 @@ final public class OnlineDatabaseManager {
 
     boolean isEmpty(JSONArray arr) throws InterruptedException, IOException, JSONException {
         if (arr != null){
-            return false;
+            return arr.isNull(0);
         }
         return true;
     }
