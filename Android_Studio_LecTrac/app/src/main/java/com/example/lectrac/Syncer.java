@@ -19,12 +19,13 @@ import java.util.List;
 import static com.example.lectrac.HelperFunctions.*;
 
 public class Syncer {
-
+    //region Intialization
     static boolean isLec;
     static Context context;
     static boolean isManual;
     static ErrorClass ec;
     static boolean syncAll;
+    //endregion
 
 
     Syncer(Context context, boolean isManual, boolean syncA) throws InterruptedException, ParseException, JSONException, IOException {

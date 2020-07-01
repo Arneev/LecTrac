@@ -1,0 +1,1395 @@
+mysql> INSERT INTO WITS VALUES("1059443","bbebbc62775c5c64","STUDENT","Bobby","Brown","2001-09-03","2018-01-01","1059443@students.wits.ac.za");
+ERROR 1046 (3D000): No database selected
+mysql> use dLecTrac;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> INSERT INTO WITS VALUES("1059443","bbebbc62775c5c64","STUDENT","Bobby","Brown","2001-09-03","2018-01-01","1059443@students.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+---------------+---------------+-----------------------------+------------------+------------------+
+| Student_ID | Student_FName | Student_LName | Student_Email               | Student_Nickname | Student_Password |
++------------+---------------+---------------+-----------------------------+------------------+------------------+
+| 1024651    | Alan          | Arkenshaw     | 1024651@students.wits.ac.za | Alan             | a7593edb23433aaa |
+| 1059443    | Bobby         | Brown         | 1059443@students.wits.ac.za | Bobster          | bbebbc62775c5c64 |
+| 2035302    | Dillan        | Davies        | 2035302@students.wits.ac.za | Dil Man          | 97c001e40e6cf33b |
+| 2098960    | Cathy         | Carmello      | 2098960@students.wits.ac.za | Cathy            | 4db26087048f1c75 |
+| 2161334    | Kiara         | Gabriel       | 2161334@students.wits.ac.za | Thee Amazing     | 2596431e788a065d |
+| 2180393    | Arneev        | Singh         | 2180393@students.wits.ac.za | Chappie          | 45ec9551a96f4b2f |
++------------+---------------+---------------+-----------------------------+------------------+------------------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO WITS VALUES("2035302","97c001e40e6cf33b","STUDENT","Dillan","Davies","2000-04-21","2018-01-01","2035302@students.wits.ac.za");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WITS VALUES("2098960","4db26087048f1c75","STUDENT","Cathy","Carmello","2000-06-18","2018-01-01","2098960@students.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WITS VALUES("2161334","2596431e788a065d","STUDENT","Kiara","Gabriel","2000-04-29","2018-01-01","2161334@students.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WITS VALUES("2180393","45ec9551a96f4b2f","STUDENT","Arneev","Singh","2000-12-09","2018-01-01","2180393@students.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM LECTURER;
++-------------+----------------+----------------+------------------------------+--------------------+-------------------+
+| Lecturer_ID | Lecturer_FName | Lecturer_LName | Lecturer_Email               | Lecturer_Reference | Lecturer_Password |
++-------------+----------------+----------------+------------------------------+--------------------+-------------------+
+| 1234567     | Pravesh        | Ranchod        | 1234567@lecturers.wits.ac.za | The Real OG        | 8d0ab6c58b585f00  |
+| 3321930     | Elijah         | Evans          | 3321930@lecturers.wits.ac.za | Elijah             | 60ae4acbcc98845b  |
+| 7654321     | Hima           | Vandapalli     | 7654321@lecturers.wits.ac.za | Coolest Person     | e7a78554d9501f04  |
+| 9092392     | Farhaan        | Farrel         | 9092392@lecturers.wits.ac.za | Farhaan            | 562be42e202627af  |
+| 9440671     | Gwen           | Gobster        | 9440671@lecturers.wits.ac.za | Gwen               | 8f742e0f5b5a70e1  |
++-------------+----------------+----------------+------------------------------+--------------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO WITS VALUES("1234567","8d0ab6c58b585f00","LECTURER","Pravesh","Ranchod","1985-07-04","2012-01-01","pravesh.ranchod@students.wits.ac.za");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> UPDATE LECTURER SET Lecturer_Email = "pravesh.ranchod@lecturers.wits.ac.za" WHERE Lecturer_FName = "Pravesh";
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE LECTURER SET Lecturer_Email = "evans.elijah@lecturers.wits.ac.za" WHERE Lecturer_FName = "Elijah";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE LECTURER SET Lecturer_Email = "hima.vandapalli@lecturers.wits.ac.za" WHERE Lecturer_FName = "Hima";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE LECTURER SET Lecturer_Email = "farhaan.farrel@lecturers.wits.ac.za" WHERE Lecturer_FName = "Farhaan";
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE LECTURER SET Lecturer_Email = "gwen.gobster@lecturers.wits.ac.za" WHERE Lecturer_FName = "Gwen";
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE WITS SET Email = "pravesh.ranchod@lecturers.wits.ac.za" WHERE FirstName = "Pravesh";
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM WITS;
++---------+------------------+----------------+-----------+-----------+-------------+--------------------+--------------------------------------+
+| User_ID | Password         | Classification | FirstName | LastName  | DateOfBirth | DateOfRegistration | Email                                |
++---------+------------------+----------------+-----------+-----------+-------------+--------------------+--------------------------------------+
+| 1024651 | a7593edb23433aaa | STUDENT        | Alan      | Arkenshaw | 2000-01-03  | 2017-01-01         | 1024651@students.wits.ac.za          |
+| 1059443 | bbebbc62775c5c64 | STUDENT        | Bobby     | Brown     | 2001-09-03  | 2018-01-01         | 1059443@students.wits.ac.za          |
+| 1234567 | 8d0ab6c58b585f00 | LECTURER       | Pravesh   | Ranchod   | 1985-07-04  | 2012-01-01         | pravesh.ranchod@lecturers.wits.ac.za |
+| 2035302 | 97c001e40e6cf33b | STUDENT        | Dillan    | Davies    | 2000-04-21  | 2018-01-01         | 2035302@students.wits.ac.za          |
+| 2098960 | 4db26087048f1c75 | STUDENT        | Cathy     | Carmello  | 2000-06-18  | 2018-01-01         | 2098960@students.wits.ac.za          |
+| 2161334 | 2596431e788a065d | STUDENT        | Kiara     | Gabriel   | 2000-04-29  | 2018-01-01         | 2161334@students.wits.ac.za          |
+| 2180393 | 45ec9551a96f4b2f | STUDENT        | Arneev    | Singh     | 2000-12-09  | 2018-01-01         | 2180393@students.wits.ac.za          |
++---------+------------------+----------------+-----------+-----------+-------------+--------------------+--------------------------------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM LECTURER;
++-------------+----------------+----------------+--------------------------------------+--------------------+-------------------+
+| Lecturer_ID | Lecturer_FName | Lecturer_LName | Lecturer_Email                       | Lecturer_Reference | Lecturer_Password |
++-------------+----------------+----------------+--------------------------------------+--------------------+-------------------+
+| 1234567     | Pravesh        | Ranchod        | pravesh.ranchod@lecturers.wits.ac.za | The Real OG        | 8d0ab6c58b585f00  |
+| 3321930     | Elijah         | Evans          | evans.elijah@lecturers.wits.ac.za    | Elijah             | 60ae4acbcc98845b  |
+| 7654321     | Hima           | Vandapalli     | hima.vandapalli@lecturers.wits.ac.za | Coolest Person     | e7a78554d9501f04  |
+| 9092392     | Farhaan        | Farrel         | farhaan.farrel@lecturers.wits.ac.za  | Farhaan            | 562be42e202627af  |
+| 9440671     | Gwen           | Gobster        | gwen.gobster@lecturers.wits.ac.za    | Gwen               | 8f742e0f5b5a70e1  |
++-------------+----------------+----------------+--------------------------------------+--------------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO WITS VALUES("3321930","60ae4acbcc98845b","LECTURER","Elijah","Evans","1971-07-04","2008-01-01","elijah.evans@lecturers.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WITS VALUES("7654321","e7a78554d9501f04","LECTURER","Hima","Vandapalli","1988-11-14","2012-01-01","hima.vandapalli@lecturers.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WITS VALUES("9092392","562be42e202627af","LECTURER","Farhaan","Farrel","1994-03-24","2020-01-01","farhaan.farrel@lecturers.wits.ac.za");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WITS VALUES("9440671","8f742e0f5b5a70e1","LECTURER","Gwen","Gobster","1960-05-19","1995-01-01","gwen.gobster@lecturers.wits.ac.za");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM WITS_COURSES;
+ERROR 1146 (42S02): Table 'dLecTrac.WITS_COURSES' doesn't exist
+mysql> SELECT * FROM WITS_COURSE;
+Empty set (0.00 sec)
+
+mysql> DESC COURSE;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Course_Code | char(8)     | NO   | PRI | NULL    |       |
+| Course_Name | varchar(50) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> DESC WITS_COURSE;
++--------------------+--------------+------+-----+---------+-------+
+| Field              | Type         | Null | Key | Default | Extra |
++--------------------+--------------+------+-----+---------+-------+
+| Course_ID          | char(8)      | NO   | PRI | NULL    |       |
+| Course_Name        | varchar(50)  | NO   |     | NULL    |       |
+| Course_Description | varchar(256) | YES  |     | NULL    |       |
++--------------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM COURSE;
++-------------+------------------------------------------+
+| Course_Code | Course_Name                              |
++-------------+------------------------------------------+
+| APPM2007    | Computational and Applied Mathematics II |
+| COMS2002    | Database Fundamentals II                 |
+| COMS2013    | Mobile Computing II                      |
+| INFO2000    | Information Systems IIA                  |
+| INFO2001    | Information Systems IIB                  |
+| MATH2007    | Multivariable Calculus II                |
+| MATH2019    | Linear Algebra II                        |
+| MATH2025    | Transition to Abstract Mathematics II    |
++-------------+------------------------------------------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INT WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Learn about the tools that discover, wonders of the rules that govern the universe in a practical way")
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INT WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Le' at line 1
+mysql> INSERT INTo WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Learn about the tools that discover, wonders of the rules that govern the universe in a practical way")
+    -> ;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> INSERT INTO WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Learn about the tools that discover, wonders of the rules that govern the universe in a practical way")
+    -> ;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> INSERT INTO WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Learn about the tools that discover, wonders of the rules that govern the universe in a practical way");
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> INSERT INTO WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Learn about the tools that discover wonders of the rules that govern the universe in a practical way");
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> INSERT INTO WITS_COURSE VALUES("APPM2007","Computational and Applied Mathematics II","Learn about the tools that discover, wonders of the rules that govern the universe in a practical way");
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> show tables;
++--------------------+
+| Tables_in_dLecTrac |
++--------------------+
+| COURSE             |
+| ENROLLED           |
+| LECTURER           |
+| MESSAGE            |
+| REGISTERED         |
+| STUDENT            |
+| TASK               |
+| TEST               |
+| WITS               |
+| WITS_COURSE        |
+| WITS_TEST          |
+| WROTE              |
++--------------------+
+12 rows in set (0.00 sec)
+
+mysql> SHOW TRIGGERS;
++-----------------+--------+-------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+---------+----------+--------------------+----------------------+----------------------+--------------------+
+| Trigger         | Event  | Table       | Statement                                                                                                                                                                                                              | Timing | Created | sql_mode | Definer            | character_set_client | collation_connection | Database Collation |
++-----------------+--------+-------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+---------+----------+--------------------+----------------------+----------------------+--------------------+
+| SYNC_COURSE_TRI | INSERT | WITS_COURSE | BEGIN INSERT INTO COURSE(COURSE.Course_Code, COURSE.Course_Name) SELECT * FROM( SELECT (WITS_COURSE.Course_ID, WITS_COURSE.Course_Name) FROM WITS_COURSE WHERE STRCMP(WITS_COURSE.Course_ID,NEW.Course_ID) ) as A; END | AFTER  | NULL    |          | d2180393@localhost | utf8                 | utf8_general_ci      | latin1_swedish_ci  |
+| SYNC_TEST_TRI   | INSERT | WITS_TEST   | BEGIN
+INSERT INTO TEST
+SELECT * FROM(
+SELECT * FROM WITS_TEST ORDER BY Test_No DESC LIMIT 1
+)
+as A;
+END                                                                                                                | AFTER  | NULL    |          | d2180393@localhost | utf8                 | utf8_general_ci      | latin1_swedish_ci  |
++-----------------+--------+-------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+---------+----------+--------------------+----------------------+----------------------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> DROP TRIGGER SYNC_COURSE_TRI;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DROP TRIGGER SYNC_TEST_TRI;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW TRIGGERS;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> DESC WROTE;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| Student_ID | char(7) | NO   | PRI |         |       |
+| Test_No    | int(11) | NO   | PRI | 0       |       |
++------------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> DESC TEST;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| Test_No     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Test_Name   | varchar(50) | NO   |     | NULL    |                |
+| Test_Mark   | int(3)      | NO   |     | NULL    |                |
+| Test_Total  | int(3)      | NO   |     | NULL    |                |
+| Course_Code | char(8)     | NO   | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST(Test_Name,Test_Mark,Test_Total,Course_Code) VALUES("Ordinary Differential Equations Test 1",);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> 
+mysql> INSERT INTO TEST(Test_Name,Test_Mark,Test_Total,Course_Code) VALUES("Ordinary Differential Equations Test 1","38","40","APPM2007");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE(Course_Code,Student_ID) VALUES("APPM2007","2180393");
+ERROR 1054 (42S22): Unknown column 'Course_Code' in 'field list'
+mysql> INSERT INTO WROTE(Student_ID,Test_No) VALUES("2180393","1");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`dLecTrac`.`WROTE`, CONSTRAINT `WROTE_ibfk_2` FOREIGN KEY (`Test_No`) REFERENCES `TEST` (`Test_No`))
+mysql> INSERT INTO WROTE(Student_ID,Test_No) VALUES("2180393",1);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`dLecTrac`.`WROTE`, CONSTRAINT `WROTE_ibfk_2` FOREIGN KEY (`Test_No`) REFERENCES `TEST` (`Test_No`))
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       3 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
++---------+----------------------------------------+-----------+------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> DELETE FROM TEST;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO TEST(1,"Ordinary Differential Equations Test 1",38,40,"APPM2007");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1,"Ordinary Differential Equations Test 1",38,40,"APPM2007")' at line 1
+mysql> INSERT INTO TEST VALUES(1,"Ordinary Differential Equations Test 1",38,40,"APPM2007");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SET FOREIGN_KEY_CHECK = 0;
+ERROR 1193 (HY000): Unknown system variable 'FOREIGN_KEY_CHECK'
+mysql> SET FOREIGN_KEY_CHECKS = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
++---------+----------------------------------------+-----------+------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> DESC WROTE;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| Student_ID | char(7) | NO   | PRI |         |       |
+| Test_No    | int(11) | NO   | PRI | 0       |       |
++------------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",1);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO TEST VALUES(2,"Java Basic Syntax",43,50,"COMS2002");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO TEST VALUES(3,"Java Basic Syntax",38,50,"COMS2002");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
++---------+----------------------------------------+-----------+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO WROTE("2161334",2);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"2161334",2)' at line 1
+mysql> INSERT INTO WROTE VALUES("2161334",2);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",3);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(4,"SQL Formal Assessment",94,100,"COMS2012");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO TEST VALUES(5,"SQL Formal Assessment",88,100,"COMS2012");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO TEST VALUES(6,"SQL Formal Assessment",76,100,"COMS2012");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO TEST VALUES(7,"SQL Formal Assessment",81,100,"COMS2012");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO WROTE VALUES("1024651",4);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO WROTE VALUES("1059443",5);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",6);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO WROTE VALUES("2161334",7);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2012    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2012    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2012    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2012    |
++---------+----------------------------------------+-----------+------------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
++------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(8,"Quiz 1",15,20,"INFO2000");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2012    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2012    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2012    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2012    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
++---------+----------------------------------------+-----------+------------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE TEST SET Course_Code = "COMS2013" WHERE Test_Name = "SQL Formal Assessment";
+Query OK, 4 rows affected (0.03 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
++---------+----------------------------------------+-----------+------------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(9,"Quiz 1",17,20,"INFO2000");
+Query OK, 1 row affected (0.14 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO WROTE("1059443",8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"1059443",8)' at line 1
+mysql> INSERT INTO WROTE VALUES("1059443",8);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",9);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
++---------+----------------------------------------+-----------+------------+-------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
++------------+---------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(10,"Test 1",18,20,"INFO2001");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2035302",10);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
++---------+----------------------------------------+-----------+------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * WROTE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WROTE' at line 1
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
++------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT * FROM COURSE;
++-------------+------------------------------------------+
+| Course_Code | Course_Name                              |
++-------------+------------------------------------------+
+| APPM2007    | Computational and Applied Mathematics II |
+| COMS2002    | Database Fundamentals II                 |
+| COMS2013    | Mobile Computing II                      |
+| INFO2000    | Information Systems IIA                  |
+| INFO2001    | Information Systems IIB                  |
+| MATH2007    | Multivariable Calculus II                |
+| MATH2019    | Linear Algebra II                        |
+| MATH2025    | Transition to Abstract Mathematics II    |
++-------------+------------------------------------------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(11,"Matrix Chain Rule",20,20,"MATH2007");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO WROTE VALUES("2161334",11);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM COURSE;
++-------------+------------------------------------------+
+| Course_Code | Course_Name                              |
++-------------+------------------------------------------+
+| APPM2007    | Computational and Applied Mathematics II |
+| COMS2002    | Database Fundamentals II                 |
+| COMS2013    | Mobile Computing II                      |
+| INFO2000    | Information Systems IIA                  |
+| INFO2001    | Information Systems IIB                  |
+| MATH2007    | Multivariable Calculus II                |
+| MATH2019    | Linear Algebra II                        |
+| MATH2025    | Transition to Abstract Mathematics II    |
++-------------+------------------------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
++---------+----------------------------------------+-----------+------------+-------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
+| 2161334    |      11 |
++------------+---------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(12,"Linear Algebra Exam",42,100,"MATH2019");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO TEST VALUES(13,"Linear Algebra Exam",39,100,"MATH2019");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WROTE VALUES("2161334",12);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> UPDATE WROTE SET Student_ID = "1024651" WHERE Test_No = 12;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
++---------+----------------------------------------+-----------+------------+-------------+
+13 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
+| 2161334    |      11 |
+| 1024651    |      12 |
++------------+---------+
+12 rows in set (0.00 sec)
+
+mysql> INSERT INTO WROTE VALUES("1059443",13);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(14,"19 Millionth Quiz",15,20,"MATH2025");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO TEST VALUES(15,"19 Millionth Quiz",13,20,"MATH2025");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO TEST VALUES(16,"19 Millionth Quiz",16,20,"MATH2025");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WROTE VALUES("1024651",14);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2098960",15);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2161334",16);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
++---------+----------------------------------------+-----------+------------+-------------+
+16 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
+| 2161334    |      11 |
+| 1024651    |      12 |
+| 1059443    |      13 |
+| 1024651    |      14 |
+| 2098960    |      15 |
+| 2161334    |      16 |
++------------+---------+
+16 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(17,"Android Stuio Exam",150,150,"COMS2002");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO TEST VALUES(18,"Android Studio Exam",140,150,"COMS2002");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> UPDATE TEST SET Test_Name = "Android Studio Exam" WHERE Test_No = 17
+    -> ;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
+|      17 | Android Studio Exam                    |       150 |        150 | COMS2002    |
+|      18 | Android Studio Exam                    |       140 |        150 | COMS2002    |
++---------+----------------------------------------+-----------+------------+-------------+
+18 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO WROTE VALIES("2161334",17);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VALIES("2161334",17)' at line 1
+mysql> INSERT INTO WROTE VALUES("2161334",17);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",18);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
+|      17 | Android Studio Exam                    |       150 |        150 | COMS2002    |
+|      18 | Android Studio Exam                    |       140 |        150 | COMS2002    |
++---------+----------------------------------------+-----------+------------+-------------+
+18 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
+| 2161334    |      11 |
+| 1024651    |      12 |
+| 1059443    |      13 |
+| 1024651    |      14 |
+| 2098960    |      15 |
+| 2161334    |      16 |
+| 2161334    |      17 |
+| 2180393    |      18 |
++------------+---------+
+18 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(19,"Trigger Test",30,30,"COMS2013");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO TEST VALUES(20,"Trigger Test",38,30,"COMS2013");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO TEST VALUES(20,"Trigger Test",27,30,"COMS2013");
+ERROR 1062 (23000): Duplicate entry '20' for key 'PRIMARY'
+mysql> DELETE FROM TEST WHERE Test_No = 20;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
+|      17 | Android Studio Exam                    |       150 |        150 | COMS2002    |
+|      18 | Android Studio Exam                    |       140 |        150 | COMS2002    |
+|      19 | Trigger Test                           |        30 |         30 | COMS2013    |
++---------+----------------------------------------+-----------+------------+-------------+
+19 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(20,"Trigger Test",27,30,"COMS2013");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO TEST VALUES(21,"Trigger Test",28,30,"COMS2013");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO TEST VALUES(22,"Trigger Test",30,30,"COMS2013");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO WROTE VALUES("1024651",19);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("1059443",20);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2161334",21);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",22);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
+|      17 | Android Studio Exam                    |       150 |        150 | COMS2002    |
+|      18 | Android Studio Exam                    |       140 |        150 | COMS2002    |
+|      19 | Trigger Test                           |        30 |         30 | COMS2013    |
+|      20 | Trigger Test                           |        27 |         30 | COMS2013    |
+|      21 | Trigger Test                           |        28 |         30 | COMS2013    |
+|      22 | Trigger Test                           |        30 |         30 | COMS2013    |
++---------+----------------------------------------+-----------+------------+-------------+
+22 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
+| 2161334    |      11 |
+| 1024651    |      12 |
+| 1059443    |      13 |
+| 1024651    |      14 |
+| 2098960    |      15 |
+| 2161334    |      16 |
+| 2161334    |      17 |
+| 2180393    |      18 |
+| 1024651    |      19 |
+| 1059443    |      20 |
+| 2161334    |      21 |
+| 2180393    |      22 |
++------------+---------+
+22 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ENROLLED;
++------------+-------------+
+| Student_ID | Course_Code |
++------------+-------------+
+| 2180393    | APPM2007    |
+| 2161334    | COMS2002    |
+| 2180393    | COMS2002    |
+| 1024651    | COMS2013    |
+| 1059443    | COMS2013    |
+| 2161334    | COMS2013    |
+| 2180393    | COMS2013    |
+| 1059443    | INFO2000    |
+| 2180393    | INFO2000    |
+| 2035302    | INFO2001    |
+| 1024651    | MATH2007    |
+| 2161334    | MATH2007    |
+| 1024651    | MATH2019    |
+| 1059443    | MATH2019    |
+| 1024651    | MATH2025    |
+| 2098960    | MATH2025    |
+| 2161334    | MATH2025    |
++------------+-------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO TEST VALUES(23,"Normalization Conversion Test",34,40,"COMS2013");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO TEST VALUES(24,"Normalization Conversion Test",37,40,"COMS2013");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO TEST VALUES(25,"Normalization Conversion Test",35,40,"COMS2013");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO TEST VALUES(26,"Normalization Conversion Test",35,40,"COMS2013");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("1024651",23);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO WROTE VALUES("1059443",24);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO WROTE VALUES("2161334",25);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO WROTE VALUES("2180393",26);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
+|      17 | Android Studio Exam                    |       150 |        150 | COMS2002    |
+|      18 | Android Studio Exam                    |       140 |        150 | COMS2002    |
+|      19 | Trigger Test                           |        30 |         30 | COMS2013    |
+|      20 | Trigger Test                           |        27 |         30 | COMS2013    |
+|      21 | Trigger Test                           |        28 |         30 | COMS2013    |
+|      22 | Trigger Test                           |        30 |         30 | COMS2013    |
+|      23 | Normalization Conversion Test          |        34 |         40 | COMS2013    |
+|      24 | Normalization Conversion Test          |        37 |         40 | COMS2013    |
+|      25 | Normalization Conversion Test          |        35 |         40 | COMS2013    |
+|      26 | Normalization Conversion Test          |        35 |         40 | COMS2013    |
++---------+----------------------------------------+-----------+------------+-------------+
+26 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++------------+---------+
+| Student_ID | Test_No |
++------------+---------+
+| 2180393    |       1 |
+| 2161334    |       2 |
+| 2180393    |       3 |
+| 1024651    |       4 |
+| 1059443    |       5 |
+| 2180393    |       6 |
+| 2161334    |       7 |
+| 1059443    |       8 |
+| 2180393    |       9 |
+| 2035302    |      10 |
+| 2161334    |      11 |
+| 1024651    |      12 |
+| 1059443    |      13 |
+| 1024651    |      14 |
+| 2098960    |      15 |
+| 2161334    |      16 |
+| 2161334    |      17 |
+| 2180393    |      18 |
+| 1024651    |      19 |
+| 1059443    |      20 |
+| 2161334    |      21 |
+| 2180393    |      22 |
+| 1024651    |      23 |
+| 1059443    |      24 |
+| 2161334    |      25 |
+| 2180393    |      26 |
++------------+---------+
+26 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_dLecTrac |
++--------------------+
+| COURSE             |
+| ENROLLED           |
+| LECTURER           |
+| MESSAGE            |
+| REGISTERED         |
+| STUDENT            |
+| TASK               |
+| TEST               |
+| WITS               |
+| WITS_COURSE        |
+| WITS_TEST          |
+| WROTE              |
++--------------------+
+12 rows in set (0.00 sec)
+
+mysql> DESC TEST;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| Test_No     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Test_Name   | varchar(50) | NO   |     | NULL    |                |
+| Test_Mark   | int(3)      | NO   |     | NULL    |                |
+| Test_Total  | int(3)      | NO   |     | NULL    |                |
+| Course_Code | char(8)     | NO   | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> DESC WITS_TEST;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Test_No     | int(11)     | NO   |     | 0       |       |
+| Test_Name   | varchar(50) | NO   |     | NULL    |       |
+| Test_Mark   | int(3)      | NO   |     | NULL    |       |
+| Test_Total  | int(3)      | NO   |     | NULL    |       |
+| Course_Code | char(8)     | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> DROP TABLE WITS_TEST;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE WITS_TEST LIKE SELECT * FROM TEST;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM TEST' at line 1
+mysql> CREATE TABLE WITS_TEST LIKE TEST;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> SELECT * FROM WITS_TEST;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO WITS_TEST SELECT * FROM TEST;
+Query OK, 26 rows affected (0.02 sec)
+Records: 26  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM WITS_TEST;
++---------+----------------------------------------+-----------+------------+-------------+
+| Test_No | Test_Name                              | Test_Mark | Test_Total | Course_Code |
++---------+----------------------------------------+-----------+------------+-------------+
+|       1 | Ordinary Differential Equations Test 1 |        38 |         40 | APPM2007    |
+|       2 | Java Basic Syntax                      |        43 |         50 | COMS2002    |
+|       3 | Java Basic Syntax                      |        38 |         50 | COMS2002    |
+|       4 | SQL Formal Assessment                  |        94 |        100 | COMS2013    |
+|       5 | SQL Formal Assessment                  |        88 |        100 | COMS2013    |
+|       6 | SQL Formal Assessment                  |        76 |        100 | COMS2013    |
+|       7 | SQL Formal Assessment                  |        81 |        100 | COMS2013    |
+|       8 | Quiz 1                                 |        15 |         20 | INFO2000    |
+|       9 | Quiz 1                                 |        17 |         20 | INFO2000    |
+|      10 | Test 1                                 |        18 |         20 | INFO2001    |
+|      11 | Matrix Chain Rule                      |        20 |         20 | MATH2007    |
+|      12 | Linear Algebra Exam                    |        42 |        100 | MATH2019    |
+|      13 | Linear Algebra Exam                    |        39 |        100 | MATH2019    |
+|      14 | 19 Millionth Quiz                      |        15 |         20 | MATH2025    |
+|      15 | 19 Millionth Quiz                      |        13 |         20 | MATH2025    |
+|      16 | 19 Millionth Quiz                      |        16 |         20 | MATH2025    |
+|      17 | Android Studio Exam                    |       150 |        150 | COMS2002    |
+|      18 | Android Studio Exam                    |       140 |        150 | COMS2002    |
+|      19 | Trigger Test                           |        30 |         30 | COMS2013    |
+|      20 | Trigger Test                           |        27 |         30 | COMS2013    |
+|      21 | Trigger Test                           |        28 |         30 | COMS2013    |
+|      22 | Trigger Test                           |        30 |         30 | COMS2013    |
+|      23 | Normalization Conversion Test          |        34 |         40 | COMS2013    |
+|      24 | Normalization Conversion Test          |        37 |         40 | COMS2013    |
+|      25 | Normalization Conversion Test          |        35 |         40 | COMS2013    |
+|      26 | Normalization Conversion Test          |        35 |         40 | COMS2013    |
++---------+----------------------------------------+-----------+------------+-------------+
+26 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_dLecTrac |
++--------------------+
+| COURSE             |
+| ENROLLED           |
+| LECTURER           |
+| MESSAGE            |
+| REGISTERED         |
+| STUDENT            |
+| TASK               |
+| TEST               |
+| WITS               |
+| WITS_COURSE        |
+| WITS_TEST          |
+| WROTE              |
++--------------------+
+12 rows in set (0.00 sec)
+
+mysql> notee

@@ -262,7 +262,6 @@ public class HelperFunctions {
 
     }
 
-
     public static void LogOption(String tag, String message){
         if (tag.equals(persoTag)){
             Log(message);

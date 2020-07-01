@@ -25,6 +25,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewMessage extends AppCompatActivity {
 
+    //region Initialization
     static LocalDatabaseManager localDB;
     static OnlineDatabaseManager onlineDB;
 
@@ -33,13 +34,13 @@ public class AddNewMessage extends AppCompatActivity {
     static EditText edtContent;
     static Spinner spinCourse;
     public static Button btnAddMessage;
-    static Button btnBack;
     static ErrorClass ec;
     static ProgressBar progressBar;
 
     static String[] courses;
 
     private long mLastClickTime = 0;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +129,6 @@ public class AddNewMessage extends AppCompatActivity {
 
     }
 
-//    void GoToMessageBoard(){
-//        startActivity(new Intent(this, MessageBoardActivity.class));
-//    }
-
     public boolean CheckHeading(String heading){
         if (heading.equals(null) || heading.length() == 0){
             return false;
@@ -140,8 +137,7 @@ public class AddNewMessage extends AppCompatActivity {
         return true;
     }
 
-
-    //region Spinner Setter
+    //region Setters
 
     public void SetClassificSpinnerItems(){
         List<String> list = new ArrayList<String>();
@@ -174,10 +170,6 @@ public class AddNewMessage extends AppCompatActivity {
         spinCourse.setAdapter(dataAdapter);
     }
 
-    //endregion
-
-    //region Helper Function
-
     public void addOnClick(){
 
         btnAddMessage.setOnClickListener(new View.OnClickListener() {
@@ -196,11 +188,6 @@ public class AddNewMessage extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(this, MessageBoardActivity.class));
-    }
-
     public void cancelAddTaskClick(){
         Button btnCancel = findViewById(R.id.btnBackButton);
 
@@ -211,7 +198,12 @@ public class AddNewMessage extends AppCompatActivity {
             }
         });
     }
-
-
     //endregion
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MessageBoardActivity.class));
+    }
+
+
 }

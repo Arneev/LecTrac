@@ -1,0 +1,31 @@
+mysql> SELECT * FROM STUDENT;
++------------+---------------+---------------+-----------------------------+------------------+------------------+
+| Student_ID | Student_FName | Student_LName | Student_Email               | Student_Nickname | Student_Password |
++------------+---------------+---------------+-----------------------------+------------------+------------------+
+| 1024651    | Alan          | Arkenshaw     | 1024651@students.wits.ac.za | Alan             | a7593edb23433aaa |
+| 1059443    | Bobby         | Brown         | 1059443@students.wits.ac.za | Bobster          | bbebbc62775c5c64 |
+| 2035302    | Dillan        | Davies        | 2035302@students.wits.ac.za | Dil Man          | 97c001e40e6cf33b |
+| 2098960    | Cathy         | Carmello      | 2098960@students.wits.ac.za | Cathy            | 4db26087048f1c75 |
+| 2161334    | Kiara         | Gabriel       | 2161334@students.wits.ac.za | Thee Amazing     | 2596431e788a065d |
+| 2180393    | Arneev        | Singh         | 2180393@students.wits.ac.za | Chappie          | 45ec9551a96f4b2f |
++------------+---------------+---------------+-----------------------------+------------------+------------------+
+6 rows in set (0.00 sec)
+
+mysql> DESC WITS;
++--------------------+--------------+------+-----+---------+-------+
+| Field              | Type         | Null | Key | Default | Extra |
++--------------------+--------------+------+-----+---------+-------+
+| User_ID            | char(7)      | NO   | PRI | NULL    |       |
+| Password           | binary(16)   | NO   |     | NULL    |       |
+| Classification     | varchar(20)  | NO   |     | NULL    |       |
+| FirstName          | varchar(50)  | NO   |     | NULL    |       |
+| LastName           | varchar(50)  | NO   |     | NULL    |       |
+| DateOfBirth        | date         | NO   |     | NULL    |       |
+| DateOfRegistration | date         | NO   |     | NULL    |       |
+| Email              | varchar(128) | NO   |     | NULL    |       |
++--------------------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO WITS VALUES("1024651","a7593edb23433aaa","STUDENT","Alan","Arkenshaw","2000-01-03","2017-01-01","1024651@students.wits.ac.za");
+Query OK, 1 row affected (0.02 sec)
+

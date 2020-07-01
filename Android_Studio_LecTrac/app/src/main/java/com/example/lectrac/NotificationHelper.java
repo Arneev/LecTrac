@@ -15,8 +15,8 @@ import static com.example.lectrac.HelperFunctions.*;
 
 class NotificationHelper {
 
-    private Context mContext;
-    private static final String NOTIFICATION_CHANNEL_ID = "10001";
+    Context mContext;
+    static final String NOTIFICATION_CHANNEL_ID = "10001";
 
     NotificationHelper(Context context) {
         mContext = context;

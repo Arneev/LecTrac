@@ -40,6 +40,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class AddNewTaskActivity extends AppCompatActivity {
 
+    //region Initialization
     public static String sTaskId, sTaskName, sDueDate, sDueTime, sCourseCode;
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
     public static String[] courses;
@@ -55,6 +56,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
     static ErrorClass ec;
 
     Boolean isLec, mustPost;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    //region Getters
     public void getTaskTitle(){
 
         // get the title of the task
@@ -195,6 +198,8 @@ public class AddNewTaskActivity extends AppCompatActivity {
         final Spinner spinCourse = findViewById(R.id.spinCourseCode);
         sCourseCode = spinCourse.getSelectedItem().toString();
     }
+
+    //endregion
 
     public boolean saveTask() throws InterruptedException, JSONException, IOException {
         Log("About to saveTask");
@@ -318,8 +323,6 @@ public class AddNewTaskActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     //region HelperFunctions
 
     public boolean isDateNull(){
@@ -373,6 +376,9 @@ public class AddNewTaskActivity extends AppCompatActivity {
         // if "None" is selected, consider this null
     }
 
+    //endregion
+
+    //region Clickers
     public void SetCourseSpinnerItems(){
         Spinner spinCourse = findViewById(R.id.spinCourseCode);
         courses = localDB.getCourses(localDB);
@@ -392,10 +398,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinCourse.setAdapter(dataAdapter);
     }
-    //endregion
 
-
-    //region Clickers
     public void SaveTaskClick(){
         Button btnSaveTask = findViewById(R.id.btnSaveTask);
 
@@ -487,13 +490,10 @@ public class AddNewTaskActivity extends AppCompatActivity {
 
     //endregion
 
-    //region Helper Function
 
     @Override
     public void onBackPressed(){
         startActivity(new Intent(this, ToDoListActivity.class));
     }
-
-    //endregion
 
 }

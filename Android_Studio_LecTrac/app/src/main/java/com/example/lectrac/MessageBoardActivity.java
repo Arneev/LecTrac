@@ -30,6 +30,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class MessageBoardActivity extends AppCompatActivity {
 
+    //region Intialization
     DrawerLayout drawer;
 
     static LocalDatabaseManager localDB;
@@ -49,6 +50,7 @@ public class MessageBoardActivity extends AppCompatActivity {
     static ArrayList<String> arrClassification = new ArrayList<>();
     static ArrayList<String> arrDate = new ArrayList<>();
     static ArrayList<Integer> arrMessageID = new ArrayList<>();
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,49 +93,6 @@ public class MessageBoardActivity extends AppCompatActivity {
             Log(e.toString());
         }
     }
-
-
-    // drawer
-
-    public void setDrawer(){
-
-        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
-
-        boolean isLec = localDB.isLec();
-
-        // use the tool bar as action bar because the action bar was removed
-        Toolbar toolbar = findViewById(R.id.toolbarTop);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-
-        if (isLec){
-            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
-        }
-        else {
-            navigationView.inflateMenu(R.menu.drawer_menu);
-        }
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
-        navigationView.addHeaderView(header);
-
-        final DrawerHelper drawerHelper = new DrawerHelper(MessageBoardActivity.this, toolbar,
-                drawer, navigationView, header);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return drawerHelper.onNavigationItemSelected(menuItem);
-            }
-        });
-    }
-
-
-    // end of drawer
-
 
     void startAdapter() throws ParseException {
         clearArr();
@@ -279,7 +238,7 @@ public class MessageBoardActivity extends AppCompatActivity {
         startActivity(new Intent(this,AddNewMessage.class));
     }
 
-    //region Spinner sort
+    //region Setters
 
     public void SetClassItems(){
         List<String> list = new ArrayList<String>();
@@ -370,6 +329,42 @@ public class MessageBoardActivity extends AppCompatActivity {
         }
     }
 
+    public void setDrawer(){
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(MessageBoardActivity.this, toolbar,
+                drawer, navigationView, header);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+    //endregion
 
     @Override
     public void onBackPressed(){

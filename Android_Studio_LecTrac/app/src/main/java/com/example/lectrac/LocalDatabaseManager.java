@@ -23,11 +23,13 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class LocalDatabaseManager extends SQLiteOpenHelper {
 
+    //region Intialization
     final static String DATABASE_NAME = "LecTrac.db";
     final static int DATABASE_VERSION = 1;
     private SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     static SQLiteDatabase db;
+    //endregion
 
     //Constructor
     public LocalDatabaseManager(@Nullable Context context) {
@@ -36,9 +38,6 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        //SORT OUT FOREIGN KEYS
-        //SORT OUT AUTOINCREMENT
-        //SET DEFAULTS
 
         db = sqLiteDatabase;
 
@@ -90,25 +89,6 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    boolean isLoggedIn(){
-        Cursor cursor = doQuery("SELECT * FROM USER");
-        int iCount = cursor.getCount();
-        if (iCount == 1){
-            Log("isLoggedIn about to return true");
-            return true;
-        }
-        Log("isLoggedIn about to return false");
-        return false;
-    }
-
-//    public void DeleteEverything(){
-//
-//    }
-
-    public String getCurrDate(){
-        return sdf.format(new java.util.Date());
-    }
-
     public SQLiteDatabase getWriteDB(){
         return getWritableDatabase();
     }
@@ -122,14 +102,10 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         //onCreate(db);
     }
 
-
-
-    //End of Helper and Starting Functions
-
+    //region Queries
     public void doQueryNonSelect(String query){
         getReadableDatabase().execSQL(query);
     }
-
 
     public Cursor doQuery(String query) {
         try {
@@ -170,7 +146,6 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         doQueryNonSelect(query);
     }
 
-
     public void doInsert(String tableName,String[] columns, String[] values){
         String stringVals = "";
         String stringCols = "";
@@ -202,6 +177,24 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
     public void doDelete(String tableName, String colName, String value){
 
         doQueryNonSelect("DELETE FROM " + tableName  + " WHERE " + colName + " = " + value);
+    }
+
+    //endregion
+
+    //region LocalDB HelperFunctions
+    boolean isLoggedIn(){
+        Cursor cursor = doQuery("SELECT * FROM USER");
+        int iCount = cursor.getCount();
+        if (iCount == 1){
+            Log("isLoggedIn about to return true");
+            return true;
+        }
+        Log("isLoggedIn about to return false");
+        return false;
+    }
+
+    public String getCurrDate(){
+        return sdf.format(new java.util.Date());
     }
 
     public long getDBFileLength()
@@ -283,4 +276,5 @@ public class LocalDatabaseManager extends SQLiteOpenHelper {
         return cursor.getString(index);
     }
 
+    //endregion
 }

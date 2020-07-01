@@ -22,8 +22,10 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class DrawerHelper extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    //region Intialization
     DrawerLayout drawer;
     Context context;
+    //endregion
 
     public DrawerHelper(Context cont, Toolbar toolbar, DrawerLayout drawerLayout,
                         NavigationView navigationView, View header ){
@@ -123,7 +125,6 @@ public class DrawerHelper extends AppCompatActivity implements NavigationView.On
         }
         return true;
     }
-
 
     public void setName(View header){
 

@@ -34,6 +34,8 @@ import static com.example.lectrac.HelperFunctions.tblUserTask;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> { //implements Filterable
 
+    //region Intialization
+
     static ErrorClass ec;
     Context context;
     Boolean isLec;
@@ -44,10 +46,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
 
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 
-    RecyclerView recyclerView;
-
-    public ToDoAdapter(){ }
-
+    //endregion
 
     public ToDoAdapter(Context cont, Boolean blnLec, ArrayList<String> names, ArrayList<String> courses, ArrayList<String> ids){
         context = cont;

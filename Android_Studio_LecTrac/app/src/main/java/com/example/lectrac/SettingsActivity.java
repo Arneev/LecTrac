@@ -37,6 +37,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    //region Intialization
     DrawerLayout drawer;
     static ErrorClass ec;
     static ProgressBar progressBar;
@@ -48,8 +49,9 @@ public class SettingsActivity extends AppCompatActivity {
     static EditText edtConfirmPass;
     static EditText edtOldPass;
 
-
     public static LocalDatabaseManager localDB;
+    //endregion
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,72 +85,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-    }
-
-    // drawer
-
-    public void setDrawer(){
-
-        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
-
-        boolean isLec = localDB.isLec();
-
-        // use the tool bar as action bar because the action bar was removed
-        Toolbar toolbar = findViewById(R.id.toolbarTop);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-
-        if (isLec){
-            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
-        }
-        else {
-            navigationView.inflateMenu(R.menu.drawer_menu);
-        }
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
-        navigationView.addHeaderView(header);
-
-        final DrawerHelper drawerHelper = new DrawerHelper(SettingsActivity.this, toolbar,
-                drawer, navigationView, header);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return drawerHelper.onNavigationItemSelected(menuItem);
-            }
-        });
-    }
-
-
-    // end of drawer
-
-
-    public void SetStartValues(){
-        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblUser);
-        cursor.moveToFirst();
-
-        String nick = cursor.getString(cursor.getColumnIndex("Nickname"));
-        int iDarkMode = cursor.getInt(cursor.getColumnIndex("isDarkMode"));
-
-        TextView edtNick = findViewById(R.id.edtSettingsNickname);
-        CheckBox cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
-
-        edtNick.setText(nick);
-
-        Boolean isDarkMode;
-
-        if (iDarkMode == 1){
-            isDarkMode = true;
-        }
-        else{
-            isDarkMode = false;
-        }
-
-        cbxDarkMode.setChecked(isDarkMode);
     }
 
     public void Save() throws InterruptedException {
@@ -258,6 +194,43 @@ public class SettingsActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
+    //region Setters
+    public void setDrawer(){
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(SettingsActivity.this, toolbar,
+                drawer, navigationView, header);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+
     public void setSaveButtonListener(){
         saveButton = findViewById(R.id.btnSettingsSave);
 
@@ -276,8 +249,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     public void setIconsToAppearMode(){
         Toolbar toolbar = findViewById(R.id.toolbarTop);
@@ -319,16 +290,33 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    public void SetStartValues(){
+        Cursor cursor = localDB.doQuery("SELECT * FROM " + tblUser);
+        cursor.moveToFirst();
 
-    @Override
-    public void onBackPressed(){
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            drawer.openDrawer(GravityCompat.START);
+        String nick = cursor.getString(cursor.getColumnIndex("Nickname"));
+        int iDarkMode = cursor.getInt(cursor.getColumnIndex("isDarkMode"));
+
+        TextView edtNick = findViewById(R.id.edtSettingsNickname);
+        CheckBox cbxDarkMode = findViewById(R.id.cbxSettingsDarkMode);
+
+        edtNick.setText(nick);
+
+        Boolean isDarkMode;
+
+        if (iDarkMode == 1){
+            isDarkMode = true;
         }
+        else{
+            isDarkMode = false;
+        }
+
+        cbxDarkMode.setChecked(isDarkMode);
     }
 
+    //endregion
+
+    //region HelperFunctions
 
     boolean correctPassParams(@NotNull String password){
         Log("Correct Pass Params");
@@ -392,7 +380,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         return true;
     }
-
 
     boolean checkPassword(String password, String userID) throws NoSuchAlgorithmException, InterruptedException, IOException, JSONException {
         Log("checkPassword");
@@ -477,6 +464,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         return false;
 
+    }
+
+    //endregion
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
     }
 
 }

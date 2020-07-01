@@ -26,6 +26,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class TestMarksActivity extends AppCompatActivity {
 
+    //region Intialization
     DrawerLayout drawer;
 
     static String[] courses;
@@ -40,6 +41,7 @@ public class TestMarksActivity extends AppCompatActivity {
     static ArrayList<Integer> arrTot = new ArrayList<>();
     static ArrayList<String> arrCourse = new ArrayList<>();
 
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,48 +70,6 @@ public class TestMarksActivity extends AppCompatActivity {
             ec.ShowUserError("Failed to update tests",this);
         }
     }
-
-    // drawer
-
-    public void setDrawer(){
-
-        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
-
-        boolean isLec = localDB.isLec();
-
-        // use the tool bar as action bar because the action bar was removed
-        Toolbar toolbar = findViewById(R.id.toolbarTop);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-
-        if (isLec){
-            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
-        }
-        else {
-            navigationView.inflateMenu(R.menu.drawer_menu);
-        }
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
-        navigationView.addHeaderView(header);
-
-        final DrawerHelper drawerHelper = new DrawerHelper(TestMarksActivity.this, toolbar,
-                drawer, navigationView, header);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return drawerHelper.onNavigationItemSelected(menuItem);
-            }
-        });
-    }
-
-
-    // end of drawer
-
 
     void startAdapter() {
         Cursor cursor = localDB.doQuery("SELECT * FROM " + tblTest);
@@ -176,7 +136,43 @@ public class TestMarksActivity extends AppCompatActivity {
         arrCourse.clear();
     }
 
-    //region Spinner Setter
+    //region Setters
+    public void setDrawer(){
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(TestMarksActivity.this, toolbar,
+                drawer, navigationView, header);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+
     public void SetCourseSpinnerItems(){
         int courseSize = courses.length;
 

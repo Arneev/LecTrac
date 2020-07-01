@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class CourseDetailsAdapter extends RecyclerView.Adapter<CourseDetailsAdapter.MyViewHolder> {
 
+    //region Intialization
     Context context;
     String[] arrLecName;
     String[] arrEmail;
@@ -23,6 +24,7 @@ public class CourseDetailsAdapter extends RecyclerView.Adapter<CourseDetailsAdap
         arrLecName = lecName;
         arrEmail = lecEmail;
     }
+    //endregion
 
     @NonNull
     @Override

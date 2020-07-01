@@ -33,21 +33,12 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.example.lectrac.HelperFunctions.Log;
-import static com.example.lectrac.HelperFunctions.isDarkMode;
-import static com.example.lectrac.HelperFunctions.isOnline;
 import static com.example.lectrac.HelperFunctions.*;
-import static com.example.lectrac.HelperFunctions.myPrefName;
-import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.Syncer.*;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    public static void Log(String error){
-        Log.i("Perso",error);
-    }
-
+    //region Intitialization
     static LocalDatabaseManager localDB;
     static Context context;
     static ErrorClass ec;
@@ -57,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     static TextView tvPass;
     HelperFunctions hp = new HelperFunctions();
     static ProgressBar progressBar;
+
+    //endregion
 
     //OnCreate
     @Override
@@ -126,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //region Listeners
     public void setButtonListener(){
         loginBtn = findViewById(R.id.btnLogin);
 
@@ -213,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     public void SetToDefault(){
 
         TextView userID = findViewById(R.id.edtUserID);
@@ -222,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
         userID.setText("");
         pass.setText("");
     }
-
 
     public void setLblForgotPassListener(){
         lblForgotPass = findViewById(R.id.lblForgotPassword);
@@ -235,20 +227,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-    //region Helper Function
+    //endregion
 
     @Override
     public void onBackPressed(){
         startActivity(new Intent(this, RegisterActivity.class));
     }
 
-    //endregion
 
-
-    //region notifications
+    //region Notifications
     public void myAlarm() {
 
         Calendar calendar = Calendar.getInstance();

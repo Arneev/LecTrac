@@ -49,6 +49,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class CalendarActivity extends AppCompatActivity {
 
+    //region Initialization
     DrawerLayout drawer;
 
     private CompactCalendarView cCalendarView;
@@ -71,6 +72,8 @@ public class CalendarActivity extends AppCompatActivity {
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     Button btnScrollRight, btnScrollLeft;
     TextView tvMonth;
+
+    //endregion
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,47 +122,6 @@ public class CalendarActivity extends AppCompatActivity {
         recyclerView.setVisibility(View.VISIBLE);
     }
 
-
-    // drawer
-
-    public void setDrawer(){
-
-        boolean isLec = localDB.isLec();
-
-        // use the tool bar as action bar because the action bar was removed
-        Toolbar toolbar = findViewById(R.id.toolbarTop);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-
-        if (isLec){
-            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
-        }
-        else {
-            navigationView.inflateMenu(R.menu.drawer_menu);
-        }
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
-        navigationView.addHeaderView(header);
-
-        final DrawerHelper drawerHelper = new DrawerHelper(CalendarActivity.this, toolbar,
-                                                            drawer, navigationView, header);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return drawerHelper.onNavigationItemSelected(menuItem);
-            }
-        });
-    }
-
-
-    // end of drawer
-
-
     void StartAdapter() throws InterruptedException {
         Log("Starting to do the RecyclerView code");
 
@@ -183,9 +145,6 @@ public class CalendarActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(CalendarActivity.this));
         Log("done");
     }
-
-
-
 
     // dates that have due dates have a small red circle under the date, indicating a task is due
     public void highlightDates() throws ParseException {
@@ -220,9 +179,6 @@ public class CalendarActivity extends AppCompatActivity {
         Log("set events");
     }
 
-
-    // helper functions
-
     void getLocalDates() {
 
         Log("getLocalDates");
@@ -252,7 +208,6 @@ public class CalendarActivity extends AppCompatActivity {
             //endregion
         }
     }
-
 
     void getOnlineDates() {
 
@@ -286,21 +241,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    public void setUpStartDate(){
-        calendarDate = getCurrDate();
-
-        arrTaskNames.clear();
-        arrTaskCourses.clear();
-        arrTaskTimes.clear();
-
-        try{
-            StartAdapter();
-        }catch (Exception e){
-            Log(e.toString());
-            Log("Failed to do Adapter ");
-        }
-    }
-
+    //region Setters
     public void setUpDate(){
 
         final TextView tvDate = findViewById(R.id.tvCalendarDate);
@@ -348,7 +289,104 @@ public class CalendarActivity extends AppCompatActivity {
 
     }
 
+    public void setUpStartDate(){
+        calendarDate = getCurrDate();
 
+        arrTaskNames.clear();
+        arrTaskCourses.clear();
+        arrTaskTimes.clear();
+
+        try{
+            StartAdapter();
+        }catch (Exception e){
+            Log(e.toString());
+            Log("Failed to do Adapter ");
+        }
+    }
+
+    public void setIconsToAppearMode(){
+        Button btnArrowCalLeft = findViewById(R.id.btnCalendarLeft);
+        Button btnArrowCalRight = findViewById(R.id.btnCalendarRight);
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+
+        if (isDarkMode(this)){
+            Log("hbhb");
+            btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left_white);
+            btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right_white);
+            toolbar.getContext().setTheme(R.style.ToolbarIconDark);
+        }
+        else{
+            Log("light");
+            btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left);
+            btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
+            toolbar.getContext().setTheme(R.style.ToolbarIconLight);
+        }
+    }
+
+    void scrollOnClick(){
+
+        // set date onCreate
+        Calendar tempCal = Calendar.getInstance();
+        Date currDate = Calendar.getInstance().getTime();
+        tempCal.setTime(currDate);
+        int month = tempCal.get(Calendar.MONTH);
+        int year = tempCal.get(Calendar.YEAR);
+
+        String display = arrMonths[month] + " " + year;
+        tvMonth.setText(display);
+
+        btnScrollRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cCalendarView.scrollRight();
+            }
+        });
+
+
+        btnScrollLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cCalendarView.scrollLeft();
+            }
+        });
+    }
+
+    public void setDrawer(){
+
+        boolean isLec = localDB.isLec();
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(CalendarActivity.this, toolbar,
+                drawer, navigationView, header);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
+    }
+    //endregion
+
+    //region DB Adders
     public void addFromLocalDB(){
 
         Log("addFromLocalDB");
@@ -438,64 +476,9 @@ public class CalendarActivity extends AppCompatActivity {
         }
         Log("successful addFromOnlineDB");
     }
+    //endregion
 
-    void scrollOnClick(){
-
-        // set date onCreate
-        Calendar tempCal = Calendar.getInstance();
-        Date currDate = Calendar.getInstance().getTime();
-        tempCal.setTime(currDate);
-        int month = tempCal.get(Calendar.MONTH);
-        int year = tempCal.get(Calendar.YEAR);
-
-        String display = arrMonths[month] + " " + year;
-        tvMonth.setText(display);
-
-        btnScrollRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cCalendarView.scrollRight();
-            }
-        });
-
-
-        btnScrollLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cCalendarView.scrollLeft();
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed(){
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            drawer.openDrawer(GravityCompat.START);
-        }
-    }
-
-    // end region
-
-    public void setIconsToAppearMode(){
-        Button btnArrowCalLeft = findViewById(R.id.btnCalendarLeft);
-        Button btnArrowCalRight = findViewById(R.id.btnCalendarRight);
-        Toolbar toolbar = findViewById(R.id.toolbarTop);
-
-        if (isDarkMode(this)){
-            Log("hbhb");
-            btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left_white);
-            btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right_white);
-            toolbar.getContext().setTheme(R.style.ToolbarIconDark);
-        }
-        else{
-            Log("light");
-            btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left);
-            btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
-            toolbar.getContext().setTheme(R.style.ToolbarIconLight);
-        }
-    }
+    //region HelperFunctions
 
     public boolean isCourseNull(String checkCourse){
 
@@ -516,6 +499,17 @@ public class CalendarActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    //endregion
+
+    @Override
+    public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            drawer.openDrawer(GravityCompat.START);
+        }
     }
 
 }

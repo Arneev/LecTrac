@@ -34,6 +34,7 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class EditTaskActivity extends AppCompatActivity {
 
+    //region Intialization
     int position;
 
     public static String newTaskName, newDueDate, newDueTime, newCourseCode;
@@ -64,6 +65,7 @@ public class EditTaskActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
 
     String whichActivity;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,6 @@ public class EditTaskActivity extends AppCompatActivity {
         cancelEditTaskClick();
 
     }
-
 
     public boolean saveTask() throws InterruptedException, JSONException, IOException {
 
@@ -310,7 +311,7 @@ public class EditTaskActivity extends AppCompatActivity {
         return true;
     }
 
-
+    //region Getters
     public void getTaskTitle(){
 
         // get the title of the task
@@ -380,6 +381,7 @@ public class EditTaskActivity extends AppCompatActivity {
         newCourseCode = spinCourse.getSelectedItem().toString();
     }
 
+    //endregion
 
     //region HelperFunctions
 
@@ -427,6 +429,17 @@ public class EditTaskActivity extends AppCompatActivity {
         // if "None" is selected, consider this null
     }
 
+    public String removeComa(String str) {
+
+        if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == ',') {
+            str = str.substring(0, str.length() - 1);
+        }
+        return str;
+    }
+
+    //endregion
+
+    //region Clickers & Setters
     public void setCourseSpinnerItems() {
 
         Spinner spinCourse = findViewById(R.id.spinCourses);
@@ -511,18 +524,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
     }
 
-    public String removeComa(String str) {
-
-        if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == ',') {
-            str = str.substring(0, str.length() - 1);
-        }
-        return str;
-    }
-
-    //endregion
-
-
-    //region Clickers
     public void SaveTaskClick(){
         Button btnSaveTask = findViewById(R.id.btnEditTask);
 

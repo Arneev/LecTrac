@@ -22,13 +22,11 @@ import static com.example.lectrac.HelperFunctions.passwordLength;
 import static com.example.lectrac.HelperFunctions.saltAndHash;
 import static com.example.lectrac.HelperFunctions.setNightMode;
 import static com.example.lectrac.HelperFunctions.showNotConnected;
+import static com.example.lectrac.HelperFunctions.Log;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-
-    public static void Log(String error){
-        Log.i("Perso",error);
-    }
+    //region Intialization
 
 
     static ErrorClass ec;
@@ -38,6 +36,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     OnlineDatabaseManager onlineDB;
     static ProgressBar progressBar;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         getInput();
     }
-
 
     public void getInput(){
 
@@ -78,7 +76,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void beginProcess() throws JSONException {
         if (!isOnline(ForgotPasswordActivity.this)){
@@ -105,7 +102,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     //region moveToForgot Password stuff
 
-
     public boolean resetPassword(String userID){
         Log("about to reset pass");
         try {
@@ -130,8 +126,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ec.ShowUserError("Please enter a valid WITS ID");
         return  false;
     }
-
-
 
     boolean checkUserID(String UserID){
 
@@ -185,7 +179,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         return true;
 
     }
-
 
     boolean checkPassword(String Password) throws JSONException {
 

@@ -20,9 +20,12 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    //region Intialization
     static ErrorClass ec;
     static Button createAccButton;
     static ProgressBar progressBar;
+    //endregion
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         exitRegistration();
     }
 
+    //region Clickers
     public void RegisterButtonClick() throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         if (!isOnline(this)){
             ec.ShowUserMessage("You are not connected to the internet",this);
@@ -112,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
     private void exitRegistration(){
 
         ImageView exitRegister = (ImageView) findViewById(R.id.back);
@@ -122,13 +127,11 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
-    //region Helper Function
+    //endregion
 
     @Override
     public void onBackPressed(){
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    //endregion
 }

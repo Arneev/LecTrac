@@ -24,7 +24,6 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class RegisterLoginManager{
 
-
     //region Constants
 
     //endregion
@@ -38,7 +37,6 @@ public class RegisterLoginManager{
     static Context context;
     static ErrorClass ec;
     //endregion
-    
 
     //region Register
     boolean RegisterAttempt(String userID, String firstName, String lastName, String email, String nick, String password, Context ct) throws NoSuchAlgorithmException, InterruptedException, JSONException, IOException {
@@ -161,30 +159,6 @@ public class RegisterLoginManager{
         return Register(userID,firstName,lastName,email,nick,password,context);
     }
 
-    boolean alreadyReg(String userID) {
-
-        try {
-            Log("alreadyReg");
-            JSONArray studentLength = onlineDB.select_student_studentid(userID);
-
-            Log(studentLength.length() + " is student length");
-
-            JSONArray lecturerLength = onlineDB.select_lecturer_userid(userID);
-
-            Log(lecturerLength.length() + " is lecturer length");
-
-            if (studentLength.length() != 0 || lecturerLength.length() != 0) {
-                Log("Returning true for alreadyReg");
-                return true;
-            }
-        }catch(Exception e){
-            Log(e.toString());
-            Log("Returning false for alreadyReg");
-            return false;
-        }
-        return false;
-    }
-
     boolean Register(@NotNull String userID, String firstName, String lastName, String email, String nick, @NotNull String password, final Context context) throws InterruptedException, IOException, JSONException {
         Log("Register");
         Log("About to initialize local DB");
@@ -259,6 +233,31 @@ public class RegisterLoginManager{
 
     }
 
+    //region Register Checkers
+    boolean alreadyReg(String userID) {
+
+        try {
+            Log("alreadyReg");
+            JSONArray studentLength = onlineDB.select_student_studentid(userID);
+
+            Log(studentLength.length() + " is student length");
+
+            JSONArray lecturerLength = onlineDB.select_lecturer_userid(userID);
+
+            Log(lecturerLength.length() + " is lecturer length");
+
+            if (studentLength.length() != 0 || lecturerLength.length() != 0) {
+                Log("Returning true for alreadyReg");
+                return true;
+            }
+        }catch(Exception e){
+            Log(e.toString());
+            Log("Returning false for alreadyReg");
+            return false;
+        }
+        return false;
+    }
+
     boolean correctPassParams(@NotNull String password){
         Log("Correct Pass Params");
         boolean containSpecial = false;
@@ -322,7 +321,6 @@ public class RegisterLoginManager{
         return true;
     }
 
-
     boolean correctUserID(String userID) throws InterruptedException {
         Log("Correct UserID");
         if (userID.length() != 7){
@@ -352,8 +350,6 @@ public class RegisterLoginManager{
         return true;
 
     }
-
-
 
     boolean foundObj(JSONArray arr) throws InterruptedException, IOException, JSONException {
         int size = arr.length();
@@ -480,6 +476,8 @@ public class RegisterLoginManager{
 
     //endregion
 
+    //endregion Register
+
     //region LogIn
     boolean LogInAttempt(String password, String userID, Context ct) throws InterruptedException, NoSuchAlgorithmException, JSONException, IOException {
         context = ct;
@@ -541,6 +539,7 @@ public class RegisterLoginManager{
         return true;
     }
 
+    //region LogIn Checkers
     boolean isLecturer(String userID) throws InterruptedException, IOException, JSONException {
         Log("isLecturer");
         boolean isLecturer;
@@ -694,5 +693,5 @@ public class RegisterLoginManager{
     }
     //endregion
 
-
+    //endregion
 }

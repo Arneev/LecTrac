@@ -30,10 +30,13 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class CourseListActivity extends AppCompatActivity {
 
+    //region Intialization
     DrawerLayout drawer;
 
     static RecyclerView rvCourseItems;
     static ErrorClass ec;
+
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,49 +71,6 @@ public class CourseListActivity extends AppCompatActivity {
         }
         startAdapter();
     }
-
-
-    // drawer
-
-    public void setDrawer(){
-
-        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
-
-        boolean isLec = localDB.isLec();
-
-        // use the tool bar as action bar because the action bar was removed
-        Toolbar toolbar = findViewById(R.id.toolbarTop);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-
-        if (isLec){
-            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
-        }
-        else {
-            navigationView.inflateMenu(R.menu.drawer_menu);
-        }
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
-        navigationView.addHeaderView(header);
-
-        final DrawerHelper drawerHelper = new DrawerHelper(CourseListActivity.this, toolbar,
-                drawer, navigationView, header);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return drawerHelper.onNavigationItemSelected(menuItem);
-            }
-        });
-    }
-
-
-    // end of drawer
-
 
     void startAdapter(){
 
@@ -182,6 +142,42 @@ public class CourseListActivity extends AppCompatActivity {
         rvCourseItems.setAdapter(courseListAdapter);
         rvCourseItems.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    public void setDrawer(){
+
+        LocalDatabaseManager localDB = new LocalDatabaseManager(this);
+
+        boolean isLec = localDB.isLec();
+
+        // use the tool bar as action bar because the action bar was removed
+        Toolbar toolbar = findViewById(R.id.toolbarTop);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+
+        if (isLec){
+            navigationView.inflateMenu(R.menu.drawer_menu_lecturer);
+        }
+        else {
+            navigationView.inflateMenu(R.menu.drawer_menu);
+        }
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, null);
+        navigationView.addHeaderView(header);
+
+        final DrawerHelper drawerHelper = new DrawerHelper(CourseListActivity.this, toolbar,
+                drawer, navigationView, header);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return drawerHelper.onNavigationItemSelected(menuItem);
+            }
+        });
     }
 
     public void setIconsToAppearMode(){

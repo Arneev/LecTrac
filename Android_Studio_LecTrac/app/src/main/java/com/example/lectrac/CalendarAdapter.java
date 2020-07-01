@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyViewHolder>{
 
+    //region Intialization
     Context context;
     ArrayList<String> arrTaskNames = new ArrayList<>();
     ArrayList<String> arrTaskCourses = new ArrayList<>();
@@ -29,6 +30,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
     ArrayList<String> arrTaskIDs = new ArrayList<>();
 
     ErrorClass ec;
+    //endregion
 
     public static OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
 

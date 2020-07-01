@@ -17,10 +17,12 @@ import static com.example.lectrac.HelperFunctions.*;
 
 public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.MyViewHolder>{
 
+    //region Intialization
     Context context;
     static LocalDatabaseManager localDB = null;
 
     ArrayList<CourseDetails> courseDetails;
+    //endregion
 
     public CourseListAdapter(Context ct, ArrayList<CourseDetails> courseDetails){
         context = ct;

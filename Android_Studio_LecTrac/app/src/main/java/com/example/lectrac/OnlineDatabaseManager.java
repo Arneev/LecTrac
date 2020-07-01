@@ -69,6 +69,7 @@ final public class OnlineDatabaseManager {
     static JSONArray arr = null;
     //endregion
 
+    //region Queries
     JSONArray Query(String url, final String param, final String paramvalue) throws InterruptedException {
         arr = null;
         url = baseUrl + url;
@@ -374,8 +375,9 @@ final public class OnlineDatabaseManager {
         return arr;
     }
 
-    //region Queries
+    //endregion Queries
 
+    //region Online PHP Functions
 
     JSONArray insert_lecturer_lecturerarr(String[] vals) throws InterruptedException {
         String[] params = new String[6];
@@ -520,6 +522,9 @@ final public class OnlineDatabaseManager {
 
     }
 
+    //endregion
+
+    //region PHP Helper Functions
     JSONObject getJSONObj(JSONArray arr) throws JSONException {
         if (arr != null){
             return arr.getJSONObject(0);
@@ -546,12 +551,9 @@ final public class OnlineDatabaseManager {
         return !studentEmpty;
     }
 
-
-
-
     //endregion
 
-    //region Old Funcs, DONT DELETE
+    //region Old Funcs OnlineDB System , Don't Delete
     /*void Update(String tableName,String setting, String condition) {
         try{
             Log("UPDATE " + tableName + " SET " + setting + " WHERE " + condition);
@@ -639,6 +641,5 @@ final public class OnlineDatabaseManager {
 
     */
     //endregion
-
 
 }
