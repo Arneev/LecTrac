@@ -59,6 +59,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
+        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+        final boolean isLec = localDB.isLec();
+
+        final String taskID = arrTaskIDs.get(position);
+
         if (arrTaskNames.isEmpty()){
 
             Log("No Tasks");
@@ -89,41 +94,71 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.MyView
             @Override
             public void onClick(View v) {
 
-                PopupMenu popup = new PopupMenu(context, holder.ivCalendarOptions);
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
+                if (!isLec && taskID.charAt(0) == 'L') {
 
-                        switch (menuItem.getItemId()) { // check for item and act accordingly
-                            case R.id.mtEdit:
 
-                                Intent intent = new Intent(context, EditTaskActivity.class);
-                                intent.putExtra("position", position);
-                                intent.putExtra("arrTaskNames", arrTaskNames);
-                                intent.putExtra("arrTaskCourses", arrTaskCourses);
-                                intent.putExtra("arrTaskIDs", arrTaskIDs);
-                                intent.putExtra("Activity", "Calendar");
-                                context.startActivity(intent);
+                    PopupMenu popup = new PopupMenu(context, holder.ivCalendarOptions);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
 
-                                break;
+                            switch (menuItem.getItemId()) { // check for item and act accordingly
+                                case R.id.mtDelete:
 
-                            case R.id.mtDelete:
+                                    try {
+                                        deleteTask(position);
+                                    } catch (InterruptedException e) {
+                                        Log(e.toString());
+                                    }
 
-                                try {
-                                    deleteTask(position);
-                                } catch (InterruptedException e) {
-                                    Log(e.toString());
-                                }
-
-                                break;
+                                    break;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
 
 
-                popup.inflate(R.menu.calendar_menu);
-                popup.show();
+                    popup.inflate(R.menu.task_menu_no_edit);
+                    popup.show();
+                }
+                else {
+
+                    PopupMenu popup = new PopupMenu(context, holder.ivCalendarOptions);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+
+                            switch (menuItem.getItemId()) { // check for item and act accordingly
+                                case R.id.mtEdit:
+
+                                    Intent intent = new Intent(context, EditTaskActivity.class);
+                                    intent.putExtra("position", position);
+                                    intent.putExtra("arrTaskNames", arrTaskNames);
+                                    intent.putExtra("arrTaskCourses", arrTaskCourses);
+                                    intent.putExtra("arrTaskIDs", arrTaskIDs);
+                                    intent.putExtra("Activity", "Calendar");
+                                    context.startActivity(intent);
+
+                                    break;
+
+                                case R.id.mtDelete:
+
+                                    try {
+                                        deleteTask(position);
+                                    } catch (InterruptedException e) {
+                                        Log(e.toString());
+                                    }
+
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+
+
+                    popup.inflate(R.menu.calendar_menu);
+                    popup.show();
+                }
             }
         });
     }
