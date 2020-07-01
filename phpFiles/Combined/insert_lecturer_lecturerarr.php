@@ -24,6 +24,17 @@ if ($stmt->execute()){
 	$output = array();
 	$output[] = "Successful";
 	echo json_encode($output);
+
+	//TAKE FROM WITS DB AND INTO LECTRAC DB
+
+	$syncSql = "INSERT INTO REGISTERED SELECT * FROM WITS_REGISTERED WHERE WITS_REGISTERED.Lecturer_ID = ?";
+	$syncStmt = $link->prepare($syncSql);
+	$syncStmt->bind_param("s",$userID);
+	$stmt->execute();
+
+
+	//TAKE FROM WITS DB AND INTO LECTRAC DB - END
+
 }else{
 	$output = array();
 	$output[] = "Unsuccessful";

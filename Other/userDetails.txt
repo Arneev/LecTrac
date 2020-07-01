@@ -1,0 +1,54 @@
+REGISTER OPTIONS
+=================
+
+LECTURER
+--------
+
+ID: 9092392
+Password: Hello123$
+Who: Farhaan
+
+STUDENT
+-------
+
+ID: 2180393
+Password: Jupiter#3690
+Who: Arneev
+
+=============
+LOGIN OPTION
+=============
+
+LECTURER
+--------
+
+ID: 1234567
+Password: Joker123$
+Who: Pravesh
+
+ID: 7654321
+Password: Saturn789#
+Who: Hima
+
+ID: 3321930
+Password: Elijah123456&
+Who: EvanElijah
+
+ID: 9440671
+Password: Gwenny123$
+Who: Gwen
+
+STUDENT
+-------
+
+ID: 2161334
+Password: EasyPeasy123!
+Who: Kiara
+
+ID : 1024651
+Password: AlanKey123$
+Who: Alan
+
+ID: 1059443
+Password: BobbleHead1#
+Who: Bobby
