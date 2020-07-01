@@ -249,15 +249,94 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         }
     }
 
+//    public void deleteTask(int position) throws InterruptedException {
+//
+//        Log("About to delete task");
+//
+//        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
+//
+//        String tableName = tblUserTask;
+//        String Task_ID = arrTaskIDs.get(position);
+//        String condition = "Task_ID = " + Task_ID.substring(1);
+//
+//
+//        // is user a student or lecturer?
+//        boolean isLec = localDB.isLec();
+//
+//
+//        // delete task from local database
+//        // if user is a lecturer then the task must also be deleted from the online database
+//
+//        if (isLec){
+//            if (Task_ID.charAt(0) == 'L'){
+//
+//                if (!isOnline(context)){
+//                    ec.ShowUserError("Connect to the internet in order to save changes",context);
+//                    return;
+//                }
+//
+//                tableName = tblLocalLecTask;
+//
+//                Log("isLec and if sCourseCode is NOT NULL about to delete from localDB");
+//                localDB.doDelete(tableName, condition);
+//
+//                Log("isLec and about to delete from onlineDB");
+//                onlineDB.delete_task_taskid(Task_ID.substring(1));
+//            }
+//            else{
+//                Log("isLec and if sCourseCode IS NULL about to delete from localDB");
+//                localDB.doDelete(tableName, condition);
+//            }
+//
+//        }
+//        else{
+//
+//            if (Task_ID.charAt(0) == 'L'){
+//
+//                tableName = tblLocalLecTask;
+//                String setting = "isDone = 1";
+//
+//                Log("isStudent, set isDone from Lecturer localDB");
+//                localDB.doUpdate(tableName, setting, condition);
+//            }
+//            else {
+//
+//                Log("isStudent, delete from localDB");
+//                localDB.doDelete(tableName, condition);
+//            }
+//
+//        }
+//
+//        // delete from arrays
+//        arrTaskIDs.remove(position);
+//        arrTaskNames.remove(position);
+//        arrTaskCourses.remove(position);
+//
+//        // adapter
+//        Log("Update Adapter");
+//        this.notifyItemRemoved(position);
+//        this.notifyDataSetChanged();
+//
+//        ec.ShowUserMessage("Deleted Task");
+//    }
+
     public void deleteTask(int position) throws InterruptedException {
 
         Log("About to delete task");
 
         LocalDatabaseManager localDB = new LocalDatabaseManager(context);
 
-        String tableName = tblUserTask;
         String Task_ID = arrTaskIDs.get(position);
         String condition = "Task_ID = " + Task_ID.substring(1);
+        boolean isLecTask = false;
+
+        if (Task_ID.charAt(0) == 'L' || Task_ID.charAt(0) == 'l'){
+            isLecTask = true;
+        }
+
+        if (Task_ID.charAt(0) == 'U' || Task_ID.charAt(0) == 'u'){
+            isLecTask = false;
+        }
 
 
         // is user a student or lecturer?
@@ -268,41 +347,43 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         // if user is a lecturer then the task must also be deleted from the online database
 
         if (isLec){
-            if (Task_ID.charAt(0) == 'L'){
+            if (isLecTask){
 
                 if (!isOnline(context)){
                     ec.ShowUserError("Connect to the internet in order to save changes",context);
                     return;
                 }
 
-                tableName = tblLocalLecTask;
+                try {
+                    onlineDB.delete_task_taskid(Task_ID.substring(1));
+                }catch (Exception e){
+                    ec.ShowUserError("Failed to delete task");
+                    return;
+                }
 
                 Log("isLec and if sCourseCode is NOT NULL about to delete from localDB");
-                localDB.doDelete(tableName, condition);
+                localDB.doDelete(tblLocalLecTask, condition);
 
-                Log("isLec and about to delete from onlineDB");
-                onlineDB.delete_task_taskid(Task_ID.substring(1));
+
             }
             else{
                 Log("isLec and if sCourseCode IS NULL about to delete from localDB");
-                localDB.doDelete(tableName, condition);
+                localDB.doDelete(tblUserTask, condition);
             }
 
         }
         else{
+            if (isLecTask){
 
-            if (Task_ID.charAt(0) == 'L'){
-
-                tableName = tblLocalLecTask;
                 String setting = "isDone = 1";
 
                 Log("isStudent, set isDone from Lecturer localDB");
-                localDB.doUpdate(tableName, setting, condition);
+                localDB.doUpdate(tblLocalLecTask, setting, condition);
             }
             else {
 
                 Log("isStudent, delete from localDB");
-                localDB.doDelete(tableName, condition);
+                localDB.doDelete(tblUserTask, condition);
             }
 
         }

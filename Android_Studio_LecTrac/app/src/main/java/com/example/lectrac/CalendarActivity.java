@@ -119,6 +119,7 @@ public class CalendarActivity extends AppCompatActivity {
         setIconsToAppearMode();
         calendarDate = getCurrDate();
         setUpStartDate();
+        calendarAdapter.notifyDataSetChanged();
         recyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -301,11 +302,10 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     public void setUpStartDate(){
-        calendarDate = getCurrDate();
 
-        arrTaskNames.clear();
-        arrTaskCourses.clear();
-        arrTaskTimes.clear();
+        clearArr();
+
+        calendarDate = getCurrDate();
 
         try{
             StartAdapter();
@@ -535,4 +535,12 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
+    void clearArr(){
+        arrTaskNames.clear();
+        arrTaskCourses.clear();
+        arrTaskTimes.clear();
+        arrTaskIDs.clear();
+        arrCalendarDates.clear();
+
+    }
 }

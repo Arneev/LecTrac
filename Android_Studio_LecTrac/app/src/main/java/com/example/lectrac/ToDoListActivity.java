@@ -107,6 +107,8 @@ public class ToDoListActivity extends AppCompatActivity {
 
         moveToAddTask();
 
+        toDoAdapter.notifyDataSetChanged();
+
     }
 
     void StartAdapter() throws InterruptedException {

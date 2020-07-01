@@ -119,7 +119,15 @@ public class EditTaskActivity extends AppCompatActivity {
 
         // set parameters for doUpdate
         String setting = "";
-        String condition = "Task_ID = " + unquote(taskID.substring(1));
+        String condition;
+
+        try {
+            condition = "Task_ID = " + unquote(taskID.substring(1));
+        }catch (Exception e){
+            ec.ShowUserError("Problem getting this task, please try again");
+            return false;
+        }
+
 
 
         // is user a student or lecturer?
@@ -346,7 +354,13 @@ public class EditTaskActivity extends AppCompatActivity {
 
         // get the title of the task
         EditText edtTitleTask = findViewById(R.id.etTaskName);
-        newTaskName = edtTitleTask.getText().toString();
+
+        try{
+            newTaskName = edtTitleTask.getText().toString();
+        }catch (Exception e){
+            newTaskName = "Temporary Task Name";
+        }
+
 
     }
 
@@ -408,7 +422,23 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public void getCourse(){
         final Spinner spinCourse = findViewById(R.id.spinCourses);
-        newCourseCode = spinCourse.getSelectedItem().toString();
+
+
+        try{
+            newCourseCode = spinCourse.getSelectedItem().toString();
+        }catch (Exception e){
+            ec.ShowUserError("Having problems with the chosen course, assigning temporary course");
+
+            courses = localDB.getCourses(localDB);
+            int courseSize = courses.length;
+
+            List<String> list = new ArrayList<String>();
+
+            // get course to display
+            oldCourseCode = arrOnlyTaskCourses.get(position);
+
+            newCourseCode = courses[position];
+        }
     }
 
     //endregion
@@ -533,7 +563,14 @@ public class EditTaskActivity extends AppCompatActivity {
         Log("isLec about to return " + Boolean.toString(isLec));
 
         // set table name and get task id
-        taskID = arrOnlyTaskIDs.get(position);
+        try {
+            taskID = arrOnlyTaskIDs.get(position);
+        }catch (Exception e){
+            ec.ShowUserError("Problem retrieving this task, please try again");
+            taskID = "-1";
+            return;
+        }
+
 
         if (taskID.charAt(0) == 'U'){
 
