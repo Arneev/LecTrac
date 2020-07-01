@@ -15,18 +15,18 @@
     <color name="subText">#575757</color>
     <color name="buttonColor">#535353</color>
     <color name="textViewColor">#126C6C6C</color>
-    <color name="spinnerColor">#126C6C6C</color>
+    <color name="spinnerColor">@color/black</color>
     <color name="generalPanel">#0AFFFFFF</color>
     <color name="headingPanel">#8B3D579C</color>
     <color name="headingTextColor">@color/OffWhite</color>
     <color name="subHeading">@color/MistyRose</color>
     <color name="subSubHeading">@color/LightSteelBlue</color>
-    <color name ="spinnerBackground">#57DDDDDD</color>
+    <color name ="spinnerBackground">@color/white</color>
     <color name = "spinnerStroke">#3A3A3A</color>
     <color name="iconColor">#FFFFFF</color>
     <color name="miniElipseButtonColor">#FFFFFF</color>
     <color name="elipseOptionColor">#818181</color>
-    <color name="actionBar">#373737</color>
+    <color name="actionBar">@color/transparent</color>
     <color name = "standardContrast">#2D313D</color>
     <color name = "antiContrast">#FFFFFF</color>
     <color name = "itemBackground">#7C7C7C</color>
@@ -36,7 +36,7 @@
     <color name = "calendarTopColor">#4F61AF</color>
     <color name = "calendarBackground">#3E3D3D</color>
     <color name = "calendarText">#FFFFFF</color>
-    <color name="toolbarIcon">#FFFFFFFF</color>
+    <color name="toolbarIcon">@color/white</color>
 
     //region You don't need to add in here BUT if you are, put it in here
     //endregion

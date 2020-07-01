@@ -30,14 +30,10 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarTop"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
+                android:layout_height="40dp"
                 android:background="@color/actionBar"
-                android:paddingBottom="0dp"
-                app:popupTheme="@style/Theme.AppCompat.NoActionBar"
+                android:paddingBottom="5dp"
+                app:title=""
                 app:titleTextColor="@color/transparent" />
 
             <TextView
@@ -57,7 +53,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/headingTextColor"
                 android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="0dp" />
 
             <com.github.sundeepk.compactcalendarview.CompactCalendarView
                 android:id="@+id/cvCalendar"
@@ -101,7 +99,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/mainText"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
 
             <Button
                 android:id="@+id/btnCalendarLeft"
@@ -113,7 +112,8 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/ic_arrow_left"
-                android:tint="@color/miniElipseButtonColor" />
+                android:tint="@color/miniElipseButtonColor"
+                android:layout_alignLeft="@+id/toolbar" />
 
             <Button
                 android:id="@+id/btnCalendarRight"
@@ -126,7 +126,9 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="6dp"
                 android:background="@drawable/ic_arrow_right"
-                android:tint="@color/miniElipseButtonColor" />
+                android:tint="@color/miniElipseButtonColor"
+                android:layout_alignRight="@+id/toolbar"
+                android:layout_marginRight="6dp" />
 
             <TextView
                 android:id="@+id/tvCalendarDate"
@@ -143,7 +145,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="1dp"
+                android:gravity="center_horizontal" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCalendarEvents"
@@ -154,7 +159,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="0dp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:layout_marginRight="0dp" />
 
 
         </RelativeLayout>

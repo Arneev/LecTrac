@@ -150,16 +150,14 @@
         android:layout_alignStart="@+id/tvAddMessageClass"
         android:layout_alignLeft="@+id/tvAddMessageClass"
         android:layout_alignParentEnd="true"
-        android:textColorHint="@color/hintColor"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/mainText"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="@drawable/general_spinner" />
+        android:textColor="@color/mainText"
+        android:textColorHint="@color/hintColor"
+        android:background="@drawable/general_spinner"/>
 
 
     <TextView

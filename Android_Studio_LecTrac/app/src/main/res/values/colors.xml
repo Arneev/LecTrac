@@ -38,13 +38,13 @@
     <color name="buttonColor">@color/Plum</color>
     <color name="buttonTextColor">#000000</color>
     <color name="textViewColor">#126C6C6C</color>
-    <color name="spinnerColor">@color/white</color>
+    <color name="spinnerColor">@color/black</color>
     <color name="generalPanel">@color/Plum</color>
     <color name="headingPanel">#2DFFFFFF</color>
     <color name="headingTextColor">@color/white</color>
     <color name="subHeading">@color/black</color>
     <color name="subSubHeading">@color/white</color>
-    <color name ="spinnerBackground">#E5E8FF</color>
+    <color name ="spinnerBackground">@color/white</color>
     <color name = "spinnerStroke">#000C5D</color>
     <color name="iconColor">#000000</color>
     <color name="miniElipseButtonColor">#000000</color>

@@ -310,13 +310,11 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarTop);
 
         if (isDarkMode(this)){
-            Log("hbhb");
             btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left_white);
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right_white);
             toolbar.getContext().setTheme(R.style.ToolbarIconDark);
         }
         else{
-            Log("light");
             btnArrowCalLeft.setBackgroundResource(R.drawable.ic_arrow_left);
             btnArrowCalRight.setBackgroundResource(R.drawable.ic_arrow_right);
             toolbar.getContext().setTheme(R.style.ToolbarIconLight);
