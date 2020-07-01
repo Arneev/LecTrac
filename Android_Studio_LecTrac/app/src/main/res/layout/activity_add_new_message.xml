@@ -85,11 +85,11 @@
         android:background="@drawable/general_textview"
         android:ems="10"
         android:singleLine="false"
+        android:gravity="top|left"
         android:textColor="@color/mainText"
         android:textColorHint="@color/hintColor"
         android:textSize="20sp"
-        android:textStyle="normal"
-        android:verticalScrollbarPosition="defaultPosition" />
+        android:textStyle="normal"/>
 
     <TextView
         android:id="@+id/tvAddMessageCourseCode"

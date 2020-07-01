@@ -215,12 +215,12 @@ public class RegisterLoginManager{
                 onlineDB.insert_student_studentarr(onlineValues);
             }
 
-            try{
-                localDB.doInsert(tblUser,localValues);
-            }catch (Exception e){
-                Log(e.toString());
-                Log("Inserting into local DB failed");
-            }
+//            try{
+//                localDB.doInsert(tblUser,localValues);
+//            }catch (Exception e){
+//                Log(e.toString());
+//                Log("Inserting into local DB failed");
+//            }
 
 
             return true;
@@ -384,8 +384,15 @@ public class RegisterLoginManager{
             ec.ShowUserError("email address cannot have a space",context);
             return false;
         }
+        boolean isCorrect;
 
-        boolean isCorrect = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        try{
+            isCorrect = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }catch (Exception e){
+            ec.ShowUserError("Problem validating your email, please try again");
+            return false;
+        }
+
 
         if (isCorrect){
             return true;

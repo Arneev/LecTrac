@@ -119,7 +119,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
         // set parameters for doUpdate
         String setting = "";
-        String condition = "Task_ID=" + taskID.substring(1);
+        String condition = "Task_ID = " + unquote(taskID.substring(1));
 
 
         // is user a student or lecturer?
@@ -261,6 +261,13 @@ public class EditTaskActivity extends AppCompatActivity {
                         return false;
                     }
 
+                    if (mustPost){
+                        ec.ShowUserError("You cannot post a message without a course code");
+                        shouldChangeActs = false;
+                        return false;
+                    }
+
+
                     // Local DB
                     tableName = tblLocalLecTask;
                     Log("Update in " + tableName);
@@ -292,11 +299,6 @@ public class EditTaskActivity extends AppCompatActivity {
                     //end of OnlineDB
                 }
                 else {
-                    if (mustPost){
-                        ec.ShowUserError("You cannot post a message without a course code");
-                        shouldChangeActs = false;
-                        return false;
-                    }
                     Log("Update in " + tableName);
                     localDB.doUpdate(tableName, setting, condition);
                 }

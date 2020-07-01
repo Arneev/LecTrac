@@ -159,12 +159,18 @@ public class CalendarActivity extends AppCompatActivity {
         long epoch;
         Date tempDate;
 
+        if (arrCalendarDates == null){
+            return;
+        }
+
         if (arrCalendarDates.isEmpty()){
             Log("No dates to highlight");
             return;
         }
 
-        for (int i = 0; i < arrCalendarDates.size(); i++) {
+        int size = arrCalendarDates.size();
+
+        for (int i = 0; i < size; i++) {
 
             //region had this commented out
             tempDate = format.parse(arrCalendarDates.get(i));
@@ -186,7 +192,12 @@ public class CalendarActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK");
 
         if (cursor == null) {return;}
-        cursor.moveToFirst();
+
+        if (!cursor.moveToFirst()){
+            return;
+        }
+
+
         int size = cursor.getCount();
         if (size == 0){
             Log("No local tasks");
@@ -218,7 +229,11 @@ public class CalendarActivity extends AppCompatActivity {
         if (cursor == null){
             return;
         }
-        cursor.moveToFirst();
+
+        if (!cursor.moveToFirst()){
+            return;
+        }
+
 
         int size = cursor.getCount();
         if (size == 0){
@@ -393,7 +408,12 @@ public class CalendarActivity extends AppCompatActivity {
         Cursor cursor = localDB.doQuery("SELECT * FROM USER_TASK WHERE Task_Due_Date = " + quote(calendarDate));
 
         if (cursor == null) {return;}
-        cursor.moveToFirst();
+
+        if (!cursor.moveToFirst()){
+            return;
+        }
+
+
         int size = cursor.getCount();
         if (size == 0){
             Log("No local tasks");
@@ -443,7 +463,11 @@ public class CalendarActivity extends AppCompatActivity {
         Log("SELECT * FROM LECTURER_TASK WHERE Task_Due_Date = " + quote(calendarDate));
 
         if (cursor1 == null) {return;}
-        cursor1.moveToFirst();
+
+        if (!cursor1.moveToFirst()){
+            return;
+        }
+
         int size = cursor1.getCount();
         if (size == 0){
             Log("No online tasks");

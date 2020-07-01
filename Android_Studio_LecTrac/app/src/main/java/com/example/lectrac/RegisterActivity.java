@@ -68,32 +68,32 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isSuccessful = registerManager.RegisterAttempt(userID,firstName,surname,email,nickname,password,this);
         if (isSuccessful){
             Log("REGISTER IN IS SUCCESSFUL <3 :P");
-            boolean logInSuccess = registerManager.LogInAttempt(password,userID,this);
-
-            if (logInSuccess){
-                Log("Log in success");
-
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //region Try Syncing
-                        try {
-                            Syncer syncClass = new Syncer(RegisterActivity.this);
-                        } catch (Exception e){
-                            ec.ShowUserMessage(showCheckInternetConnection,RegisterActivity.this);
-                        }
-                        //endregion
-                    }
-                });
-
-                t.start();
-                t.join();
+//            boolean logInSuccess = registerManager.LogInAttempt(password,userID,this);
+//
+//            if (logInSuccess){
+//                Log("Log in success");
+//
+//                Thread t = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        //region Try Syncing
+//                        try {
+//                            Syncer syncClass = new Syncer(RegisterActivity.this);
+//                        } catch (Exception e){
+//                            ec.ShowUserMessage(showCheckInternetConnection,RegisterActivity.this);
+//                        }
+//                        //endregion
+//                    }
+//                });
+//
+//                t.start();
+//                t.join();
 
                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-            }
-            else{
-                Log("Failed to login, log in was NOT successful");
-            }
+//            }
+//            else{
+//                Log("Failed to login, log in was NOT successful");
+//            }
         }
         else{
             Log("REGISTER IN IS NOT SUCCESSFUL :(");

@@ -83,6 +83,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             return;
         }
 
+        try{
+            if (!(onlineDB.isInStudent(sUserID) || onlineDB.isLec(sUserID))){
+                ec.ShowUserError("Please register");
+                return;
+            }
+        }catch (Exception e){
+            ec.ShowUserError(showNotConnected);
+            return;
+        }
+
+
         if (checkUserID(sUserID)){
 
             if (checkPassword(sPassword)){

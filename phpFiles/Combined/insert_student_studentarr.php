@@ -31,8 +31,8 @@ if ($stmt->execute()){
 	$syncSql = "INSERT INTO ENROLLED SELECT * FROM WITS_ENROLLED WHERE WITS_ENROLLED.Student_ID = ?";
 	$syncStmt = $link->prepare($syncSql);
 	$syncStmt->bind_param("s",$userID);
-	$stmt->execute();
-	
+	$syncStmt->execute();
+
 	//TAKE FROM WITS DB AND INTO LECTRAC DB - END
 
 }else{

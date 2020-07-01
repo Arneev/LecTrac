@@ -89,6 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void Save() throws InterruptedException {
 
+        boolean savePass = false;
         Boolean isOnline = isOnline(context);
 
         if (!isOnline){
@@ -102,28 +103,39 @@ public class SettingsActivity extends AppCompatActivity {
         edtOldPass = findViewById(R.id.edtOldPassSettings);
 
         String nickname = edtNickname.getText().toString();
-        String password = edtNewPass.getText().toString();
-        String confirmPass = edtConfirmPass.getText().toString();
-        String oldPass = edtOldPass.getText().toString();
+
+        String password = edtNewPass.getText().toString().trim();
+        String confirmPass = edtConfirmPass.getText().toString().trim();
+        String oldPass = edtOldPass.getText().toString().trim();
+
+        if (password.isEmpty() && confirmPass.isEmpty() && oldPass.isEmpty()){
+            savePass = false;
+        }
+        else {
+            savePass = true;
+        }
+
 
         String userID = localDB.getUserID(localDB);
 
-        try {
-            if (!checkPassword(oldPass,userID)){
-                ec.ShowUserError("Please make sure your old password is correct");
+        if (savePass){
+            try {
+                if (!checkPassword(oldPass,userID)){
+                    ec.ShowUserError("Please make sure your old password is correct");
+                    return;
+                }
+            } catch (Exception e){
+                ec.ShowUserError(showCheckInternetConnection);
                 return;
             }
-        } catch (Exception e){
-            ec.ShowUserError(showCheckInternetConnection);
-            return;
-        }
 
-        if (!correctPassParams(password)){
-            return;
-        }
+            if (!correctPassParams(password)){
+                return;
+            }
 
-        if (!confirmPass.equals(password)){
-            ec.ShowUserError("Please make sure your confirm new password is the same as your new password");
+            if (!confirmPass.equals(password)){
+                ec.ShowUserError("Please make sure your confirm new password is the same as your new password");
+            }
         }
 
         Log("nickname with quote(nickname) is " + quote(nickname));
@@ -140,11 +152,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         Boolean isLec = localDB.isLec();
 
-        try{
-            password = CopyOnly(saltAndHash(password),passwordLength);
-        }catch (Exception e){
-            ec.ShowUserError("Please try again");
-            return;
+        if (savePass){
+            try{
+                password = CopyOnly(saltAndHash(password),passwordLength);
+            }catch (Exception e){
+                ec.ShowUserError("Please try again");
+                return;
+            }
         }
 
         OnlineDatabaseManager onlineDB = new OnlineDatabaseManager();
@@ -161,22 +175,22 @@ public class SettingsActivity extends AppCompatActivity {
                 iLec = 0;
             }
 
-            String[] vals = new String[4];
-            vals[0] = userID;
-            vals[1] = password;
-            vals[2] = CopyOnly(saltAndHash(oldPass),passwordLength);
-            vals[3] = Integer.toString(iLec);
+            if (savePass){
+                String[] vals = new String[4];
+                vals[0] = userID;
+                vals[1] = password;
+                vals[2] = CopyOnly(saltAndHash(oldPass),passwordLength);
+                vals[3] = Integer.toString(iLec);
 
-            if (!onlineDB.update_password_userid_newpass_oldpass(vals)){
-                ec.ShowUserError("Failed to update password");
-                return;
+                if (!onlineDB.update_password_userid_newpass_oldpass(vals)){
+                    ec.ShowUserError("Failed to update password");
+                    return;
+                }
             }
 
         }catch (Exception e){
             ec.ShowUserError(showCheckInternetConnection);
         }
-
-
 
 
         ec.ShowUserMessage("Finished Save");

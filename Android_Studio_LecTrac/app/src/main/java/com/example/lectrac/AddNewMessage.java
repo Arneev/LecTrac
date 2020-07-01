@@ -87,6 +87,18 @@ public class AddNewMessage extends AppCompatActivity {
             return;
         }
 
+        if (content.isEmpty()){
+            ec.ShowUserError("Please enter a body of text",this);
+        }
+
+        if (course.isEmpty()){
+            ec.ShowUserError("Please choose a course",this);
+        }
+
+        if (classific.isEmpty()){
+            ec.ShowUserError("Please choose a classification",this);
+        }
+
         String[] cols = new String[7];
         cols[0] = "Message_Name";
         cols[1] = "Message_Classification";

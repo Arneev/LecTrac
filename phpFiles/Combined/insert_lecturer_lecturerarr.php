@@ -30,7 +30,7 @@ if ($stmt->execute()){
 	$syncSql = "INSERT INTO REGISTERED SELECT * FROM WITS_REGISTERED WHERE WITS_REGISTERED.Lecturer_ID = ?";
 	$syncStmt = $link->prepare($syncSql);
 	$syncStmt->bind_param("s",$userID);
-	$stmt->execute();
+	$syncStmt->execute();
 
 
 	//TAKE FROM WITS DB AND INTO LECTRAC DB - END

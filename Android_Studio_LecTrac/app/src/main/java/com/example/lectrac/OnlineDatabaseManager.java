@@ -535,7 +535,7 @@ final public class OnlineDatabaseManager {
 
     public boolean isLec(String userID) throws InterruptedException, JSONException, IOException {
         boolean isLec = isEmpty(select_lecturer_userid(userID));
-        return  !isLec;
+        return  isLec;
     }
 
     boolean isEmpty(JSONArray arr) throws InterruptedException, IOException, JSONException {
@@ -548,7 +548,7 @@ final public class OnlineDatabaseManager {
 
     public boolean isInStudent(String userID) throws InterruptedException, JSONException, IOException {
         boolean studentEmpty = isEmpty(select_student_studentid(userID));
-        return !studentEmpty;
+        return studentEmpty;
     }
 
     //endregion
