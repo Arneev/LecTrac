@@ -245,6 +245,10 @@ public class EditTaskActivity extends AppCompatActivity {
 
         setting = removeComa(setting);
 
+        if (isDateNull(completeUnquote(newDueDate,3)) && isTimeNull(completeUnquote(newDueTime,3))){
+            ec.ShowUserError("You cannot have a time without a date");
+            return false;
+        }
 
         // update in local DB and if isLec update in online DB
         tableName = tblUserTask;
