@@ -250,41 +250,25 @@ public class EditTaskActivity extends AppCompatActivity {
         tableName = tblUserTask;
 
         if (blnDoUpdate){
-            if (isLecTask){
-                tableName = tblLocalLecTask;
 
-                //Insert into local db and online db
-            }
+            //Is Lec
             if (isLec){
-                if (isCourseNull()){
-                    tableName = tblLocalLecTask;
+                //isLec and isLecTask
+                if (isLecTask){
+
                     if (!isOnline(this)){
                         ec.ShowUserMessage("You are not connected to the internet",this);
                         shouldChangeActs = false;
                         return false;
                     }
 
-                    if (isLecTask){
-                        ec.ShowUserError("You cannot post a message without a course code");
-                        shouldChangeActs = false;
+                    if (isCourseNull()){
+                        ec.ShowUserError("You cannot post a course without a course code");
                         return false;
                     }
 
-
-                    // Local DB
-                    tableName = tblLocalLecTask;
-                    Log("Update in " + tableName);
-                    LogCal(setting);
-                    LogCal(condition);
-                    localDB.doUpdate(tableName, setting, condition);
-
-                    // Online DB
-                    Log("Update in online DB");
-
-
-                    if (isLecTask) {
-                        //onlineDB.Update(tableName, setting, condition);
-                        Log("GONNA UPDATE ONLINEEEEEEE");
+                    try{//onlineDB
+                        Log("About to update online");
 
                         if (updateCourseCode) {
                             onlineDB.update_task_coursecode_taskid(unquote(newCourseCode), taskID);
@@ -301,23 +285,47 @@ public class EditTaskActivity extends AppCompatActivity {
                         if (updateDateInOnline) {
                             onlineDB.update_task_duedate_taskid(unquote(newDueDate), taskID);
                         }
-                    }
-                    //end of OnlineDB
-                }
-                else {
+
+                    }catch (Exception e){
+                        ec.ShowUserError(showNotConnected);
+                        Log("Failed to update online task of lecturers");
+                        return false;
+                    } // if cannot update online don't allow to local update
+
+                    //localDB
+                    tableName = tblLocalLecTask;
                     Log("Update in " + tableName);
-                    LogCal(setting);
-                    LogCal(condition);
                     localDB.doUpdate(tableName, setting, condition);
+                    //Updated in localLecTas
+
+
                 }
 
+                //isLec but not updating LecTask
+                else{
+                    //localDB
+                    tableName = tblUserTask;
+                    Log("Update in " + tableName);
+                    localDB.doUpdate(tableName, setting, condition);
+                    //Updated in localLecTas
+                }
             }
+            //So is student
             else {
-                Log("Update in " + tableName);
-                LogCal(setting);
-                LogCal(condition);
-                localDB.doUpdate(tableName, setting, condition);
+                //Student cannot edit lecturers task
+                if (isLecTask){
+                    ec.ShowUserError("You cannot edit a lecturers task, sorry :(");
+                }
+                // So is students local task
+                else{
+                    //localDB
+                    tableName = tblUserTask;
+                    Log("Update in " + tableName);
+                    localDB.doUpdate(tableName, setting, condition);
+                    //Updated in localLecTas
+                }
             }
+
         }
 
         return true;
