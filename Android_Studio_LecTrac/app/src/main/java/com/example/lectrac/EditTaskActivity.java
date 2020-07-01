@@ -275,6 +275,9 @@ public class EditTaskActivity extends AppCompatActivity {
                         Log("About to update online");
 
                         taskID = filterTaskID(taskID);
+                        if (taskID.equals("-1")){
+                            return false;
+                        }
 
                         if (updateCourseCode) {
                             onlineDB.update_task_coursecode_taskid(unquote(newCourseCode), taskID);
@@ -466,8 +469,8 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public String filterTaskID(String taskID){
         if (taskID == null){
-            Log("returning null");
-            return "0";
+            ec.ShowUserError("Problem with the Task ID");
+            return "-1";
         }
 
         Character c = taskID.charAt(0);
