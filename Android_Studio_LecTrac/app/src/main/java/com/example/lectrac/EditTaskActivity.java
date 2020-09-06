@@ -254,15 +254,23 @@ public class EditTaskActivity extends AppCompatActivity {
 
         setting = removeComa(setting);
 
-        if (isDateNull(completeUnquote(newDueDate,3)) && !isTimeNull(completeUnquote(newDueTime,3))){
-            ec.ShowUserError("You cannot have a time without a date");
-            return false;
+
+
+        if (isDateNull(oldDate) && isDateNull(newDueDate)){
+
+            if (!isTimeNull(completeUnquote(newDueTime,3))){
+                ec.ShowUserError("You cannot have a time without a date");
+                return false;
+            }
         }
+
+
 
         // update in local DB and if isLec update in online DB
         tableName = tblUserTask;
 
         if (blnDoUpdate){
+
 
             //Is Lec
             if (isLec){
@@ -459,7 +467,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public boolean isDateNull(String checkDate){
 
-        if (checkDate == null || checkDate.equals("NULL") || checkDate.equals("null")){
+        if (checkDate == null || checkDate.equals("NULL") || checkDate.equals("null") || checkDate.equals("")){
             Log("checkDate is null");
             return true;
         }
@@ -468,7 +476,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public boolean isTimeNull(String checkTime){
 
-        if (checkTime == null || checkTime.equals("NULL") || checkTime.equals("null")){
+        if (checkTime == null || checkTime.equals("NULL") || checkTime.equals("null") || checkTime.equals("")){
             Log("checkTime is null");
             return true;
         }

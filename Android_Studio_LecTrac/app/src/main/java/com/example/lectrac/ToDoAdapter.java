@@ -32,7 +32,7 @@ import static com.example.lectrac.HelperFunctions.tblLocalLecTask;
 import static com.example.lectrac.HelperFunctions.tblTask;
 import static com.example.lectrac.HelperFunctions.tblUserTask;
 
-public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> { //implements Filterable
+public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> {
 
     //region Intialization
 
@@ -194,45 +194,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         return -1;
     }
 
- /*   @Override
-    public Filter getFilter() {
 
-        Log("getFilter");
-        return filter;
-    }
-
-    Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            List<String> filteredList = new ArrayList<>();
-
-            if (constraint.toString().isEmpty()){
-                filteredList.addAll(arrTaskCourses);
-            }
-            else {
-
-                for (String course: arrTaskCourses){
-
-                    if (course.contains(constraint.toString())){
-                        filteredList.add(course);
-                    }
-                }
-            }
-
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filteredList;
-
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-
-            arrFilteredCourses.addAll((Collection<? extends String>) results.values);
-            notifyDataSetChanged();
-        }
-    };*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -249,76 +211,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> 
         }
     }
 
-//    public void deleteTask(int position) throws InterruptedException {
-//
-//        Log("About to delete task");
-//
-//        LocalDatabaseManager localDB = new LocalDatabaseManager(context);
-//
-//        String tableName = tblUserTask;
-//        String Task_ID = arrTaskIDs.get(position);
-//        String condition = "Task_ID = " + Task_ID.substring(1);
-//
-//
-//        // is user a student or lecturer?
-//        boolean isLec = localDB.isLec();
-//
-//
-//        // delete task from local database
-//        // if user is a lecturer then the task must also be deleted from the online database
-//
-//        if (isLec){
-//            if (Task_ID.charAt(0) == 'L'){
-//
-//                if (!isOnline(context)){
-//                    ec.ShowUserError("Connect to the internet in order to save changes",context);
-//                    return;
-//                }
-//
-//                tableName = tblLocalLecTask;
-//
-//                Log("isLec and if sCourseCode is NOT NULL about to delete from localDB");
-//                localDB.doDelete(tableName, condition);
-//
-//                Log("isLec and about to delete from onlineDB");
-//                onlineDB.delete_task_taskid(Task_ID.substring(1));
-//            }
-//            else{
-//                Log("isLec and if sCourseCode IS NULL about to delete from localDB");
-//                localDB.doDelete(tableName, condition);
-//            }
-//
-//        }
-//        else{
-//
-//            if (Task_ID.charAt(0) == 'L'){
-//
-//                tableName = tblLocalLecTask;
-//                String setting = "isDone = 1";
-//
-//                Log("isStudent, set isDone from Lecturer localDB");
-//                localDB.doUpdate(tableName, setting, condition);
-//            }
-//            else {
-//
-//                Log("isStudent, delete from localDB");
-//                localDB.doDelete(tableName, condition);
-//            }
-//
-//        }
-//
-//        // delete from arrays
-//        arrTaskIDs.remove(position);
-//        arrTaskNames.remove(position);
-//        arrTaskCourses.remove(position);
-//
-//        // adapter
-//        Log("Update Adapter");
-//        this.notifyItemRemoved(position);
-//        this.notifyDataSetChanged();
-//
-//        ec.ShowUserMessage("Deleted Task");
-//    }
 
     public void deleteTask(int position) throws InterruptedException {
 
